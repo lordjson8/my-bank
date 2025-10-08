@@ -14,7 +14,7 @@ export default function Input({value,label,setValue,placeholder,keyboardType,sec
             autoCapitalize="none"
             onChangeText={setValue}
             secureTextEntry={secure}
-            className="border rounded-xl px-3 text-base py-4 border-border"
+            className="border rounded-xl text-blackc placeholder:text-muted-foreground px-3 text-base py-4 border-border"
           />
     </View>
   )

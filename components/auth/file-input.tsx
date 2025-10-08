@@ -23,7 +23,7 @@ export default function FileInput({
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
-      aspect: [4, 3],
+      // aspect: [9,16],
       quality: 1,
     });
 
@@ -56,13 +56,13 @@ export default function FileInput({
           <>
             <View className="flex-row gap-2 px-3 py-3 bg-card items-center mb-3">
               <Icon size={24} color={"#F97316"}/>
-              <Text className="text-sm  mt-2">{image}</Text>
+              <Text className="text-sm  mt-2 max-h-6">{image}</Text>
             </View>
              <TouchableOpacity
               onPress={pickImage}
-              className="rounded-xl flex items-center justify-center"
+              className="rounded-xl  flex items-center justify-center"
             >
-              <Text className="text-primary">Changer</Text>
+              <Text className="text-primary ">Changer</Text>
             </TouchableOpacity>
           </>
         )}

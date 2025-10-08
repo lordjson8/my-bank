@@ -5,7 +5,7 @@ import { Link } from "expo-router";
 
 export default function Politics() {
   return (
-    <View className="mt-6">
+    <View className="mt-6 mb-16">
       <Text className="text-base text-pretty text-center text-muted-foreground">
         En continuant, vous acceptez nos{" "}
         <Text className="text-primary"> Conditions d&apos;utilisation </Text>

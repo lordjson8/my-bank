@@ -9,7 +9,7 @@ import {
   Plus,
   Send,
 } from "lucide-react-native";
-import { ScrollView, Text ,View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import Header from "@/components/dashboard/header";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -31,10 +31,7 @@ const TabIcon = ({
         color={color}
         size={24}
       />
-      <Text
-        style={{ color: color }}
-        className={`text-xs w-fit  text-pretty`}
-      >
+      <Text style={{ color: color }} className={`text-xs w-fit  text-pretty`}>
         {name}
       </Text>
     </View>
@@ -63,6 +60,12 @@ const MainTabIcon = ({
 export default function TabLayout() {
   return (
     <>
+      {/* <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "slide_from_right",
+        }}
+      /> */}
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#F97316",
@@ -70,7 +73,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarButton: HapticTab,
           tabBarHideOnKeyboard: true,
-          tabBarShowLabel: false,
+          // tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: "#fff",
             borderWidth: 3,

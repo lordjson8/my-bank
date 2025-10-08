@@ -66,10 +66,11 @@ export default function List() {
   }, [activeFilter, search, transactions]);
 
   return (
+    
     <View className="bg-white rounded-xl px-4 py-6 mb-[300px]">
-      <View className="flex-row justify-between mb-4 items-center">
-        <Text className="text-muted-foreground">Transactions Recents</Text>
-        <View className="flex-row gap-1">
+      <View className="flex-row justify-between mb-4 items-start">
+        <Text className="text-muted-foreground py-2">Transactions Recents</Text>
+        <View className="flex-row flex-wrap justify-end flex-1 gap-1">
           <TouchableOpacity className="" onPress={() => setActiveFilter("all")}>
             <Text
               className={` ${activeFilter === "all" && "bg-card text-primary "} px-2 py-2 rounded-md`}
@@ -93,7 +94,7 @@ export default function List() {
           </TouchableOpacity>
         </View>
       </View>
-      <View className="mt-2 mb-5 bg-gray-50 flex-row  gap-2 items-center">
+      <View className="mt-2 mb-5 bg-gray-50 flex-row  gap-2 items-center px-2 rounded-xl">
         <Search size={17} color={"gray"} />
         <TextInput
           className="border-none w-full outline-none px-3 py-3"

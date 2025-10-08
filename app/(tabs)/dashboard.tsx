@@ -3,23 +3,25 @@ import CurrentAccount from "@/components/dashboard/current-account";
 import Header from "@/components/dashboard/header";
 import List from "@/components/dashboard/list";
 import Notifications from "@/components/dashboard/notifications";
-import { ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView className="bg-gray-50 ">
-       <View className="fixed top-0 left-0 z-50 w-screen">
+    <KeyboardAvoidingView behavior="padding" className='flex-1'>
+      <SafeAreaView className="bg-gray-50 ">
+        <View className="fixed top-0 left-0 z-50 w-screen">
           <Header />
         </View>
-      <ScrollView className="relative">
-        <View className="px-4 py-6">
-          <CurrentAccount />
-          <Accounts />
-          <Notifications />
-          <List />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView className="relative">
+          <View className="px-4 py-6">
+            <CurrentAccount />
+            <Accounts />
+            <Notifications />
+            <List />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }

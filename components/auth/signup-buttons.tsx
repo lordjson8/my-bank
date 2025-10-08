@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react-native";
 
 export default function SignupButtons({href,label} : {href: "/(auth)/verify" | "/(auth)/security" | "/(auth)/success" | "/(auth)/info",label: string}) {
   return (
-    <View className="mt-6">
+    <View className="flex-1 mt-6">
       <View className="flex flex-row gap-3 mb-5">
         <TouchableOpacity
           onPress={() => {

@@ -86,7 +86,7 @@ export default function DateInput({
         <TextInput
           placeholder={placeholder}
           value={date ? date.toLocaleDateString() : ""}
-          className="text-base"
+          className="text-base placeholder:text-muted-foreground"
           editable={false}
         />
         <Calendar size={15} />
