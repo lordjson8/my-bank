@@ -1,0 +1,87 @@
+{
+  "expo": {
+    "name": "Bank",
+    "slug": "Bank",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "bank",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "splash": {
+        "backgroundColor": "#F97316",
+        "image": "./assets/images/splash.png",
+        "imageOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "imageScale": "contain"
+      }
+    },
+    "android": {
+      "splash": {
+        "backgroundColor": "#F97316",
+        "image": "./assets/images/splash.png",
+        "imageOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "imageScale": "contain"
+      },
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.lordjson.Bank"
+    },
+    "web": {
+      "splash": {
+        "backgroundColor": "#F97316",
+        "image": "./assets/images/splash.png",
+        "imageOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "imageScale": "contain"
+      },
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F97316",
+          "image": "./assets/images/splash.png",
+          "imageWidth": 100,
+          "resizeMode": "contain",
+          "dark": {
+            "backgroundColor": "#F97316"
+          }
+        }
+        
+      
+      ]
+      
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "0aae084a-1f55-4dc7-b7f5-bd5be28093ee"
+      }
+    }
+  }
+}
