@@ -1,7 +1,7 @@
 import { View, Text, TextInput } from 'react-native'
 import React from 'react'
 
-export default function Input({value,label,setValue,placeholder,keyboardType,secure} : {secure : boolean,label : string,value : string,setValue : (value : string) => void,placeholder : string,keyboardType : 'email-address' | 'phone-pad' | 'default'}) {
+export default function Input({error,value,label,setValue,placeholder,keyboardType,secure} : {error? : string,secure : boolean,label : string,value : string,setValue : (value : string) => void,placeholder : string,keyboardType : 'email-address' | 'phone-pad' | 'default'}) {
   return (
     <View className='mb-4'>
        <Text className="text-base mb-2 ">
@@ -13,9 +13,11 @@ export default function Input({value,label,setValue,placeholder,keyboardType,sec
             keyboardType={keyboardType}
             autoCapitalize="none"
             onChangeText={setValue}
+            placeholderTextColor={'gray'}
             secureTextEntry={secure}
-            className="border rounded-xl text-blackc placeholder:text-muted-foreground px-3 text-base py-4 border-border"
+            className={`border rounded-xl text-black px-4 text-base py-4 ${error? 'border-red-500' : 'border-border'} `}
           />
+          {error && <Text className='text-red-500 text-sm'>{error}</Text>}
     </View>
   )
 }

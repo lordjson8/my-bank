@@ -55,9 +55,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
       [
-        
         "expo-splash-screen",
         {
           "backgroundColor": "#F97316",
@@ -68,10 +66,13 @@
             "backgroundColor": "#F97316"
           }
         }
-        
-      
+      ],
+      [
+        "expo-router",
+        {
+          "unstable_useServerMiddleware": true
+        }
       ]
-      
     ],
     "experiments": {
       "typedRoutes": true,

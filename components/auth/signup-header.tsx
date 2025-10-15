@@ -6,16 +6,12 @@ import Tabs from './tabs'
 export default function SignupHeader() {
   return (
     <View>
-       <Progress step={2} progress="40%" />
-        <View className="pt-32">
-          <Text className="text-center mb-2 text-2xl font-bold">
-            Créez votre compte
+       <Progress step={1} progress="20%" />
+        <View className="pt-6">
+        
+          <Text className="mb-8 text-primary font-bold text-4xl">
+            Get started with your account!
           </Text>
-          <Text className="text-center text-base mb-8 text-muted-foreground">
-            Entrez vos coordonnées pour commencer
-          </Text>
-
-         <Tabs />
         </View>
     </View>
   )

@@ -1,4 +1,10 @@
-import { View, Text, TextInput, Platform, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import DateTimePicker, {
   DateTimePickerAndroid,
@@ -9,13 +15,15 @@ import { Calendar } from "lucide-react-native";
 export default function DateInput({
   label,
   date,
+  error,
   setDate,
   placeholder,
 }: {
+  error?: string;
   secure: boolean;
   label: string;
-  date: Date | undefined;
-  setDate: (value: Date | undefined) => void;
+  date: Date | null;
+  setDate: (value: Date) => void;
   placeholder: string;
   keyboardType: "email-address" | "phone-pad" | "default";
 }) {
@@ -81,16 +89,17 @@ export default function DateInput({
 
       <TouchableOpacity
         onPress={showDatePicker}
-        className="border rounded-xl px-3  py-1 border-border flex-row justify-between items-center"
+        className={`border rounded-xl px-3  py-1 border-border flex-row justify-between items-center ${error? 'border-red-500' : 'border-border'}`}
       >
         <TextInput
           placeholder={placeholder}
           value={date ? date.toLocaleDateString() : ""}
-          className="text-base placeholder:text-muted-foreground"
+          className={`text-base placeholder:text-muted-foreground  `}
           editable={false}
         />
         <Calendar size={15} />
       </TouchableOpacity>
+      {error && <Text className="text-red-500 text-sm">{error}</Text>}
     </View>
   );
 }

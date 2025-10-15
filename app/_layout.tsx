@@ -46,6 +46,11 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+        <Stack.Screen name="home/index" options={{ title: "Home page", headerStyle: {
+          backgroundColor : "green",
+          
+        } }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}
@@ -56,3 +61,4 @@ export default function RootLayout() {
     // </ThemeProvider>
   );
 }
+
