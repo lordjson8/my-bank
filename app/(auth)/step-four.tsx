@@ -2,7 +2,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -10,20 +9,42 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SignupHeader from "@/components/auth/signup-header";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Code, LockKeyhole, RefreshCcw, ScanFace } from "lucide-react-native";
+import { LockKeyhole, ScanFace } from "lucide-react-native";
+import * as LocalAuthentication from "expo-local-authentication";
+import { Alert } from "react-native";
 
 export default function StepFour() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
 
-  const handleChange = (index: number, value: string) => {
-    const newCode = [...code];
-    newCode[index] = value;
-    setCode(newCode);
+  const handleLocalAuthentication = async () => {
+    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
 
-    if (value && index < 3) {
-      // You would need to use refs for actual auto-focus
+    console.log(isEnrolled);
+    try {
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: "Confirmerer l'authentification",
+        cancelLabel: "Annuler",
+        fallbackLabel: "Utiliser le code",
+        disableDeviceFallback: false,
+      });
+
+      if (result.success) {
+        Alert.alert("Succès", "Authentification réussie !");
+      } else {
+        if (result.error === "not_available") {
+          // showPermissionGuide();
+        } else if (result.error === "not_enrolled") {
+          Alert.alert(
+            "Biométrie non configurée",
+            "Veuillez configurer les empreintes digitales ou Face ID dans les paramètres de votre appareil."
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
     }
   };
+
   return (
     <KeyboardAvoidingView
       style={{
@@ -51,13 +72,16 @@ export default function StepFour() {
             </Text>
 
             <View className="border-b border-border flex-1">
-              <TouchableOpacity className="flex-1 flex-row gap-6 py-4 items-center">
+              <TouchableOpacity
+                onPress={handleLocalAuthentication}
+                className="flex-1 flex-row gap-6 py-4 items-center"
+              >
                 <ScanFace color={"#F97316"} size={32} />
                 <Text className="font-bold text-xl ">Face ID & Passcode</Text>
               </TouchableOpacity>
             </View>
 
-            <Link href={'/(auth)/access-code'} asChild>
+            <Link href={"/(auth)/access-code"} asChild>
               <TouchableOpacity className="flex-1 flex-row gap-6 py-4 items-center">
                 <LockKeyhole color={"#F97316"} size={32} />
                 <Text className="font-bold text-xl ">

@@ -72,6 +72,12 @@
         {
           "unstable_useServerMiddleware": true
         }
+      ],
+       [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow My Bank to use Face ID."
+        }
       ]
     ],
     "experiments": {
