@@ -10,16 +10,18 @@ export default function PasswordInput({
   keyboardType,
 }: {
   error?: string;
-  label: string;
-  value: string;
-  setValue: (value: string) => void;
-  placeholder: string;
-  keyboardType: "email-address" | "phone-pad" | "default";
+  label?: string;
+  value?: string;
+  setValue?: (value: string) => void;
+  placeholder?: string;
+  keyboardType?: "email-address" | "phone-pad" | "default";
 }) {
   const [secure, setSecure] = useState<boolean>(true);
 
   return (
     <View className="mb-4 border-b border-border ">
+      <Text className="text-sm invisible text-muted-foreground">{placeholder}</Text>
+
       <View className="flex-row justify-between items-center">
         <TextInput
           placeholder={placeholder}
@@ -29,10 +31,14 @@ export default function PasswordInput({
           onChangeText={setValue}
           placeholderTextColor={"gray"}
           secureTextEntry={secure}
-          className={`rounded-xl text-black px-3 text-xl py-4 ${error ? "border-red-500" : "border-border"} `}
+          className={`rounded-xl text-black px-0 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
         />
         <TouchableOpacity onPress={() => setSecure(!secure)}>
-        {secure? <EyeOff color={'#777777'} size={20}/> : <Eye color={'#777777'} size={20}/>}
+          {secure ? (
+            <EyeOff color={"#777777"} size={20} />
+          ) : (
+            <Eye color={"#777777"} size={20} />
+          )}
         </TouchableOpacity>
       </View>
 

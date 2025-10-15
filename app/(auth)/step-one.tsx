@@ -1,35 +1,72 @@
-import { KeyboardAvoidingView, ScrollView, Text } from "react-native";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignupHeader from "@/components/auth/signup-header";
 
-import Politics from "@/components/auth/politics";
-import RInput from "@/components/auth/register-input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import SubmitButtons from "@/components/auth/submit-buttons";
-import { emailSchema, emailType } from "@/utils/zod-schemas";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { emailSchema, emailType } from "@/utils/zod-schemas";
 import BottomBorderedInput from "@/components/auth/bottom-bordered-input";
 import PasswordInput from "@/components/auth/password-input";
+import Checkbox from "expo-checkbox";
+import { Link } from "expo-router";
+import TextBold from "@/components/auth/text-bold";
 
 export default function EmailSignup() {
-
-
-  const {control,handleSubmit,formState : {errors, isLoading}} = useForm<emailSchema>({
-    resolver: zodResolver(emailType),
-  })
-  const onsubmit = (data: emailSchema) => {
-     
-  }
+  //   const {
+  //     control,
+  //     handleSubmit,
+  //     formState: { errors, isLoading },
+  //   } = useForm<emailSchema>({
+  //     resolver: zodResolver(emailType),
+  //   });
+  //   const onsubmit = (data: emailSchema) => {};
 
   return (
     <KeyboardAvoidingView behavior="padding" className="flex-1">
-      <SafeAreaView className="flex-1 p-4 bg-white">
+      <SafeAreaView className="flex-1 p-4 min-h-screen bg-white">
         <ScrollView
+          contentContainerStyle={{
+            display: "flex",
+            justifyContent: "space-between",
+            height: "100%",
+          }}
           className="flex-1 px-4 py-8"
         >
-          <SignupHeader />
-          <BottomBorderedInput placeholder="Email Address" />
-          <PasswordInput placeholder="Password"/>
+          <View className="">
+            <SignupHeader />
+            <BottomBorderedInput placeholder="Email Address" />
+            <PasswordInput placeholder="Password" />
+          </View>
+          <View>
+            <View className="flex-row items-center gap-3 mb-4">
+              <Checkbox
+                color={"#F97316"}
+                //   onValueChange={() => setBiometric(!biometric)}
+                //   value={biometric}
+              />
+              <View className="">
+                <Text className=" text-muted-foreground text-pretty text-base">
+                  J&apos;ai lu et compris les{" "}
+                  <TextBold label="conditions générales" />
+                  et la <TextBold label="politique" /> de
+                  <TextBold label="confidentialité" /> de Quick Finance.
+                </Text>
+              </View>
+            </View>
+            <View className="mt-4 mb-4">
+              <Link href={"/(auth)/auth-options"} asChild>
+                <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
+                  <Text className="text-white text-base">Commencer</Text>
+                </TouchableOpacity>
+              </Link>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>
