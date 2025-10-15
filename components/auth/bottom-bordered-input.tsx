@@ -30,7 +30,7 @@ export default function BottomBorderedInput({
           onChangeText={setValue}
           placeholderTextColor={"gray"}
           secureTextEntry={secure}
-          className={`rounded-xl text-black px-0 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
+          className={`rounded-xl text-black px-0 flex-1 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
         />
       </View>
 

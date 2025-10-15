@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { ChevronLeft } from "lucide-react-native";
+import { router } from "expo-router";
 
 export default function Progress({
   progress,
@@ -15,7 +16,9 @@ export default function Progress({
   return (
     <View>
       <View className="flex flex-row justify-between items-center text-gray-300">
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        router.back()
+      }}>
         <ChevronLeft />
 
       </TouchableOpacity>

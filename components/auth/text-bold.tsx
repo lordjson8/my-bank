@@ -3,6 +3,6 @@ import React from 'react'
 
 export default function TextBold({label} : {label : string}) {
   return (
-      <Text className="text-black font-bold"> {label} </Text>
+      <Text className="text-black font-bold flex-1"> {label} </Text>
   )
 }

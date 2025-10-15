@@ -5,14 +5,13 @@ import MB from "@/components/auth/mb";
 import { Link } from "expo-router";
 
 export default function AuthOptions() {
+  const image = require("@/assets/images/PastedImage.png");
+
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="min-h-screen bg-white">
         <View className="flex-1  pt-32 mx-auto">
-          <Image
-            className="flex-1 w-[302.01px] h-[232.77px]"
-            source={require("./../../assets/images/Pasted-image.png")}
-          />
+          <Image className="flex-1 w-[302.01px] h-[232.77px]" source={image} />
         </View>
         <View className="px-12 py-12 gap-6">
           <View className="mx-auto">
@@ -28,19 +27,14 @@ export default function AuthOptions() {
 
           <View className="flex-1 mt-6">
             <View className="flex flex-row gap-3 mb-5">
-              <TouchableOpacity
-                className="w-[40%]  gap-1 py-4 px-8 items-center bg-[#31313133] rounded-xl"
-              >
+              <TouchableOpacity className="w-[40%]  gap-1 py-4 px-8 items-center bg-[#31313133] rounded-xl">
                 <Text className="font-bold">Login</Text>
               </TouchableOpacity>
-              <Link href={'/(auth)/step-one'} asChild>
-                            <TouchableOpacity
-                className="w-[60%] flex-row bg-primary py-4 items-center justify-center gap-2 rounded-xl"
-              >
-                <Text className="text-white font-bold">Commencer</Text>
-              </TouchableOpacity>
+              <Link href={"/(auth)/step-one"} asChild>
+                <TouchableOpacity className="w-[60%] flex-row bg-primary py-4 items-center justify-center gap-2 rounded-xl">
+                  <Text className="text-white font-bold">Commencer</Text>
+                </TouchableOpacity>
               </Link>
-
             </View>
           </View>
         </View>

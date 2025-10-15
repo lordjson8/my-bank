@@ -13,33 +13,27 @@ import SignupHeader from "@/components/auth/signup-header";
 // import { emailSchema, emailType } from "@/utils/zod-schemas";
 import BottomBorderedInput from "@/components/auth/bottom-bordered-input";
 import PasswordInput from "@/components/auth/password-input";
-import Checkbox from "expo-checkbox";
+import { Checkbox } from "expo-checkbox";
 import { Link } from "expo-router";
 import TextBold from "@/components/auth/text-bold";
 
 export default function EmailSignup() {
-  //   const {
-  //     control,
-  //     handleSubmit,
-  //     formState: { errors, isLoading },
-  //   } = useForm<emailSchema>({
-  //     resolver: zodResolver(emailType),
-  //   });
-  //   const onsubmit = (data: emailSchema) => {};
-
   return (
-    <KeyboardAvoidingView behavior="padding" className="flex-1">
-      <SafeAreaView className="flex-1 p-4 min-h-screen bg-white">
+      <SafeAreaView className="flex-1 p-4  bg-white">
         <ScrollView
           contentContainerStyle={{
             display: "flex",
             justifyContent: "space-between",
-            height: "100%",
+            minHeight: "100%",
           }}
           className="flex-1 px-4 py-8"
         >
           <View className="">
-            <SignupHeader />
+            <SignupHeader
+              label="Get started with your account!"
+              step={1}
+              progress="20%"
+            />
             <BottomBorderedInput placeholder="Email Address" />
             <PasswordInput placeholder="Password" />
           </View>
@@ -50,8 +44,8 @@ export default function EmailSignup() {
                 //   onValueChange={() => setBiometric(!biometric)}
                 //   value={biometric}
               />
-              <View className="">
-                <Text className=" text-muted-foreground text-pretty text-base">
+              <View className="flex-1">
+                <Text className="flex-1 text-muted-foreground text-pretty text-base">
                   J&apos;ai lu et compris les{" "}
                   <TextBold label="conditions générales" />
                   et la <TextBold label="politique" /> de
@@ -59,8 +53,8 @@ export default function EmailSignup() {
                 </Text>
               </View>
             </View>
-            <View className="mt-4 mb-4">
-              <Link href={"/(auth)/auth-options"} asChild>
+            <View className="mt-4 mb-12">
+              <Link href={"/(auth)/step-two"} asChild>
                 <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
                   <Text className="text-white text-base">Commencer</Text>
                 </TouchableOpacity>
@@ -69,6 +63,5 @@ export default function EmailSignup() {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </KeyboardAvoidingView>
-  );
+   );
 }

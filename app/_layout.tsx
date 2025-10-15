@@ -32,6 +32,8 @@ export default function RootLayout() {
     "Poppins-Light": require("../assets/fonts/Poppins-Light.ttf"),
   });
 
+  // const [images] = useImages
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hide();

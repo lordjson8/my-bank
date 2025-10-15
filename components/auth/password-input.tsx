@@ -31,7 +31,7 @@ export default function PasswordInput({
           onChangeText={setValue}
           placeholderTextColor={"gray"}
           secureTextEntry={secure}
-          className={`rounded-xl text-black px-0 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
+          className={`rounded-xl text-black px-0 text-base py-4 flex-1`}
         />
         <TouchableOpacity onPress={() => setSecure(!secure)}>
           {secure ? (

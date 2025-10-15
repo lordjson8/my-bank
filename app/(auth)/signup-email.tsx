@@ -30,7 +30,7 @@ export default function EmailSignup() {
         <ScrollView
           className="flex-1 px-4 py-8"
         >
-          <SignupHeader />
+          {/* <SignupHeader /> */}
           <RInput
             secure={false}
             label="Address email"

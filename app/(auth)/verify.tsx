@@ -30,10 +30,10 @@ export default function Verify() {
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <SafeAreaView className="flex-1 p-4 bg-white">
-        <ScrollView className="px-4 py-8">
+        <ScrollView className="px-4 py-8 flex-1">
           <Progress step={3} progress="60%" />
 
-          <View className="mt-[156px] mb-2">
+          <View className="mt-[156px] mb-2 flex-1">
             <Text className="text-center text-2xl font-bold">Vérification</Text>
             <Text className="text-center text-base text-muted-foreground">
               Nous avons envoyé un code à
@@ -42,7 +42,7 @@ export default function Verify() {
               inares726@gmail.com
             </Text>
 
-            <View className="mt-6 flex-row gap-3 items-center justify-center">
+            <View className="mt-6 flex-row flex-1 gap-3 items-center justify-center">
               {code.map((digit, index) => (
                 <TextInput
                   value={digit}
@@ -50,7 +50,7 @@ export default function Verify() {
                   onChangeText={(digit) => handleChange(index, digit)}
                   keyboardType="numeric"
                   maxLength={1}
-                  className="w-16 h-16 border rounded-xl border-border text-center font-bold text-2xl"
+                  className="w-16 h-16 flex-1 border rounded-xl border-border text-center font-bold text-2xl"
                 />
               ))}
             </View>
