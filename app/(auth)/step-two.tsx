@@ -2,6 +2,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -11,21 +12,23 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignupHeader from "@/components/auth/signup-header";
 import { Link } from "expo-router";
-import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
+import { countries } from "@/constants";
+import PhoneModal from "@/components/auth/phone-modal";
 
 export default function StepTwo() {
-const countries = [
-  { code: "+237", name: "Cameroon", flag: "🇨🇲" },
-  { code: "+234", name: "Nigeria", flag: "🇳🇬" },
-  { code: "+27", name: "South Africa", flag: "🇿🇦" },
-  { code: "+254", name: "Kenya", flag: "🇰🇪" },
-  { code: "+233", name: "Ghana", flag: "🇬🇭" },
-  ];
+
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
+     <KeyboardAvoidingView
+              style={{
+                flex: 1,
+              }}
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+
+            >
     <SafeAreaView className="flex-1 p-4  bg-white">
       <ScrollView
         contentContainerStyle={{
@@ -35,48 +38,7 @@ const countries = [
         }}
         className="flex-1 px-4 py-8"
       >
-        <Modal
-          visible={modalVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View className="w-full h-10 bg-black/50  justify-center flex-1">
-            <View className="bg-white rounded-xl max-h-3/4 mx-4">
-              <View className="px-4 py-4 border-b border-border">
-                <Text className="text-center text-lg font-bold">
-                  Select your country
-                </Text>
-              </View>
-              <FlatList
-                className="max-h-96"
-                data={countries}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelectedCountry(item);
-                      setModalVisible(false);
-                    }}
-                    className="px-4 py-4 flex-row items-center gap-6 border-b border-border"
-                  >
-                    <Text>{item.flag}</Text>
-                    <Text>{item.name}</Text>
-                  </TouchableOpacity>
-                )}
-                keyExtractor={(item) => item.code}
-                showsVerticalScrollIndicator={false}
-              />
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                className="px-4 py-4 border-t border-border"
-              >
-                <Text className="text-center text-lg font-bold text-primary">
-                  Cancel
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+       <PhoneModal modalVisible={modalVisible} setModalVisible={setModalVisible} setSelectedCountry={setSelectedCountry}/>
         <View className="">
           <SignupHeader
             label="Quel est ton numéro de portable ?"
@@ -99,12 +61,12 @@ const countries = [
               {/* <Text className="text-sm invisible text-muted-foreground">
                 {"placeholder"}
               </Text> */}
-                <TextInput
-                  placeholder={"Numéro de téléphone"}
-                  keyboardType="phone-pad"
-                  placeholderTextColor={"gray"}
-                  className={` w-full text-black px-0 text-lg py-4 border-border `}
-                />
+              <TextInput
+                placeholder={"Numéro de téléphone"}
+                keyboardType="phone-pad"
+                placeholderTextColor={"gray"}
+                className={` w-full text-black px-0 text-lg py-4 border-border `}
+              />
             </View>
           </View>
         </View>
@@ -119,12 +81,13 @@ const countries = [
           <View className="mt-4 mb-12">
             <Link href={"/(auth)/step-three"} asChild>
               <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
-                <Text className="text-white text-base">Soumettre</Text>
+                <Text className="text-white text-xl">Soumettre</Text>
               </TouchableOpacity>
             </Link>
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }

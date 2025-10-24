@@ -28,7 +28,7 @@
           "x": 0,
           "y": 0
         },
-        "imageScale": "contain"
+        "imageScale": "contain" 
       },
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",

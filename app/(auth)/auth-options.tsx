@@ -27,9 +27,12 @@ export default function AuthOptions() {
 
           <View className="flex-1 mt-6">
             <View className="flex flex-row gap-3 mb-5">
-              <TouchableOpacity className="w-[40%]  gap-1 py-4 px-8 items-center bg-[#31313133] rounded-xl">
-                <Text className="font-bold">Login</Text>
-              </TouchableOpacity>
+              <Link asChild href={"/(auth)/login"}>
+                <TouchableOpacity className="w-[40%]  gap-1 py-4 px-8 items-center bg-[#31313133] rounded-xl">
+                  <Text className="font-bold">Login</Text>
+                </TouchableOpacity>
+              </Link>
+
               <Link href={"/(auth)/step-one"} asChild>
                 <TouchableOpacity className="w-[60%] flex-row bg-primary py-4 items-center justify-center gap-2 rounded-xl">
                   <Text className="text-white font-bold">Commencer</Text>

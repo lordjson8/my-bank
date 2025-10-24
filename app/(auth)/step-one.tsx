@@ -16,8 +16,17 @@ import PasswordInput from "@/components/auth/password-input";
 import { Checkbox } from "expo-checkbox";
 import { Link } from "expo-router";
 import TextBold from "@/components/auth/text-bold";
+import { useAuth } from "@/services/providers/auth-context";
+import { useEffect } from "react";
 
 export default function EmailSignup() {
+
+   const p = useAuth()
+
+  useEffect(() => {
+    p.setOnboarding(false)
+    console.log('p: ', p.onBoarding)
+  },[])
   return (
       <SafeAreaView className="flex-1 p-4  bg-white">
         <ScrollView
@@ -56,7 +65,7 @@ export default function EmailSignup() {
             <View className="mt-4 mb-12">
               <Link href={"/(auth)/step-two"} asChild>
                 <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
-                  <Text className="text-white text-base">Commencer</Text>
+                  <Text className="text-white text-xl">Commencer</Text>
                 </TouchableOpacity>
               </Link>
             </View>

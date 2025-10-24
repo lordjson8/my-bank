@@ -3,7 +3,19 @@ import React from "react";
 import { Link, router } from "expo-router";
 import { ArrowLeft, ArrowRight } from "lucide-react-native";
 
-export default function SubmitButtons({href,label,onPressFN} : {onPressFN : () => void,href: "/(auth)/verify" | "/(auth)/security" | "/(auth)/success" | "/(auth)/info",label: string}) {
+export default function SubmitButtons({
+  href,
+  label,
+  onPressFN,
+}: {
+  onPressFN: () => void;
+  href:
+    | "/(auth)/verify"
+    | "/(auth)/security"
+    | "/(auth)/success"
+    | "/(auth)/info";
+  label: string;
+}) {
   return (
     <View className="flex-1 mt-6">
       <View className="flex flex-row gap-3 mb-5">
@@ -18,12 +30,17 @@ export default function SubmitButtons({href,label,onPressFN} : {onPressFN : () =
           </Text>
           <Text className="font-bold">Retour</Text>
         </TouchableOpacity>
-          <TouchableOpacity onPress={onPressFN} className="flex-1 flex-row bg-primary py-4 items-center justify-center gap-2 rounded-xl">
+        <Link href={href} asChild>
+          <TouchableOpacity
+            onPress={onPressFN}
+            className="flex-1 flex-row bg-primary py-4 items-center justify-center gap-2 rounded-xl"
+          >
             <Text>
               <ArrowRight className="font-bold" size={17} color={"#fff"} />
             </Text>
             <Text className="text-white font-bold">{label}</Text>
           </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );

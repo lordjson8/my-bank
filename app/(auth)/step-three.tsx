@@ -94,7 +94,7 @@ export default function StepThree() {
             <View className="mt-4 mb-12">
               <Link href={"/(auth)/step-four"} asChild>
                 <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
-                  <Text className="text-white text-base">Soumettre</Text>
+                  <Text className="text-white text-xl">Soumettre</Text>
                 </TouchableOpacity>
               </Link>
             </View>

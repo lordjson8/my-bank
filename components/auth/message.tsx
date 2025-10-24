@@ -10,10 +10,10 @@ export default function Message() {
         <MB />
       </View>
       <View className="mt-6">
-        <Text className="text-center font-bold text-2xl">
+        <Text className="text-center font-bold text-3xl">
           Bienvenue sur MobileBanque
         </Text>
-        <Text className="text-center text-base font-[400] text-muted-foreground mt-4 leading-6">
+        <Text className="text-center text-lg font-[400] text-muted-foreground mt-4 leading-6">
           Créez votre compte pour profiter de tous nos services bancaires en
           quelques étapes simples.
         </Text>

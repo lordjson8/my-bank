@@ -24,7 +24,7 @@ export default function AccessCode() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-4  bg-white">
+    <SafeAreaView className="flex-1 px-4  bg-white">
       <ScrollView
         contentContainerStyle={{
           display: "flex",
@@ -120,7 +120,7 @@ export default function AccessCode() {
               <TouchableOpacity
                 className={`rounded-xl  flex flex-row items-center py-4 justify-center gap-2 ${code.length < 4 ? "bg-orange-200" : "bg-primary"}`}
               >
-                <Text className="text-white text-base">Continue</Text>
+                <Text className="text-white text-xl">Continue</Text>
               </TouchableOpacity>
             </Link>
           </View>

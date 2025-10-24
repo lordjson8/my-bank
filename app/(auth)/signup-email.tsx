@@ -12,8 +12,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SubmitButtons from "@/components/auth/submit-buttons";
 import { emailSchema, emailType } from "@/utils/zod-schemas";
+import { useAuth } from "@/services/providers/auth-context";
+import { useEffect } from "react";
 
 export default function EmailSignup() {
+ 
   // const [email, setEmail] = useState("");
 
 

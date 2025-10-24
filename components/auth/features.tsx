@@ -13,8 +13,8 @@ export default function Features() {
               >
                 <el.icon color={"#F97316"} />
                 <View className="ml-3 flex-1">
-                  <Text className="text-base font-[500]">{el.title}</Text>
-                  <Text className="mt-2 text-muted-foreground  text-pretty text-base">
+                  <Text className="text-lg font-[500]">{el.title}</Text>
+                  <Text className="mt-2 text-muted-foreground  text-pretty text-lg">
                     {el.description}
                   </Text>
                 </View>
