@@ -10,10 +10,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen() {
   return (
     <KeyboardAvoidingView behavior="padding" className='flex-1'>
-      <SafeAreaView className="bg-gray-50 ">
-        <View className="fixed top-0 left-0 z-50 w-screen">
-          <Header />
-        </View>
+      <View className="bg-gray-50 ">
+        {/* <View className="fixed top-0 left-0 z-50 w-screen">
+           <Header /> 
+        </View> */}
         <Tabs.Screen options={{
           tabBarBadge : 4
         }}/>
@@ -25,7 +25,7 @@ export default function HomeScreen() {
             <List />
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     </KeyboardAvoidingView>
   );
 }
