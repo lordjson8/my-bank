@@ -14,9 +14,9 @@ export default function HomeScreen() {
         {/* <View className="fixed top-0 left-0 z-50 w-screen">
            <Header /> 
         </View> */}
-        <Tabs.Screen options={{
+        {/* <Tabs.Screen options={{
           tabBarBadge : 4
-        }}/>
+        }}/> */}
         <ScrollView className="relative">
           <View className="px-4 py-6">
             <CurrentAccount />

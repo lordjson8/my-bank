@@ -67,7 +67,7 @@ export default function List() {
 
   return (
     
-    <View className="bg-white rounded-xl px-4 py-6 mb-[300px]">
+    <View className="bg-white rounded-xl px-4 py-6 ">
       <View className="flex-row justify-between mb-4 items-start">
         <Text className="text-muted-foreground py-2">Transactions Recents</Text>
         <View className="flex-row flex-wrap justify-end flex-1 gap-1">

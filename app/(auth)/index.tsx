@@ -10,6 +10,7 @@ import { useAuth } from "@/services/providers/auth-context";
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 import * as GoogleAuth from 'expo-auth-session/providers/google';
+import axios from 'axios'
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,6 +22,10 @@ const discovery = {
 };
 
 const Index = () => {
+
+
+  axios('http://10.127.98.61:8000/api/library/models/').then(res => console.log(res.data)).catch(err => console.log(err))
+
   const p = useAuth()
   console.log(p)
 

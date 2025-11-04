@@ -6,15 +6,15 @@ import { StatusBar } from "expo-status-bar";
 export default function AuthLayout() {
   const p = useAuth();
 
-  // if(!p.isLoggedIn){
-  //   return <Redirect href={'/dashboard'}/>
-  // }
+  if(true){
+    return <Redirect href={'/transfer'}/>
+  }
 
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        // animation: "slide_from_right",
+        animation: 'slide_from_right',
       }}
     >
       <StatusBar style="auto" />
