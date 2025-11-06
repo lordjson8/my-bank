@@ -16,26 +16,24 @@ import PasswordInput from "@/components/auth/password-input";
 import { Checkbox } from "expo-checkbox";
 import { Link } from "expo-router";
 import TextBold from "@/components/auth/text-bold";
-import { useAuth } from "@/services/providers/auth-context";
 import { useEffect } from "react";
 
 export default function EmailSignup() {
 
-   const p = useAuth()
 
-  useEffect(() => {
-    p.setOnboarding(false)
-    console.log('p: ', p.onBoarding)
-  },[])
+  // useEffect(() => {
+  //   p.setOnboarding(false)
+  //   console.log('p: ', p.onBoarding)
+  // },[])
   return (
       <SafeAreaView className="flex-1 p-4  bg-white">
         <ScrollView
           contentContainerStyle={{
             display: "flex",
+            flex: 1,
             justifyContent: "space-between",
-            minHeight: "100%",
           }}
-          className="flex-1 px-4 py-8"
+          className="px-4 py-8"
         >
           <View className="">
             <SignupHeader

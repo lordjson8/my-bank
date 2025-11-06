@@ -13,6 +13,7 @@ import { useEffect } from "react";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import AuthProvider from "@/services/providers/auth-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -48,24 +49,28 @@ export default function RootLayout() {
   // return <Redirect href="/dashboard" />;
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    // <AuthProvider>
-    <>
-      <Stack>
-        {/* <Stack.Protected guard={false}> */}
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        {/* </Stack.Protected> */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
-        />
-      </Stack>
-      <StatusBar backgroundColor="#fff" style="dark" />
-    </>
-    // </AuthProvider>
-    // </ThemeProvider>
-    // </>
+    <GestureHandlerRootView>
+      {/* // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+      {/* // <AuthProvider> */}
+      <>
+        <Stack>
+          {/* <Stack.Protected guard={false}> */}
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          {/* </Stack.Protected> */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", title: "Modal" }}
+          />
+        </Stack>
+        <StatusBar backgroundColor="#fff" style="dark" />
+      </>
+
+      {/* // </AuthProvider> */}
+      {/* </ThemeProvider> */}
+
+      {/* // </> */}
+    </GestureHandlerRootView>
   );
 }

@@ -35,7 +35,7 @@ export default function StepThree() {
           contentContainerStyle={{
             display: "flex",
             justifyContent: "space-between",
-            minHeight: "100%",
+            flex: 1,
           }}
           className="flex-1 px-4 py-8"
         >

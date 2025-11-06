@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Message from "@/components/auth/message";
 import { Link } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
-import { useAuth } from "@/services/providers/auth-context";
 
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
@@ -25,9 +24,6 @@ const Index = () => {
 
 
   axios('http://10.127.98.61:8000/api/library/models/').then(res => console.log(res.data)).catch(err => console.log(err))
-
-  const p = useAuth()
-  console.log(p)
 
 
       const redirectUri = makeRedirectUri({
@@ -59,16 +55,16 @@ const Index = () => {
 
   return (
     <SafeAreaView className="flex-1 p-4 bg-white">
-      <ScrollView className="px-4 py-8 ">
+      <ScrollView className="px-4 py-8 " showsHorizontalScrollIndicator={true} showsVerticalScrollIndicator={true}>
         {/* <Progress step={1} progress={"20%"} /> */}
-         <Button
+         {/* <Button
       disabled={!request}
       title="Login"
       onPress={() => {
         promptAsync();
         // console.log('pressed')
       }}
-    />
+    /> */}
         <Message />
         <View className="mt-4 mb-4">
           <Link href={"/(auth)/auth-options"} asChild>

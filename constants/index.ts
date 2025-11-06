@@ -1,4 +1,4 @@
-import { ChartLine, CreditCard, Shield } from "lucide-react-native";
+import { ChartLine, CreditCard, FileText, Headset, Lock, Shield, UserPlus } from "lucide-react-native";
 
 export const features = [
   {
@@ -18,6 +18,33 @@ export const features = [
     description: "Visualisez et gérez vos finances en temps réel.",
   },
 ];
+
+
+
+export const general_features = [
+  {
+    icon: Headset,
+    title: "Contacter le service client",
+    description:
+      "Disponible du Lundi au Vendredi de 8h30 à 17h30",
+  },
+  {
+    icon: Lock,
+    title: "Changer le code secret",
+    description: "Modifier le code secret du compte",
+  },
+  {
+    icon: UserPlus,
+    title: "Inviter un ami",
+    description: "Partager le lien de l'application avec vos proches",
+  },
+   {
+    icon: FileText,
+    title: "Conditions générales d'utilisation",
+    description: "Lire les conditions générales de l'application",
+  },
+];
+
 
 export const countries = [
   { code: "+237", name: "Cameroon", flag: "🇨🇲" },

@@ -1,5 +1,4 @@
 import Header from "@/components/dashboard/header";
-import { useAuth } from "@/services/providers/auth-context";
 import { Tabs } from "expo-router";
 
 import {
@@ -11,6 +10,7 @@ import {
   Settings,
 } from "lucide-react-native";
 import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Icon = ({
@@ -48,12 +48,10 @@ export default function TabLayout() {
   // }
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <Header />
       <Tabs
         screenOptions={{
+          header: Header,
           tabBarActiveTintColor: "#F97316",
-          headerShown: false,
-          headerTransparent: true,
           animation: "shift",
           tabBarHideOnKeyboard: true,
           tabBarStyle: {

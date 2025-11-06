@@ -32,16 +32,16 @@ export default function Transfer() {
       // keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
       <View className="flex-1">
-        <WarningBanner />
 
         <ScrollView
-          className="bg-gray-50 mt-6"
+          className="bg-gray-50"
           contentContainerStyle={{
             flexGrow: 1,
           }}
-          // keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+          
           <PhoneModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}

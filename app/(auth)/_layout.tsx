@@ -1,14 +1,14 @@
-import { useAuth } from "@/services/providers/auth-context";
+// import { useAuth } from "@/services/providers/auth-context";
 // import { HeaderTitle } from "@react-navigation/elements";
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 export default function AuthLayout() {
-  const p = useAuth();
+  // const p = useAuth();
 
-  if(true){
-    return <Redirect href={'/transfer'}/>
-  }
+ if(true){
+    return <Redirect href={'/settings'}/>
+  }  
 
   return (
     <Stack

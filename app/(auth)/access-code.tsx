@@ -27,13 +27,12 @@ export default function AccessCode() {
     <SafeAreaView className="flex-1 px-4  bg-white">
       <ScrollView
         contentContainerStyle={{
-          display: "flex",
           justifyContent: "space-between",
-          minHeight: "100%",
+          flex: 1
         }}
-        className="flex-1 px-4 py-8"
+        className="px-4 py-8"
       >
-        <View className="">
+        <View className="flex-1">
           <SignupHeader
             label="Créez votre code d'accès."
             step={3}
@@ -56,7 +55,7 @@ export default function AccessCode() {
             })}
           </View>
 
-          <View className="items-center mt-10">
+          <View className="flex-1 items-center mt-10">
             <View className="flex-row gap-10 flex-1 mb-8">
               {[1, 2, 3].map((number) => {
                 return (

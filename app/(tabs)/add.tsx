@@ -12,8 +12,7 @@ export default function add() {
 
   return (
     <View className="bg-gray-50 min-h-screen">
-      <WarningBanner />
-      <ScrollView className="mt-12">
+      <ScrollView className="">
         {/* <Header /> */}
         <View className="px-4 py-6">
           <View>
