@@ -21,12 +21,7 @@ export default function StepTwo() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <KeyboardAvoidingView
-      style={{
-        flex: 1,
-      }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+  
       <SafeAreaView className="flex-1 p-4  bg-white">
         <ScrollView
           contentContainerStyle={{
@@ -90,6 +85,5 @@ export default function StepTwo() {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </KeyboardAvoidingView>
   );
 }

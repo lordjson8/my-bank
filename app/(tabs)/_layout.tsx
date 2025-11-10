@@ -1,4 +1,5 @@
 import Header from "@/components/dashboard/header";
+import { HapticTab } from "@/components/haptic-tab";
 import { Tabs } from "expo-router";
 
 import {
@@ -12,6 +13,7 @@ import {
 import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { fa } from "zod/v4/locales";
 
 const Icon = ({
   name,
@@ -48,102 +50,107 @@ export default function TabLayout() {
   // }
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <Tabs
-        screenOptions={{
-          header: Header,
-          tabBarActiveTintColor: "#F97316",
-          animation: "shift",
-          tabBarHideOnKeyboard: true,
-          tabBarStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
-            height: 60,
-          },
-          // tabBarShowLabel: false,
-          // transitionSpec: {}
-        }}
-      >
-        <Tabs.Screen
-          name="transfer"
-          options={{
-            title: "Transférer",
-            // tabBarBadge: 2,
-            tabBarIcon: ({ color, focused }) => (
-              <Icon
-                name="Transférer"
-                color={color}
-                focused={focused}
-                Icon={Send}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="add"
-          options={{
-            title: "Historique",
-            // tabBarBadge: 2,
-            tabBarIcon: ({ color, focused }) => (
-              <Icon
-                name="Historique"
-                color={color}
-                focused={focused}
-                Icon={Clock8}
-              />
-            ),
-          }}
-        />
+      <GestureHandlerRootView  className="flex-1">
+        <KeyboardAvoidingView behavior="padding" className="flex-1">
+          <Header />
+          <Tabs
+            screenOptions={{
+              header: Header,
+              headerShown: false,
+              tabBarActiveTintColor: "#F97316",
+              animation: "shift",
+              tabBarHideOnKeyboard: true,
+              tabBarStyle: {
+                elevation: 0,
+                shadowOpacity: 0,
+                height: 60,
+              },
+              tabBarButton: HapticTab,
+            }}
+          >
+            <Tabs.Screen
+              name="transfer"
+              options={{
+                title: "Transférer",
+                // tabBarBadge: 2,
+                tabBarIcon: ({ color, focused }) => (
+                  <Icon
+                    name="Transférer"
+                    color={color}
+                    focused={focused}
+                    Icon={Send}
+                  />
+                ),
+              }}
+            />
+            <Tabs.Screen
+              name="add"
+              options={{
+                title: "Historique",
+                // tabBarBadge: 2,
+                tabBarIcon: ({ color, focused }) => (
+                  <Icon
+                    name="Historique"
+                    color={color}
+                    focused={focused}
+                    Icon={Clock8}
+                  />
+                ),
+              }}
+            />
 
-        <Tabs.Screen
-          name="settings"
-          options={{
-            title: "Settings",
-            // tabBarBadge: 2,
-            tabBarIcon: ({ color, focused }) => (
-              <Icon
-                name="Paramètre"
-                color={color}
-                focused={focused}
-                Icon={Settings}
-              />
-            ),
-          }}
-        />
+            <Tabs.Screen
+              name="settings"
+              options={{
+                title: "Settings",
+                // tabBarBadge: 2,
+                tabBarIcon: ({ color, focused }) => (
+                  <Icon
+                    name="Paramètre"
+                    color={color}
+                    focused={focused}
+                    Icon={Settings}
+                  />
+                ),
+              }}
+            />
 
-        <Tabs.Screen
-          name="cards"
-          options={{
-            href: null,
-            title: "Cards",
-            // tabBarBadge: 2,
-            tabBarIcon: ({ color, focused }) => (
-              <Icon
-                name="transfer"
-                color={color}
-                focused={focused}
-                Icon={CreditCard}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="dashboard"
-          options={{
-            title: "More",
-            // href: null,
+            <Tabs.Screen
+              name="cards"
+              options={{
+                href: null,
+                title: "Cards",
+                // tabBarBadge: 2,
+                tabBarIcon: ({ color, focused }) => (
+                  <Icon
+                    name="transfer"
+                    color={color}
+                    focused={focused}
+                    Icon={CreditCard}
+                  />
+                ),
+              }}
+            />
+            <Tabs.Screen
+              name="dashboard"
+              options={{
+                title: "More",
+                href: null,
 
-            // tabBarBadge: 2,
-            tabBarIcon: ({ color, focused }) => (
-              <Icon
-                name="transfer"
-                color={color}
-                focused={focused}
-                Icon={LayoutGrid}
-              />
-            ),
-          }}
-        />
-      </Tabs>
+                // tabBarBadge: 2,
+                tabBarIcon: ({ color, focused }) => (
+                  <Icon
+                    name="transfer"
+                    color={color}
+                    focused={focused}
+                    Icon={LayoutGrid}
+                  />
+                ),
+              }}
+            />
+          </Tabs>
+        </KeyboardAvoidingView>
+      </GestureHandlerRootView>
     </SafeAreaView>
   );
 }

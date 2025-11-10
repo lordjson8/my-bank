@@ -18,7 +18,8 @@
           "y": 0
         },
         "imageScale": "contain"
-      }
+      },
+      "bundleIdentifier": "com.lordjson.Bank"
     },
     "android": {
       "splash": {
@@ -28,7 +29,7 @@
           "x": 0,
           "y": 0
         },
-        "imageScale": "contain" 
+        "imageScale": "contain"
       },
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -38,7 +39,13 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.lordjson.Bank"
+      "package": "com.lordjson.Bank",
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "splash": {
@@ -73,7 +80,7 @@
           "unstable_useServerMiddleware": true
         }
       ],
-       [
+      [
         "expo-local-authentication",
         {
           "faceIDPermission": "Allow My Bank to use Face ID."
@@ -87,7 +94,6 @@
           "recordAudioAndroid": true
         }
       ]
-
     ],
     "experiments": {
       "typedRoutes": true,

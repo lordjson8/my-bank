@@ -26,6 +26,7 @@ export default function EmailSignup() {
   //   console.log('p: ', p.onBoarding)
   // },[])
   return (
+    
       <SafeAreaView className="flex-1 p-4  bg-white">
         <ScrollView
           contentContainerStyle={{

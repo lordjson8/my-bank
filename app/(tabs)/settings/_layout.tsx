@@ -57,12 +57,11 @@ const StackHeader = ({
           );
 
           return (
-            <View
-              key={link.title}
-              className="flex-1 relative items-center"
-            >
+            <View key={link.title} className="flex-1 relative items-center">
               <Link replace href={href} asChild>
-                <TouchableOpacity className=" px-2 py-6 ">
+                <TouchableOpacity
+                  className={`${isActive && "bg-orange-50"} rounded-lg px-2 py-6 w-full`}
+                >
                   <Text
                     className={`${isActive && "text-primary"}  font-bold text-center `}
                   >
@@ -71,7 +70,9 @@ const StackHeader = ({
                 </TouchableOpacity>
               </Link>
 
-                <View className={` h-1  w-full absolute bottom-0 ${isActive? 'bg-primary' : 'bg-gray-100'}`} />
+              <View
+                className={` h-1  w-full absolute bottom-0 ${isActive ? "bg-primary" : "bg-gray-100"}`}
+              />
             </View>
           );
         })}
@@ -80,7 +81,7 @@ const StackHeader = ({
   );
 };
 
-export default function AuthLayout() {
+export default function SettingsLayout() {
   return (
     <Stack
       screenOptions={{

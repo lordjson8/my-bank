@@ -26,11 +26,7 @@ export default function Transfer() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <KeyboardAvoidingView
-      behavior={"padding"}
-      style={{ flex: 1 }}
-      // keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-    >
+   
       <View className="flex-1">
 
         <ScrollView
@@ -142,6 +138,5 @@ export default function Transfer() {
           </View>
         </ScrollView>
       </View>
-    </KeyboardAvoidingView>
   );
 }
