@@ -35,9 +35,9 @@ export default function StepThree() {
           contentContainerStyle={{
             display: "flex",
             justifyContent: "space-between",
-            flex: 1,
+            flexGrow: 1,
           }}
-          className="flex-1 px-4 py-8"
+          className="flex-1 px-4 py-4"
         >
           <View>
             <SignupHeader
@@ -83,7 +83,7 @@ export default function StepThree() {
               </TouchableOpacity>
             </View>
           </View>
-          <View className="mt-6">
+          <View className="">
             <View className="flex-row items-center gap-3 mb-4">
               <Text className="text-base text-muted-foreground">
                 En fournissant votre numéro de téléphone, vous acceptez que nous
@@ -91,7 +91,7 @@ export default function StepThree() {
                 messagerie et de données peuvent s&apos;appliquer.
               </Text>
             </View>
-            <View className="mt-4 mb-12">
+            <View className="mt-2 ">
               <Link href={"/(auth)/step-four"} asChild>
                 <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
                   <Text className="text-white text-xl">Soumettre</Text>

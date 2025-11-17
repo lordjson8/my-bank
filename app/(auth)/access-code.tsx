@@ -28,7 +28,7 @@ export default function AccessCode() {
       <ScrollView
         contentContainerStyle={{
           justifyContent: "space-between",
-          flex: 1
+          flexGrow: 1
         }}
         className="px-4 py-8"
       >
@@ -54,67 +54,70 @@ export default function AccessCode() {
               );
             })}
           </View>
+        </View>
 
-          <View className="flex-1 items-center mt-10">
-            <View className="flex-row gap-10 flex-1 mb-8">
-              {[1, 2, 3].map((number) => {
+        <View className="flex-1">
+          <View className="flex-1 items-center">
+            <View className="flex-row gap-3 flex-1">
+              {[1, 2, 3,4].map((number) => {
                 return (
                   <TouchableOpacity
                     key={number}
                     onPress={() => handleAddCode(number)}
-                    className={`h-20 w-20 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800 `}
+                    className={`h-16 w-16 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800 `}
                   >
                     <Text className="text-2xl font-bold">{number}</Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
-            <View className="flex-row gap-10 flex-1 mb-8">
-              {[4, 5, 6].map((number) => {
+            <View className="flex-row gap-3 flex-1">
+              {[5, 6, 7, 8].map((number) => {
                 return (
                   <TouchableOpacity
                     key={number}
                     onPress={() => handleAddCode(number)}
-                    className="h-20 w-20 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
+                    className="h-16 w-16 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
                   >
                     <Text className="text-2xl font-bold">{number}</Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
-            <View className="flex-row gap-10 flex-1 mb-10">
-              {[7, 8, 9].map((number) => {
+            <View className="flex-row flex-1 gap-3">
+              {[9,0].map((number) => {
                 return (
                   <TouchableOpacity
                     key={number}
                     onPress={() => handleAddCode(number)}
-                    className="h-20 w-20 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
+                    className="h-16 w-16 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
                   >
                     <Text className="text-2xl font-bold">{number}</Text>
                   </TouchableOpacity>
                 );
               })}
-            </View>
-
-            <View className="flex-row flex-1 gap-10  mb-10 justify-end">
-              <TouchableOpacity
-                onPress={() => handleAddCode(0)}
-                className="h-20 w-20 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
-              >
-                <Text className="text-2xl font-bold">0</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+                 <TouchableOpacity
                 onPress={handleDeleteCode}
-                className="h-20 w-20 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
+                className="h-16 w-16 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
               >
                 <ChevronLeft size={30} />
               </TouchableOpacity>
             </View>
+
+            {/* <View className="flex-row flex-1 gap-10  mb-10 justify-end"> */}
+              {/* <TouchableOpacity
+                onPress={() => handleAddCode(0)}
+                className="h-16 w-16 bg-muted rounded-full items-center justify-center shadow-lg shadow-gray-800"
+              >
+                <Text className="text-2xl font-bold">0</Text>
+              </TouchableOpacity> */}
+           
+            {/* </View> */}
           </View>
         </View>
         <View className="">
           <View className="flex-row items-center gap-3"></View>
-          <View className="mt-4 mb-12">
+          <View className="mt-4">
             <Link disabled={code.length < 4} href={"/(auth)/info"} asChild>
               <TouchableOpacity
                 className={`rounded-xl  flex flex-row items-center py-4 justify-center gap-2 ${code.length < 4 ? "bg-orange-200" : "bg-primary"}`}

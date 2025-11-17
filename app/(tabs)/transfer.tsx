@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -20,10 +20,15 @@ import { countries } from "@/constants";
 import Checkbox from "expo-checkbox";
 
 export default function Transfer() {
-  const [amount, setAmount] = React.useState("");
+  const [amount, setAmount] = React.useState(0);
+  const [fee,setFee] = React.useState(amount * 0.01);
   const [selectedMethod, setSelectedMethod] = React.useState("mobile");
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    setFee(amount * 0.01);
+  }, [amount]);
 
   return (
    
@@ -116,14 +121,14 @@ export default function Transfer() {
               <View className="flex-row justify-between items-center p-2">
                 <Text className="text-[#374151]">Frais de transfert</Text>
                 <Text className="text-primary text-2xl font-bold">
-                  0 <Text>FCFA</Text>
+                  {fee} <Text>FCFA</Text>
                 </Text>
               </View>
 
               <View className="flex-row justify-between items-center p-2 border-t-2 border-border">
                 <Text className="font-bold">Frais de transfert</Text>
                 <Text className="text-2xl font-bold">
-                  2000 <Text>FCFA</Text>
+                  {amount} <Text>FCFA</Text>
                 </Text>
               </View>
             </View>

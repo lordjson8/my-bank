@@ -8,9 +8,9 @@ import { tr } from "zod/v4/locales";
 export default function AuthLayout() {
   // const p = useAuth();
 
-   if(true){
-      return <Redirect href={'/settings'}/>
-    }
+  //  if(true){
+  //     return <Redirect href={'/settings'}/>
+  //   }
 
   return (
    

@@ -24,7 +24,7 @@ const Option = ({ el }: { el: any }) => {
   const [collapsed, setCollapsed] = React.useState<boolean>(false);
   if (el.type === "link") {
     return (
-      <Link asChild href={el.href} className="border-b flex border-border p-4">
+      <Link asChild href={el.href} className="border-b flex border-border p-4 flex-1">
         <TouchableOpacity
           onPress={() => setCollapsed(!collapsed)}
           className="rounded-xl items-start  flex flex-row  mb-2 "
@@ -51,7 +51,7 @@ const Option = ({ el }: { el: any }) => {
     );
   }
   return (
-    <View className="border-b flex border-border p-4">
+    <View className="border-b flex border-border p-4 flex-1">
       <TouchableOpacity
         onPress={() => setCollapsed(!collapsed)}
         className="rounded-xl items-start  flex flex-row  mb-2 "
@@ -89,7 +89,7 @@ export function Features() {
       }}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      className="px-4 py-6"
+      className="px-4 py-6 flex-1"
     >
       <View className="flex-1">
         {general_features.map((el, index) => {

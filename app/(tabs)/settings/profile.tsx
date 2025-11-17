@@ -11,7 +11,7 @@ export default function add() {
   const image = require("@/assets/images/Container.png");
 
   return (
-    <View className="bg-gray-50 min-h-screen">
+    <View className="bg-gray-50 flex-1">
       <ScrollView className="">
         <View className="px-6 py-6">
           <Text className="font-bold text-lg">Données personnelles</Text>

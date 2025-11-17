@@ -75,7 +75,7 @@ export default function StepTwo() {
                 messagerie et de données peuvent s&apos;appliquer.
               </Text>
             </View>
-            <View className="mt-4 mb-12">
+            <View className="mt-4 ">
               <Link href={"/(auth)/step-three"} asChild>
                 <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
                   <Text className="text-white text-xl">Soumettre</Text>

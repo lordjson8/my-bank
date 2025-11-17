@@ -61,7 +61,7 @@ export default function EmailSignup() {
                 </Text>
               </View>
             </View>
-            <View className="mt-4 mb-12">
+            <View className="mt-4">
               <Link href={"/(auth)/step-two"} asChild>
                 <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
                   <Text className="text-white text-xl">Commencer</Text>
