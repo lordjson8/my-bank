@@ -4,7 +4,6 @@ import axios, {
   AxiosRequestConfig,
   isAxiosError,
 } from "axios";
-import { set } from "zod";
 
 class ApiClient {
   private client: AxiosInstance;
