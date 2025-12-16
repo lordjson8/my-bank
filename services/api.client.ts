@@ -1,4 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  isAxiosError,
+} from "axios";
+import { set } from "zod";
 
 class ApiClient {
   private client: AxiosInstance;
@@ -28,14 +34,48 @@ class ApiClient {
         return config;
       },
       (error) => {
-        return Promise.reject(error);
+        return this.handleResponseError(error);
       }
     );
   }
 
+  private getErrorMessage(error: AxiosError): string {
+    if (error.response) {
+      return `Error: ${error.response.status} - ${JSON.stringify(
+        error.response.data
+      )}`;
+    } else if (error.request) {
+      return "No response received from server.";
+    }
+
+    return error.message;
+  }
+
+  private handleResponseError(error: AxiosError): never {
+    const apiError = {
+      message: this.getErrorMessage(error),
+      status: error.response?.status,
+      data: error.response?.data,
+      code: error.code,
+    };
+
+    // Handle specific error codes
+    if (apiError.status === 401) {
+      // Unauthorized - clear auth data
+      //   await authService.clearAuthData();
+      // You might want to redirect to login here
+    }
+
+    throw apiError;
+  }
+
   async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.client.get<T>(url, config);
-    return response.data;
+    try {
+      const response = await this.retryRequest<T>(url, config);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async post<T>(
@@ -47,15 +87,29 @@ class ApiClient {
     return response.data;
   }
 
+  private shouldRetry(error: AxiosError): boolean {
+    if (error.response) {
+      const status = error.response.status;
+      return status >= 500 && status < 600;
+    }
+    return true;
+  }
+
+  private async delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+    // return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   private async retryRequest<T>(
     url: string,
-    config: AxiosRequestConfig,
+    config?: AxiosRequestConfig,
     retriesLeft: number = this.maxRetries
   ): Promise<T> {
     try {
       return await this.get<T>(url, config);
     } catch (error) {
-      if (retriesLeft > 0) {
+      if (retriesLeft > 0 && isAxiosError(error) && this.shouldRetry(error)) {
+        await this.delay(1000 * (this.maxRetries - retriesLeft + 1));
         return this.retryRequest<T>(url, config, retriesLeft - 1);
       }
       throw error;
