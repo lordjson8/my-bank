@@ -19,10 +19,10 @@ export default function PasswordInput({
   const [secure, setSecure] = useState<boolean>(true);
 
   return (
-    <View className="mb-4 border-b border-border ">
-      <Text className="text-sm invisible text-muted-foreground">{placeholder}</Text>
+    <View className="mb-4  rounded-lg">
+      <Text className="text-sm  text-muted-foreground">Enter Your Password</Text>
 
-      <View className="flex-row justify-between items-center">
+      <View className="flex-row justify-between items-center border border-border rounded-xl px-4 mt-2">
         <TextInput
           placeholder={placeholder}
           value={value}

@@ -2,6 +2,7 @@ import axios, {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
+  AxiosResponse,
   isAxiosError,
 } from "axios";
 
@@ -68,7 +69,10 @@ class ApiClient {
     throw apiError;
   }
 
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  async get<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> {
     try {
       const response = await this.retryRequest<T>(url, config);
       return response;
@@ -81,8 +85,12 @@ class ApiClient {
     url: string,
     data?: any,
     config?: AxiosRequestConfig
-  ): Promise<T> {
-    const response = await this.client.post<T>(url, data, config);
+  ): Promise<AxiosResponse<T>> {
+    const response = await this.client.post<AxiosResponse<T>>(
+      url,
+      data,
+      config
+    );
     return response.data;
   }
 
@@ -103,7 +111,7 @@ class ApiClient {
     url: string,
     config?: AxiosRequestConfig,
     retriesLeft: number = this.maxRetries
-  ): Promise<T> {
+  ): Promise<AxiosResponse<T>> {
     try {
       return await this.get<T>(url, config);
     } catch (error) {

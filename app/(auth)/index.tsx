@@ -52,11 +52,11 @@ const Index = () => {
     <SafeAreaView className="flex-1 p-4 bg-white">
       <ScrollView className="px-4 py-8 " showsHorizontalScrollIndicator={true} showsVerticalScrollIndicator={true}>
         {/* <Progress step={1} progress={"20%"} /> */}
-          <Button
+        {/* <Button
         disabled={!request}
         title="Login"
         onPress={() =>   promptAsync()}
-      />
+      /> */}
         <Message />
         <View className="mt-4 mb-4">
           <Link href={"/(auth)/auth-options"} asChild>

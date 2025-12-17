@@ -19,9 +19,9 @@ export default function BottomBorderedInput({
   keyboardType?: "email-address" | "phone-pad" | "default";
 }) {
   return (
-    <View className="mb-4 border-b border-border ">
-      <Text className="text-sm invisible text-muted-foreground">{placeholder}</Text>
-      <View className="flex-row justify-between items-center">
+    <View className="">
+      <Text className="text-sm text-muted-foreground">Enter Email Address</Text>
+      <View className="flex-row justify-between items-center border rounded-lg border-border px-4 mt-2">
         <TextInput
           placeholder={placeholder}
           value={value}
