@@ -52,7 +52,7 @@ export default function EmailSignup() {
             step={1}
             progress="20%"
           />
-          <Input keyboardType='email-address' value={name} setValue={setName} placeholder="jane@doe.com" label="Enter Your Email" secure={false} required={true}/>
+          {/* <Input keyboardType='email-address' value={name} setValue={setName} placeholder="jane@doe.com" label="Enter Your Email" secure={false} required={true}/> */}
           {/* <View>
             <View className="flex-row gap-4 mt-4 items-center">
               <View className="border-b border-border  w-20 ">
@@ -73,7 +73,7 @@ export default function EmailSignup() {
             </View>
           </View> */}
 
-          <PasswordInput placeholder="Password" />
+          {/* <PasswordInput placeholder="Password" /> */}
         </View>
         <View>
           <View className="flex-row items-center gap-3 mb-4">

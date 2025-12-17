@@ -9,9 +9,11 @@ export default function PasswordInput({
   control,
   name,
   placeholder,
+  disable = false,
   keyboardType,
 }: {
   label?: string;
+  disable? : boolean;
   control: Control<any>;
   name: string;
   setValue?: (value: string) => void;
@@ -30,15 +32,16 @@ export default function PasswordInput({
         {label} <Text className="text-primary font-bold">*</Text>{" "}
       </Text>
 
-      <View
-        className={`flex-row px-4 justify-between items-center border-2 rounded-lg ${isFocused ? "border-primary" : "border-border "} `}
-      >
-        <Controller
-          control={control}
-          name={name}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <>
+            <View
+              className={`flex-row px-4 justify-between items-center border-2 rounded-lg ${isFocused ? "border-primary" : "border-border "} ${error ? "border-red-500" : "border-border"}`}
+            >
               <TextInput
+                editable={!disable}
                 placeholder={placeholder}
                 value={value}
                 keyboardType={keyboardType}
@@ -48,23 +51,22 @@ export default function PasswordInput({
                 onChangeText={onChange}
                 placeholderTextColor={"gray"}
                 secureTextEntry={secure}
-                className={`rounded-xl text-black px-0 text-base py-4 flex-1`}
+                className={`rounded-xl ${disable ? 'text-gray-500' : 'text-black'} px-0 text-base py-4 flex-1`}
               />
-              {error && (
-                <Text className="text-red-500 text-sm">{error.message}</Text>
-              )}
-            </>
-          )}
-        />
-
-        <TouchableOpacity onPress={() => setSecure(!secure)}>
-          {secure ? (
-            <EyeOff color={"#777777"} size={20} />
-          ) : (
-            <Eye color={"#777777"} size={20} />
-          )}
-        </TouchableOpacity>
-      </View>
+              <TouchableOpacity onPress={() => setSecure(!secure)}>
+                {secure ? (
+                  <EyeOff color={"#777777"} size={20} />
+                ) : (
+                  <Eye color={"#777777"} size={20} />
+                )}
+              </TouchableOpacity>
+            </View>
+            {error && (
+              <Text className="text-red-500 text-md mt-1">{error.message}</Text>
+            )}
+          </>
+        )}
+      />
     </View>
   );
 }

@@ -118,7 +118,7 @@ export default function AccessCode() {
         <View className="">
           <View className="flex-row items-center gap-3"></View>
           <View className="mt-4">
-            <Link disabled={code.length < 4} href={"/(auth)/info"} asChild>
+            <Link disabled={code.length < 4} href={"/(tabs)/transfer"} asChild>
               <TouchableOpacity
                 className={`rounded-xl  flex flex-row items-center py-4 justify-center gap-2 ${code.length < 4 ? "bg-orange-200" : "bg-primary"}`}
               >

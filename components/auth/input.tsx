@@ -10,7 +10,9 @@ export default function Input<T>({
   placeholder,
   keyboardType,
   secure,
+  disable = false
 }: {
+  disable?: boolean;
   name: string;
   error?: string;
   secure: boolean;
@@ -37,16 +39,19 @@ export default function Input<T>({
         }) => (
           <>
             <TextInput
+              editable={!disable}
               placeholder={placeholder}
               value={value}
+              // style={{ color: disable ? 'gray' : 'black' }}
               keyboardType={keyboardType}
               autoCapitalize="none"
               onBlur={() => setIsFocused(false)}
               onFocus={() => setIsFocused(true)}
               onChangeText={onChange}
+    
               placeholderTextColor={"gray"}
               secureTextEntry={secure}
-              className={`border-2 ${isFocused ? "border-primary" : "border-border"} rounded-xl text-black px-4 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
+              className={`border-2 ${isFocused ? "border-primary" : "border-border"} ${disable ? 'text-gray-500' : 'text-black'} rounded-xl  px-4 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
             />
             {error && (
               <Text className="text-red-500 text-md mt-1">{error.message}</Text>

@@ -6,11 +6,7 @@ const SignupSchema = z.object({
     .string()
     .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
   phoneNumber: z.string().min(9, "Le numéro de téléphone est requis"),
-  acceptedTerms: z.literal(true, {
-    errorMap: () => ({
-      message: "Vous devez accepter les termes et conditions",
-    }),
-  }),
+ 
 });
 
 export type SignupFormData = z.infer<typeof SignupSchema>;
