@@ -25,19 +25,19 @@ export default function Progress({
         >
           <ChevronLeft size={32}/>
         </TouchableOpacity>
-        {showProgress && (
+        {/* {showProgress && (
           <Text className="text-base text-muted-foreground font-semibold">
             Étape {step}/{total}
           </Text>
-        )}
+        )} */}
       </View>
-      {showProgress && (
+      {/* {showProgress && (
         <View className="h-1 bg-gray-300 rounded-full mt-6">
           <View
             className={`h-1 bg-primary rounded-full w-[${progress}]`}
           ></View>
         </View>
-      )}
+      )} */}
     </View>
   );
 }

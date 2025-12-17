@@ -7,7 +7,7 @@ export default function SignupHeader({
   label,
   step,
   progress,
-  showProgress = true,
+  showProgress = false,
 }: {
   label: string;
   step: number;
@@ -16,8 +16,8 @@ export default function SignupHeader({
 }) {
   return (
     <View>
-      <Progress showProgress={showProgress} step={step} progress={progress} />
-        <View className={`pt-6 ${!showProgress && 'px-3'} `}>
+     {showProgress && <Progress showProgress={showProgress} step={step} progress={progress} /> }
+        <View className={`pt-6 ${!showProgress && ''} `}>
           <Text className="mb-8 text-primary font-bold text-4xl">{label}</Text>
         </View>
     </View>

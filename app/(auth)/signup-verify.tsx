@@ -11,7 +11,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignupVerifySchema, SignupVerifyType } from "@/utils/zod-schemas";
 import SignupHeader from "@/components/auth/signup-header";
 import { RefreshCcw } from "lucide-react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";

@@ -17,14 +17,15 @@ export default function EmailSignup() {
       <ScrollView
         contentContainerStyle={{
           display: "flex",
+          flexGrow: 1,
           justifyContent: "space-between",
-          minHeight: "100%",
+          // minHeight: "100%",
         }}
         className="flex-1 px-4 py-8"
       >
         <View className="">
           <SignupHeader
-            showProgress={false}
+            showProgress
             label="Forgot Password"
             step={1}
             progress="20%"
@@ -40,7 +41,7 @@ export default function EmailSignup() {
           </View>
         </View>
         <View className="">
-          <View className="mt-4 mb-12">
+          <View className="mt-4 ">
             <Link href={"/(auth)/step-two"} asChild>
               <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
                 <Text className="text-white text-xl">Next</Text>

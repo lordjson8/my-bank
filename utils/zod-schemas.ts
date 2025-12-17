@@ -1,6 +1,23 @@
-import * as z from "zod";
+import z from "zod/v3";
 
-// Regex patterns for validation
+const SignupSchema = z.object({
+  email: z.string().email("Email invalide"),
+  password: z
+    .string()
+    .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+  phoneNumber: z.string().min(9, "Le numéro de téléphone est requis"),
+  acceptedTerms: z.literal(true, {
+    errorMap: () => ({
+      message: "Vous devez accepter les termes et conditions",
+    }),
+  }),
+});
+
+export type SignupFormData = z.infer<typeof SignupSchema>;
+
+export { SignupSchema };
+
+
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const PHONE_REGEX = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
@@ -22,21 +39,6 @@ export const LoginSchema = z.object({
 
 export type LoginFormType = z.infer<typeof LoginSchema>;
 
-// ============================================
-// SIGNUP SCHEMAS (Multi-step)
-// ============================================
-
-// Step 1: Email Input
-export const SignupEmailSchema = z.object({
-  email: z
-    .string({ required_error: "Email is required" })
-    .email("Invalid email address")
-    .min(1, "Email is required"),
-});
-
-export type SignupEmailType = z.infer<typeof SignupEmailSchema>;
-
-// Step 2: Email Verification (OTP/Code)
 export const SignupVerifySchema = z.object({
   code: z
     .string({ required_error: "Verification code is required" })
@@ -131,28 +133,7 @@ export const SignupTermsSchema = z.object({
 
 export type SignupTermsType = z.infer<typeof SignupTermsSchema>;
 
-// ============================================
-// COMBINED SIGNUP SCHEMA
-// ============================================
-export const CompleteSignupSchema = SignupEmailSchema.extend({
-  password: SignupPasswordSchema.shape.password,
-  confirmPassword: SignupPasswordSchema.shape.confirmPassword,
-  firstName: SignupInfoSchema.shape.firstName,
-  lastName: SignupInfoSchema.shape.lastName,
-  phoneNumber: SignupInfoSchema.shape.phoneNumber,
-  dateOfBirth: SignupInfoSchema.shape.dateOfBirth,
-  streetAddress: SignupAddressSchema.shape.streetAddress,
-  city: SignupAddressSchema.shape.city,
-  state: SignupAddressSchema.shape.state,
-  postalCode: SignupAddressSchema.shape.postalCode,
-  country: SignupAddressSchema.shape.country,
-  agreeToTerms: SignupTermsSchema.shape.agreeToTerms,
-  agreeToPrivacy: SignupTermsSchema.shape.agreeToPrivacy,
-  agreeToMarketing: SignupTermsSchema.shape.agreeToMarketing,
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+
 
 export type CompleteSignupType = z.infer<typeof CompleteSignupSchema>;
 

@@ -33,7 +33,7 @@ export default function AuthOptions() {
                 </TouchableOpacity>
               </Link>
 
-              <Link href={"/(auth)/step-one"} asChild>
+              <Link href={"/(auth)/signup"} asChild>
                 <TouchableOpacity className="w-[60%] flex-row bg-primary py-4 items-center justify-center gap-2 rounded-xl">
                   <Text className="text-white font-bold">Commencer</Text>
                 </TouchableOpacity>
