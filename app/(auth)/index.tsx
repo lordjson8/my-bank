@@ -5,41 +5,37 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Message from "@/components/auth/message";
 import { Link } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
-import { useAuth } from "@/services/providers/auth-context";
 
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 import * as GoogleAuth from 'expo-auth-session/providers/google';
+import axios from 'axios'
 
 WebBrowser.maybeCompleteAuthSession();
 
-const androidClientID = '592514759965-pjfovq7hqti9kekbs8lvd1hhmv875592.apps.googleusercontent.com'
+const androidClientID = '592514759965-62mmuvev6m38vri9gifef85qdiirkhp2.apps.googleusercontent.com'
 const web = '592514759965-u8djt882it06mqiiornalvovgskjt49k.apps.googleusercontent.com'
-const discovery = {
-  authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-  tokenEndpoint: 'https://oauth2.googleapis.com/token',
-};
-
+const ios = '592514759965-45f4urfaqpki8qkoug2p10hk6n12ur3g.apps.googleusercontent.com'
 const Index = () => {
-  const p = useAuth()
-  console.log(p)
 
 
-      const redirectUri = makeRedirectUri({
+  axios('http://10.127.98.61:8000/api/library/models/').then(res => console.log(res.data)).catch(err => console.log(err))
 
 
-        scheme: 'bank',
-
-
-      });
-
+    
+    const redirectUri = makeRedirectUri({
+      // scheme: "bank",
+      
+      // native: "bank://",
+    })
   console.log('redirectUri', redirectUri);
 
   const [request, response, promptAsync] = GoogleAuth.useAuthRequest(
     {
-      clientId: androidClientID,
-      scopes: ['openid', 'profile','email'],
-      redirectUri,
+      androidClientId: androidClientID,
+      // iosClientId: ios,
+      // webClientId: web,
+      // redirectUri,
     },
     // discovery
   );
@@ -54,16 +50,13 @@ const Index = () => {
 
   return (
     <SafeAreaView className="flex-1 p-4 bg-white">
-      <ScrollView className="px-4 py-8 ">
+      <ScrollView className="px-4 py-8 " showsHorizontalScrollIndicator={true} showsVerticalScrollIndicator={true}>
         {/* <Progress step={1} progress={"20%"} /> */}
-         <Button
-      disabled={!request}
-      title="Login"
-      onPress={() => {
-        promptAsync();
-        // console.log('pressed')
-      }}
-    />
+        {/* <Button
+        disabled={!request}
+        title="Login"
+        onPress={() =>   promptAsync()}
+      /> */}
         <Message />
         <View className="mt-4 mb-4">
           <Link href={"/(auth)/auth-options"} asChild>

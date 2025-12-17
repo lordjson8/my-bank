@@ -8,8 +8,8 @@ export default function AuthOptions() {
   const image = require("@/assets/images/PastedImage.png");
 
   return (
-    <SafeAreaView className="bg-white">
-      <ScrollView className="min-h-screen bg-white">
+    <SafeAreaView className="bg-white flex-1">
+      <ScrollView className="flex-1 bg-white">
         <View className="flex-1  pt-32 mx-auto">
           <Image className="flex-1 w-[302.01px] h-[232.77px]" source={image} />
         </View>

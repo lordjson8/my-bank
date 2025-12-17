@@ -59,7 +59,7 @@ export default function PhoneModal({
             />
           </View>
           <FlatList
-            className="min-h-[80vh]"
+            className="min-h-[70vh]"
             data={filtered_countries}
             ListEmptyComponent={<View>
               <Text className="text-primary text-center text-lg">

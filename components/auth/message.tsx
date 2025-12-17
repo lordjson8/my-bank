@@ -11,7 +11,7 @@ export default function Message() {
       </View>
       <View className="mt-6">
         <Text className="text-center font-bold text-3xl">
-          Bienvenue sur MobileBanque
+          Bienvenue sur ChicTransfer
         </Text>
         <Text className="text-center text-lg font-[400] text-muted-foreground mt-4 leading-6">
           Créez votre compte pour profiter de tous nos services bancaires en

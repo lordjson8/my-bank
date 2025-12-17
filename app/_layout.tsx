@@ -3,7 +3,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { Stack, usePathname, useRouter } from "expo-router";
+import { Redirect, Stack, usePathname, useRouter } from "expo-router";
 import { setStatusBarStyle, StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import "@/global.css";
@@ -13,6 +13,7 @@ import { useEffect } from "react";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import AuthProvider from "@/services/providers/auth-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -27,7 +28,7 @@ SplashScreen.setOptions({
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const p = usePathname()
+  const p = usePathname();
   const [loaded] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
@@ -42,26 +43,34 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  console.log(p.toLowerCase())
+  console.log(p.toLowerCase());
   // const colorScheme = useColorScheme();
 
+  // return <Redirect href="/dashboard" />;
+
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    <AuthProvider>
-      <Stack>
-        {/* <Stack.Protected guard={false}> */}
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        {/* </Stack.Protected> */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
-        />
-      </Stack>
-      <StatusBar backgroundColor="#fff" style='dark' />
-    </AuthProvider>
-    // </ThemeProvider>
+    <GestureHandlerRootView>
+      {/* // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+      {/* // <AuthProvider> */}
+      <>
+        <Stack>
+          {/* <Stack.Protected guard={false}> */}
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          {/* </Stack.Protected> */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", title: "Modal" }}
+          />
+        </Stack>
+        <StatusBar backgroundColor="#fff" style="dark" />
+      </>
+
+      {/* // </AuthProvider> */}
+      {/* </ThemeProvider> */}
+
+      {/* // </> */}
+    </GestureHandlerRootView>
   );
 }
-

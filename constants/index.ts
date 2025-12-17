@@ -1,4 +1,15 @@
-import { ChartLine, CreditCard, Shield } from "lucide-react-native";
+import ChangeCode from "@/components/general/change-code";
+import Contact from "@/components/general/contact";
+import {
+  ChartLine,
+  CreditCard,
+  FileText,
+  Headset,
+  Lock,
+  LucideIcon,
+  Shield,
+  UserPlus,
+} from "lucide-react-native";
 
 export const features = [
   {
@@ -16,6 +27,54 @@ export const features = [
     icon: ChartLine,
     title: "Suivi financier",
     description: "Visualisez et gérez vos finances en temps réel.",
+  },
+];
+
+
+interface GeneralFeature {
+  icon: LucideIcon; 
+  type: "component" | "link"; 
+  href: string | null;
+  title: string;
+  description: string;
+  Component: React.ComponentType | null;
+}
+
+
+
+
+export const general_features : GeneralFeature[] = [
+  {
+    icon: Headset,
+    type: "component",
+    href: null,
+    title: "Contacter le service client",
+    description: "Disponible du Lundi au Vendredi de 8h30 à 17h30",
+    Component: Contact,
+  },
+  {
+    icon: UserPlus,
+    title: "Inviter un ami",
+    type: "link",
+    href: "/settings/invite-friend",
+    description: "Partager le lien de l'application avec vos proches",
+    Component: null,
+  },
+  {
+    icon: FileText,
+    type: "link",
+    href: "/settings",
+    title: "Conditions générales d'utilisation",
+    description: "Lire les conditions générales de l'application",
+    Component: null,
+  },
+  {
+    icon: Lock,
+    title: "Changer le code secret",
+    type: "link",
+    href: "/settings/change-code",
+    description: "Modifier le code secret du compte",
+    Component: null,
   },
 ];
 
