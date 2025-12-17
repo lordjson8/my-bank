@@ -1,19 +1,60 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginSchema, LoginFormType } from "@/utils/zod-schemas";
 import SignupHeader from "@/components/auth/signup-header";
-
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { emailSchema, emailType } from "@/utils/zod-schemas";
 import BottomBorderedInput from "@/components/auth/bottom-bordered-input";
 import PasswordInput from "@/components/auth/password-input";
 import { Checkbox } from "expo-checkbox";
-import { Link } from "expo-router";
-import TextBold from "@/components/auth/text-bold";
+import { Link, useRouter } from "expo-router";
+import { useState } from "react";
 
-export default function EmailSignup() {
+export default function LoginScreen() {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    watch,
+  } = useForm<LoginFormType>({
+    resolver: zodResolver(LoginSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
+  });
+
+  const rememberMe = watch("rememberMe");
+
+  const onSubmit = async (data: LoginFormType) => {
+    try {
+      setIsLoading(true);
+      // TODO: Implement actual login API call
+      // const response = await loginUser(data.email, data.password);
+      // Store remember me preference if needed
+      // if (data.rememberMe) {
+      //   await SecureStore.setItemAsync('rememberMe', data.email);
+      // }
+
+      // Mock successful login - navigate to dashboard
+      console.log("Login attempt:", data);
+      // router.replace("/(tabs)");
+      router.push("/(tabs)");
+    } catch (error) {
+      console.error("Login error:", error);
+      // TODO: Show error toast/alert
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <SafeAreaView className="flex-1 p-4  bg-white">
+    <SafeAreaView className="flex-1 bg-white">
       <ScrollView
         contentContainerStyle={{
           display: "flex",
@@ -21,38 +62,118 @@ export default function EmailSignup() {
           minHeight: "100%",
         }}
         className="flex-1 px-4 py-8"
+        showsVerticalScrollIndicator={false}
       >
         <View className="">
           <SignupHeader
             showProgress={false}
-            label="Login to your MB  account"
+            label="Login to your MB account"
             step={1}
             progress="20%"
           />
-          <View className="px-3">
-            <BottomBorderedInput placeholder="Email Address" />
-            <PasswordInput placeholder="Password" />
+          <View className="mt-8 px-3">
+            {/* Email Input */}
+            <View className="mb-6">
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    <BottomBorderedInput
+                      placeholder="Email Address"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      editable={!isLoading}
+                      placeholderTextColor="#9CA3AF"
+                    />
+                    {errors.email && (
+                      <Text className="text-red-500 text-sm mt-2 font-medium">
+                        {errors.email.message}
+                      </Text>
+                    )}
+                  </View>
+                )}
+              />
+            </View>
 
-            <View className="flex-row justify-between items-center mt-4 mb-4 gap-4">
+            {/* Password Input */}
+            <View className="mb-4">
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View>
+                    <PasswordInput
+                      placeholder="Password"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      editable={!isLoading}
+                    />
+                    {errors.password && (
+                      <Text className="text-red-500 text-sm mt-2 font-medium">
+                        {errors.password.message}
+                      </Text>
+                    )}
+                  </View>
+                )}
+              />
+            </View>
+
+            {/* Remember Me & Forgot Password */}
+            <View className="flex-row justify-between items-center mt-6 mb-8 gap-4">
               <View className="flex-1 flex-row items-center gap-2">
-                <Checkbox
-                  color={"#F97316"}
-                  //   onValueChange={() => setBiometric(!biometric)}
-                  //   value={biometric}
+                <Controller
+                  control={control}
+                  name="rememberMe"
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      color={"#F97316"}
+                      value={value}
+                      onValueChange={onChange}
+                      disabled={isLoading}
+                    />
+                  )}
                 />
-                <Text className="text-muted-foreground">Remember Me</Text>
+                <Text className="text-gray-500 text-sm">Remember Me</Text>
               </View>
-                <Link href={'/(auth)/forget-password'} className="font-bold  text-muted-foreground text-pretty text-base">
-                  Forgot Password?
-                </Link> 
+              <Link href={"/(auth)/forget-password"} asChild>
+                <TouchableOpacity disabled={isLoading}>
+                  <Text className="font-semibold text-gray-700 text-sm">
+                    Forgot Password?
+                  </Text>
+                </TouchableOpacity>
+              </Link>
             </View>
           </View>
         </View>
+
+        {/* Login Button & Sign Up Link */}
         <View className="">
-          <View className="mt-4 mb-12">
-            <Link href={"/(auth)/step-two"} asChild>
-              <TouchableOpacity className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2">
-                <Text className="text-white text-xl">Login</Text>
+          <TouchableOpacity
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isValid || isLoading}
+            className={`rounded-xl flex flex-row items-center py-4 justify-center gap-2 ${
+              !isValid || isLoading
+                ? "bg-gray-300"
+                : "bg-orange-500 active:bg-orange-600"
+            }`}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <Text className="text-white text-lg font-semibold">Login</Text>
+            )}
+          </TouchableOpacity>
+
+          <View className="flex-row justify-center items-center mt-6 mb-12">
+            <Text className="text-gray-600 text-sm">Don't have an account? </Text>
+            <Link href={"/(auth)/auth-options"} asChild>
+              <TouchableOpacity>
+                <Text className="text-orange-500 font-bold text-sm">Sign Up</Text>
               </TouchableOpacity>
             </Link>
           </View>
