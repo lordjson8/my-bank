@@ -15,9 +15,9 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import AuthProvider from "@/services/providers/auth-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
+// export const unstable_settings = {
+//   anchor: "(tabs)",
+// };
 
 // Set the animation options. This is optional.
 SplashScreen.setOptions({
@@ -52,25 +52,30 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       {/* // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
       {/* // <AuthProvider> */}
-      <>
-        <Stack>
-          {/* <Stack.Protected guard={false}> */}
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          {/* </Stack.Protected> */}
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", title: "Modal" }}
-          />
-        </Stack>
-        <StatusBar backgroundColor="#fff" style="dark" />
-      </>
+      {/* <> */}
+      <Stack>
+        <Stack.Protected guard={true}>
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+            <Stack.Protected guard={true}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          </Stack.Protected>
+        </Stack.Protected>
+        <Stack.Protected guard={true}>
+        
 
-      {/* // </AuthProvider> */}
-      {/* </ThemeProvider> */}
+          <Stack.Protected guard={false}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack.Protected>
+        </Stack.Protected>
 
-      {/* // </> */}
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="modal"
+          options={{ presentation: "modal", title: "Modal" }}
+        />
+      </Stack>
+      <StatusBar backgroundColor="#fff" style="dark" />
+      {/* </> */}
     </GestureHandlerRootView>
   );
 }

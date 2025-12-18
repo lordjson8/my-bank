@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SignupHeader from "@/components/auth/signup-header";
 import PasswordInput from "@/components/auth/password-input";
 import { Checkbox } from "expo-checkbox";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import TextBold from "@/components/auth/text-bold";
 import { useEffect, useState } from "react";
 import Input from "@/components/auth/input";
@@ -56,6 +56,7 @@ export default function EmailSignup() {
     setErromessage("An error occurred. Please try again.");
     console.log("Form Data: ", data);
     console.log("Selected Country", selectedCountry);
+    router.push("/(auth)/verify-otp");
   };
 
   return (

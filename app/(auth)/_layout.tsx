@@ -22,37 +22,7 @@ export default function AuthLayout() {
       >
         <StatusBar style="auto" />
 
-        {/* <Stack.Protected guard={p.onBoarding && !p.isLoggedIn}> */}
-        {/* <Stack.Screen name="welcome" /> */}
-        <Stack.Screen
-          name="index"
-          options={{
-            title: "Hello",
-            headerTitle: "Same",
-          }}
-        />
-        {/* <Stack.Screen name="[id]" options={({route}) => ({
-          headerTitle : route.params?.id
-         })} /> */}
-        <Stack.Screen
-          name="auth-options"
-          // options={
-          //   {
-          //     title: "Profile",
-          //     presentation: 'formSheet',
-          //     gestureDirection: 'vertical',
-          //     animation: 'slide_from_bottom',
-          //     sheetGrabberVisible: true,
-          //     sheetInitialDetentIndex: 0,
-          //     sheetAllowedDetents: [1],
-          //     sheetCornerRadius: 20,
-          //     sheetExpandsWhenScrolledToEdge : true,
-          //     sheetElevation: 24
-          //   }
-          // }
-        />
-        {/* </Stack.Protected> */}
-        {/* <Stack.Protected guard={!p.isLoggedIn}> */}
+       
         <Stack.Screen name="step-one" />
         <Stack.Screen name="signup-email" />
         <Stack.Screen name="step-two" />
@@ -68,7 +38,6 @@ export default function AuthLayout() {
         <Stack.Screen name="forget-password" />
 
         <Stack.Screen name="signup-phone" />
-        {/* </Stack.Protected> */}
       </Stack>
   );
 }

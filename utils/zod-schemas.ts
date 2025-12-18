@@ -131,7 +131,7 @@ export type SignupTermsType = z.infer<typeof SignupTermsSchema>;
 
 
 
-export type CompleteSignupType = z.infer<typeof CompleteSignupSchema>;
+// export type CompleteSignupType = z.infer<typeof CompleteSignupSchema>;
 
 // ============================================
 // PASSWORD RESET
@@ -168,7 +168,7 @@ export const InfoFormSchema = z.object({
 
 export type InfoFormType = z.infer<typeof InfoFormSchema>;
 
-export const emailType = z.object({
+export const emailSchema = z.object({
   email: z
     .string({
       required_error: "L'adresse e-mail est obligatoire.",
@@ -176,4 +176,4 @@ export const emailType = z.object({
     .email("Le format de l'e-mail est invalide."),
 });
 
-export type emailSchema = z.infer<typeof emailType>;
+export type emailType = z.infer<typeof emailSchema>;
