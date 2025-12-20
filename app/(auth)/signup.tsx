@@ -27,14 +27,9 @@ export default function EmailSignup() {
   const {
     control,
     handleSubmit,
-    // setValue,
-    // getValues,
-    // reset,
-    // trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignupFormData>({
     resolver: zodResolver(SignupSchema),
-    // mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
@@ -46,17 +41,25 @@ export default function EmailSignup() {
   const [modalVisible, setModalVisible] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErromessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const OnSubmit = async (data: SignupFormData) => {
-    setErromessage(null);
+    setErrorMessage(null);
+    setSuccessMessage(null);
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setIsLoading(false);
-    setErromessage("An error occurred. Please try again.");
-    console.log("Form Data: ", data);
-    console.log("Selected Country", selectedCountry);
-    router.push("/(auth)/verify-otp");
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      console.log("Form Data: ", data);
+      console.log("Selected Country", selectedCountry);
+      setSuccessMessage("Account created successfully! Redirecting...");
+      // router.push("/(auth)/verify-otp"); // Assuming this is the next step after successful signup
+    } catch (error) {
+      setErrorMessage("An error occurred during signup. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -72,7 +75,6 @@ export default function EmailSignup() {
           display: "flex",
           justifyContent: "space-between",
           flexGrow: 1,
-          // minHeight: "100%",
         }}
         className="flex-1 px-4 py-8"
       >
@@ -83,12 +85,14 @@ export default function EmailSignup() {
             step={1}
             progress="20%"
           />
-            {errorMessage && (
-            <View className="px-4  py-2 mb-2 bg-red-500 rounded-lg">
-              <Text className="font-bold text-white">Error : </Text>
-              <Text className="text-white">
-                {errorMessage}
-              </Text>
+          {errorMessage && (
+            <View className="px-4 py-3 mb-4 bg-red-100 border border-red-400 rounded-lg">
+              <Text className="text-red-700 font-medium">{errorMessage}</Text>
+            </View>
+          )}
+          {successMessage && (
+            <View className="px-4 py-3 mb-4 bg-green-100 border border-green-400 rounded-lg">
+              <Text className="text-green-700 font-medium">{successMessage}</Text>
             </View>
           )}
           <Input
@@ -100,11 +104,13 @@ export default function EmailSignup() {
             label="Email"
             placeholder="Votre address email"
           />
+          {errors.email && <Text className="text-red-500 mt-1">{errors.email.message}</Text>}
           <CountrySelect
             disable={isLoading}
             control={control}
             name="phoneNumber"
           />
+          {errors.phoneNumber && <Text className="text-red-500 mt-1">{errors.phoneNumber.message}</Text>}
           <PasswordInput
             disable={isLoading}
             name="password"
@@ -113,7 +119,7 @@ export default function EmailSignup() {
             label="Mot de passe"
             placeholder="Votre mot de passe"
           />
-        
+          {errors.password && <Text className="text-red-500 mt-1">{errors.password.message}</Text>}
         </View>
 
         <View>
@@ -122,6 +128,7 @@ export default function EmailSignup() {
               color={"#F97316"}
               onValueChange={() => setAgreeTerms(!agreeTerms)}
               value={agreeTerms}
+              disabled={isLoading}
             />
             <View className="flex-1">
               <Text className="flex-1 text-muted-foreground text-pretty text-base">

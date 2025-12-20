@@ -1,5 +1,6 @@
-import ChangeCode from "@/components/general/change-code";
-import Contact from "@/components/general/contact";
+// import ChangeCode from "@/components/general/change-code";
+import Contact from "../components/general/contact";
+
 import {
   ChartLine,
   CreditCard,
@@ -79,25 +80,24 @@ export const general_features : GeneralFeature[] = [
 ];
 
 export const countries = [
-  { code: "+237", name: "Cameroon", flag: "🇨🇲" },
-  { code: "+234", name: "Nigeria", flag: "🇳🇬" },
-  { code: "+27", name: "South Africa", flag: "🇿🇦" },
-  { code: "+254", name: "Kenya", flag: "🇰🇪" },
-  { code: "+233", name: "Ghana", flag: "🇬🇭" },
-  { code: "+20", name: "Egypt", flag: "🇪🇬" },
-  { code: "+212", name: "Morocco", flag: "🇲🇦" },
-  { code: "+251", name: "Ethiopia", flag: "🇪🇹" },
-  { code: "+255", name: "Tanzania", flag: "🇹🇿" },
-  { code: "+243", name: "DR Congo", flag: "🇨🇩" },
-  // 10 More Countries Added:
-  { code: "+263", name: "Zimbabwe", flag: "🇿🇼" },
-  { code: "+256", name: "Uganda", flag: "🇺🇬" },
-  { code: "+213", name: "Algeria", flag: "🇩🇿" },
-  { code: "+216", name: "Tunisia", flag: "🇹🇳" },
-  { code: "+221", name: "Senegal", flag: "🇸🇳" },
-  { code: "+225", name: "Côte d'Ivoire", flag: "🇨🇮" },
-  { code: "+244", name: "Angola", flag: "🇦🇴" },
-  { code: "+258", name: "Mozambique", flag: "🇲🇿" },
-  { code: "+260", name: "Zambia", flag: "🇿🇲" },
-  { code: "+261", name: "Madagascar", flag: "🇲🇬" },
+  { code: "+237", name: "Cameroon", flag: "🇨🇲", iso: "CM" },
+  { code: "+234", name: "Nigeria", flag: "🇳🇬", iso: "NG" },
+  { code: "+27", name: "South Africa", flag: "🇿🇦", iso: "ZA" },
+  { code: "+254", name: "Kenya", flag: "🇰🇪", iso: "KE" },
+  { code: "+233", name: "Ghana", flag: "🇬🇭", iso: "GH" },
+  { code: "+20", name: "Egypt", flag: "🇪🇬", iso: "EG" },
+  { code: "+212", name: "Morocco", flag: "🇲🇦", iso: "MA" },
+  { code: "+251", name: "Ethiopia", flag: "🇪🇹", iso: "ET" },
+  { code: "+255", name: "Tanzania", flag: "🇹🇿", iso: "TZ" },
+  { code: "+243", name: "DR Congo", flag: "🇨🇩", iso: "CD" },
+  { code: "+263", name: "Zimbabwe", flag: "🇿🇼", iso: "ZW" },
+  { code: "+256", name: "Uganda", flag: "🇺🇬", iso: "UG" },
+  { code: "+213", name: "Algeria", flag: "🇩🇿", iso: "DZ" },
+  { code: "+216", name: "Tunisia", flag: "🇹🇳", iso: "TN" },
+  { code: "+221", name: "Senegal", flag: "🇸🇳", iso: "SN" },
+  { code: "+225", name: "Côte d'Ivoire", flag: "🇨🇮", iso: "CI" },
+  { code: "+244", name: "Angola", flag: "🇦🇴", iso: "AO" },
+  { code: "+258", name: "Mozambique", flag: "🇲🇿", iso: "MZ" },
+  { code: "+260", name: "Zambia", flag: "🇿🇲", iso: "ZM" },
+  { code: "+261", name: "Madagascar", flag: "🇲🇬", iso: "MG" },
 ];

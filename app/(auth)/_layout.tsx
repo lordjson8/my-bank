@@ -22,13 +22,8 @@ export default function AuthLayout() {
       >
         <StatusBar style="auto" />
 
-       
-        <Stack.Screen name="step-one" />
+        <Stack.Screen name="signup" />
         <Stack.Screen name="signup-email" />
-        <Stack.Screen name="step-two" />
-        <Stack.Screen name="step-three" />
-        <Stack.Screen name="step-four" />
-        <Stack.Screen name="step-five" />
         <Stack.Screen name="success" />
         <Stack.Screen name="info" />
         <Stack.Screen name="login" />
@@ -36,8 +31,6 @@ export default function AuthLayout() {
         <Stack.Screen name="security" />
         <Stack.Screen name="access-code" />
         <Stack.Screen name="forget-password" />
-
-        <Stack.Screen name="signup-phone" />
-      </Stack>
+   </Stack>
   );
 }

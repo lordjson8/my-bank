@@ -3,79 +3,74 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { Redirect, Stack, usePathname, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import { setStatusBarStyle, StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import "@/global.css";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import AuthProvider from "@/services/providers/auth-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useAuthStore } from "@/store/authStore";
 
-// export const unstable_settings = {
-//   anchor: "(tabs)",
-// };
-
-// Set the animation options. This is optional.
-SplashScreen.setOptions({
-  duration: 2000,
-  fade: true,
-});
-
+// Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const p = usePathname();
+  const { 
+    hasCompletedOnboarding, 
+    isAuthenticated, 
+    isEmailVerified,
+    _hasHydrated 
+  } = useAuthStore();
+
   const [loaded] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
     "Poppins-Light": require("../assets/fonts/Poppins-Light.ttf"),
   });
 
-  // const [images] = useImages
-
+  // Hide splash screen after both fonts and store hydration complete
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hide();
+    if (loaded && _hasHydrated) {
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 100);
     }
-  }, [loaded]);
+  }, [loaded, _hasHydrated]);
 
-  console.log(p.toLowerCase());
-  // const colorScheme = useColorScheme();
-
-  // return <Redirect href="/dashboard" />;
+  // Don't render until both are ready
+  if (!loaded || !_hasHydrated) {
+    return null;
+  }
 
   return (
-    <GestureHandlerRootView>
-      {/* // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
-      {/* // <AuthProvider> */}
-      {/* <> */}
-      <Stack>
-        <Stack.Protected guard={true}>
-          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-            <Stack.Protected guard={true}>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          </Stack.Protected>
-        </Stack.Protected>
-        <Stack.Protected guard={true}>
-        
-
-          <Stack.Protected guard={false}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack.Protected>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* ONBOARDING - Show only if NOT completed */}
+        <Stack.Protected guard={!hasCompletedOnboarding}>
+          <Stack.Screen name="(onboarding)" />
         </Stack.Protected>
 
-        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+        {/* AUTH - Show only if onboarded but NOT authenticated */}
+        <Stack.Protected guard={hasCompletedOnboarding && !isAuthenticated}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+
+        {/* TABS - Show only if authenticated AND verified */}
+        <Stack.Protected guard={isAuthenticated && isEmailVerified}>
+          <Stack.Screen name="(tabs)" />
+        </Stack.Protected>
+
+        {/* Global screens (always accessible) */}
+        <Stack.Screen name="+not-found" />
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}
         />
       </Stack>
       <StatusBar backgroundColor="#fff" style="dark" />
-      {/* </> */}
     </GestureHandlerRootView>
   );
 }

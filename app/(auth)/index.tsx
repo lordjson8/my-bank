@@ -5,10 +5,10 @@ import { useAuthStore } from '@/store/authStore'
 import { Link } from 'expo-router';
 
 export default function Index() {
-    const onboarding = useAuthStore((state) => state.onboarding);
-    const setOnboarding = useAuthStore((state) => state.setOnboarding);
-    console.log('onboarding in auth index', onboarding);
-    setOnboarding(false);
+    // const onboarding = useAuthStore((state) => state.onboarding);
+    // const setOnboarding = useAuthStore((state) => state.setOnboarding);
+    // console.log('onboarding in auth index', onboarding);
+    // setOnboarding(false);
 
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
