@@ -2,7 +2,7 @@ import axios from 'axios';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store'
 
-const API_BASE_URL = 'http://your-server.com/api';
+const API_BASE_URL = 'http://192.168.100.241:8000/api';
 
 // Create axios instance
 const api = axios.create({

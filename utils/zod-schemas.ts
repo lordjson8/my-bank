@@ -1,21 +1,26 @@
 import z from "zod/v3";
 
+const PASSWORD_REGEX = /^(?=[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;;
+
 const SignupSchema = z.object({
   email: z.string().email("Email invalide"),
-  password: z
+   password: z
     .string()
-    .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+    .regex(
+      PASSWORD_REGEX,
+      "Le mot de passe doit commencer par une majuscule, contenir au moins un chiffre, un caractère spécial et au minimum 8 caractères"
+    ),
   phoneNumber: z.string().min(9, "Le numéro de téléphone est requis"),
  
 });
+
+
 
 export type SignupFormData = z.infer<typeof SignupSchema>;
 
 export { SignupSchema };
 
 
-const PASSWORD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const PHONE_REGEX = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
 
 // ============================================
@@ -28,8 +33,7 @@ export const LoginSchema = z.object({
     .min(1, "Email is required"),
   password: z
     .string({ required_error: "Password is required" })
-    .min(1, "Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(1, "Password is required"),
   rememberMe: z.boolean().default(false).optional(),
 });
 

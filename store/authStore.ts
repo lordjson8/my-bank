@@ -1,63 +1,73 @@
-// store/authStore.ts
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { secureStore } from '@/utils/secureStoreAdapter';
 
+export interface User {
+  id: number;
+  email: string;
+  phone: string;
+  full_name: string;
+  country: string;
+  email_verified: boolean;
+  phone_verified: boolean;
+  kyc_status: string;
+  kyc_level: string;
+  two_factor_enabled: boolean;
+  can_transfer: boolean;
+}
+
 interface AuthState {
+  user: User | null;
   hasCompletedOnboarding: boolean;
-  isAuthenticated: boolean;
-  isEmailVerified: boolean;
-  user: { email: string; name: string } | null;
-  _hasHydrated: boolean; // Track secureStore hydration
-  
+  _hasHydrated: boolean;
+
+  loginSuccess: (payload: {
+    user: User;
+    access: string;
+    refresh: string;
+  }) => Promise<void>;
+
+  logout: () => Promise<void>;
   completeOnboarding: () => void;
-  login: (token: string, user: { email: string; name: string }) => void;
-  verifyEmail: () => void;
-  logout: () => void;
   setHasHydrated: (state: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      hasCompletedOnboarding: false,
-      isAuthenticated: false,
-      isEmailVerified: false,
       user: null,
+      hasCompletedOnboarding: false,
       _hasHydrated: false,
 
-      completeOnboarding: () => set({ hasCompletedOnboarding: true }),
+      async loginSuccess({ user, access, refresh }) {
+        await secureStore.setItem('accessToken', access);
+        await secureStore.setItem('refreshToken', refresh);
 
-      login: (token, user) => 
-        set({ 
-          isAuthenticated: true, 
-          user,
-        }),
+        set({ user });
+      },
 
-      verifyEmail: () => set({ isEmailVerified: true }),
+      async logout() {
+        await secureStore.removeItem('accessToken');
+        await secureStore.removeItem('refreshToken');
 
-      logout: () =>
-        set({
-          isAuthenticated: false,
-          isEmailVerified: false,
-          user: null,
-        }),
+        set({ user: null });
+      },
 
-      setHasHydrated: (state) => set({ _hasHydrated: state }),
+      completeOnboarding: () =>
+        set({ hasCompletedOnboarding: true }),
+
+      setHasHydrated: (state) =>
+        set({ _hasHydrated: state }),
     }),
     {
-      name: 'auth-storage', // secureStore key
+      name: 'auth-ui-storage',
       storage: createJSONStorage(() => secureStore),
-      
-      // Only persist these fields (exclude _hasHydrated)
+
       partialize: (state) => ({
-        // hasCompletedOnboarding: state.hasCompletedOnboarding,
-        // isAuthenticated: state.isAuthenticated,
-        // isEmailVerified: state.isEmailVerified,
-        // user: state.user,
+        user: state.user,
+        hasCompletedOnboarding: state.hasCompletedOnboarding,
       }),
 
-      // Handle hydration completion
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },

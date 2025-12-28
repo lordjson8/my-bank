@@ -69,7 +69,7 @@ export default function TabLayout() {
             }}
           >
             <Tabs.Screen
-              name="transfer"
+              name="index"
               options={{
                 title: "Transférer",
                 // tabBarBadge: 2,

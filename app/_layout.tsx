@@ -4,7 +4,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
-import { setStatusBarStyle, StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import "@/global.css";
 import { useFonts } from "expo-font";
@@ -18,59 +18,72 @@ import { useAuthStore } from "@/store/authStore";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { 
-    hasCompletedOnboarding, 
-    isAuthenticated, 
-    isEmailVerified,
-    _hasHydrated 
+  const colorScheme = useColorScheme();
+
+  const {
+    user,
+    logout,
+    hasCompletedOnboarding,
+    _hasHydrated,
   } = useAuthStore();
 
-  const [loaded] = useFonts({
+//  logout();
+
+  const isAuthenticated = !!user;
+  const isEmailVerified = user?.email_verified === true;
+
+  const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
     "Poppins-Light": require("../assets/fonts/Poppins-Light.ttf"),
   });
 
-  // Hide splash screen after both fonts and store hydration complete
+  // Hide splash screen ONLY when everything is ready
   useEffect(() => {
-    if (loaded && _hasHydrated) {
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 100);
+    if (fontsLoaded && _hasHydrated) {
+      SplashScreen.hideAsync();
     }
-  }, [loaded, _hasHydrated]);
+  }, [fontsLoaded, _hasHydrated]);
 
-  // Don't render until both are ready
-  if (!loaded || !_hasHydrated) {
-    return null;
-  }
+  // Block rendering until hydration + fonts
+  // if (!fontsLoaded || !_hasHydrated) {
+  //   return null;
+  // }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack screenOptions={{ headerShown: false }}>
-        {/* ONBOARDING - Show only if NOT completed */}
-        <Stack.Protected guard={!hasCompletedOnboarding}>
-          <Stack.Screen name="(onboarding)" />
-        </Stack.Protected>
+      {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
+        <Stack screenOptions={{ headerShown: false }}>
 
-        {/* AUTH - Show only if onboarded but NOT authenticated */}
-        <Stack.Protected guard={hasCompletedOnboarding && !isAuthenticated}>
-          <Stack.Screen name="(auth)" />
-        </Stack.Protected>
+          {/* 1️⃣ ONBOARDING */}
+          <Stack.Protected guard={!hasCompletedOnboarding}>
+            <Stack.Screen name="(onboarding)" />
+          </Stack.Protected>
 
-        {/* TABS - Show only if authenticated AND verified */}
-        <Stack.Protected guard={isAuthenticated && isEmailVerified}>
-          <Stack.Screen name="(tabs)" />
-        </Stack.Protected>
+          {/* 2️⃣ AUTH (login / register / verify email) */}
+          <Stack.Protected
+            guard={hasCompletedOnboarding && !isAuthenticated}
+          >
+            <Stack.Screen name="(auth)" />
+          </Stack.Protected>
 
-        {/* Global screens (always accessible) */}
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
-        />
-      </Stack>
-      <StatusBar backgroundColor="#fff" style="dark" />
+          {/* 3️⃣ VERIFIED APP */}
+          <Stack.Protected
+            guard={isAuthenticated && isEmailVerified}
+          >
+            <Stack.Screen name="(tabs)" />
+          </Stack.Protected>
+
+          {/* 4️⃣ FALLBACKS */}
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal" }}
+          />
+        </Stack>
+      {/* </ThemeProvider> */}
+
+      <StatusBar style="auto" />
     </GestureHandlerRootView>
   );
 }
