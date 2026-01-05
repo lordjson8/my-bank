@@ -127,7 +127,7 @@ export default function EmailSignup() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-4  bg-white">
+    <SafeAreaView className="flex-1 p-4 bg-white">
       <PhoneModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -142,6 +142,7 @@ export default function EmailSignup() {
             display: "flex",
             justifyContent: "space-between",
             flexGrow: 1,
+            gap: 20,
           }}
           className="flex-1 px-4 py-8"
         >

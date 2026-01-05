@@ -1,4 +1,6 @@
+import { store } from '@/store/authStore';
 import axios from 'axios';
+import { router } from 'expo-router';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store'
 
@@ -46,20 +48,23 @@ api.interceptors.response.use(
           { refresh: refreshToken }
         );
 
-        const { access } = response.data;
+        const { access,refresh } = response.data;
         
         // Save new access token
         await SecureStore.setItemAsync('accessToken', access);
+        await SecureStore.setItemAsync('refreshToken', refresh);
 
         // Retry original request with new token
         originalRequest.headers.Authorization = `Bearer ${access}`;
         return api(originalRequest);
       } catch (refreshError) {
         // Refresh failed, logout user
-        await SecureStore.deleteItemAsync('accessToken');
-        await SecureStore.deleteItemAsync('refreshToken');
-        await SecureStore.deleteItemAsync('user');
+        // await SecureStore.deleteItemAsync('accessToken');
+        // await SecureStore.deleteItemAsync('refreshToken');
+        // await SecureStore.deleteItemAsync('user');
         // Navigate to login screen
+        await store.getState().logout();
+        // router.replace('/(auth)/login');
         return Promise.reject(refreshError);
       }
     }

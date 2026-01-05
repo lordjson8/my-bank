@@ -1,3 +1,4 @@
+import { set } from 'react-hook-form';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { secureStore } from '@/utils/secureStoreAdapter';
@@ -18,6 +19,7 @@ export interface User {
 
 interface AuthState {
   user: User | null;
+  setOnboarding: (hasCompleted: boolean) => void;
   hasCompletedOnboarding: boolean;
   _hasHydrated: boolean;
 
@@ -52,7 +54,8 @@ export const useAuthStore = create<AuthState>()(
 
         set({ user: null });
       },
-
+      setOnboarding: (hasCompleted : boolean) =>
+        set({ hasCompletedOnboarding: hasCompleted }),
       completeOnboarding: () =>
         set({ hasCompletedOnboarding: true }),
 
@@ -74,3 +77,6 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+
+
+export const store = useAuthStore;

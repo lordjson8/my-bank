@@ -1,5 +1,7 @@
 import {
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -15,7 +17,6 @@ import Input from "@/components/auth/input";
 import { useState } from "react";
 
 export default function ForgotPassword() {
-
   const {
     control,
     handleSubmit,
@@ -49,75 +50,79 @@ export default function ForgotPassword() {
 
   return (
     <SafeAreaView className="flex-1 p-4 bg-white">
-      <ScrollView
-        contentContainerStyle={{
-          display: "flex",
-          flexGrow: 1,
-          justifyContent: "space-between",
-        }}
-        className="flex-1 px-4 py-8"
-      >
-        <View className="">
-          <SignupHeader
-            showProgress
-            label="Forgot Password"
-            step={1}
-            progress="20%"
-          />
-          <View className="px-3">
-            {errorMessage && (
-              <View className="px-4 py-3 mb-4 bg-red-100 border border-red-400 rounded-lg">
-                <Text className="text-red-700 font-medium">{errorMessage}</Text>
-              </View>
-            )}
-            {successMessage && (
-              <View className="px-4 py-3 mb-4 bg-green-100 border border-green-400 rounded-lg">
-                <Text className="text-green-700 font-medium">
-                  {successMessage}
-                </Text>
-              </View>
-            )}
-            <Input
-              name="email"
-              control={control}
-              secure={false}
-              keyboardType="email-address"
-              label="Email Address"
-              placeholder="Enter your email"
-              disable={isLoading}
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={{
+            display: "flex",
+            flexGrow: 1,
+            justifyContent: "space-between",
+          }}
+          className="flex-1 px-4 py-8"
+        >
+          <View className="">
+            <SignupHeader
+              showProgress
+              label="Forgot Password"
+              step={1}
+              progress="20%"
             />
-            {/* {errors.email && (
+            <View className="px-3">
+              {errorMessage && (
+                <View className="px-4 py-3 mb-4 bg-red-100 border border-red-400 rounded-lg">
+                  <Text className="text-red-700 font-medium">
+                    {errorMessage}
+                  </Text>
+                </View>
+              )}
+              {successMessage && (
+                <View className="px-4 py-3 mb-4 bg-green-100 border border-green-400 rounded-lg">
+                  <Text className="text-green-700 font-medium">
+                    {successMessage}
+                  </Text>
+                </View>
+              )}
+              <Input
+                name="email"
+                control={control}
+                secure={false}
+                keyboardType="email-address"
+                label="Email Address"
+                placeholder="Enter your email"
+                disable={isLoading}
+              />
+              {/* {errors.email && (
               <Text className="text-red-500 mt-1">{errors.email.message}</Text>
             )} */}
-            <View className="flex-row justify-center items-center mt-4 mb-4 gap-2">
-              <Text className="text-muted-foreground">
-                Remember your password?
-              </Text>
-              <Link
-                href={"/(auth)/login"}
-                className="font-bold text-primary text-base"
-              >
-                Login
-              </Link>
+              <View className="flex-row justify-center items-center mt-4 mb-4 gap-2">
+                <Text className="text-muted-foreground">
+                  Remember your password?
+                </Text>
+                <Link
+                  href={"/(auth)/login"}
+                  className="font-bold text-primary text-base"
+                >
+                  Login
+                </Link>
+              </View>
             </View>
           </View>
-        </View>
-        <View className="">
-          <View className="mt-4">
-            <TouchableOpacity
-              onPress={handleSubmit(onSubmit)}
-              disabled={isLoading}
-              className={`rounded-xl ${isLoading ? "bg-orange-200" : "bg-primary"} flex flex-row items-center py-4 justify-center gap-2`}
-            >
-              {isLoading ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
-              ) : (
-                <Text className="text-white text-xl font-bold">Submit</Text>
-              )}
-            </TouchableOpacity>
+          <View className="">
+            <View className="mt-4">
+              <TouchableOpacity
+                onPress={handleSubmit(onSubmit)}
+                disabled={isLoading}
+                className={`rounded-xl ${isLoading ? "bg-orange-200" : "bg-primary"} flex flex-row items-center py-4 justify-center gap-2`}
+              >
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Text className="text-white text-xl font-bold">Submit</Text>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

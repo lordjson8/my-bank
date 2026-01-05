@@ -49,13 +49,14 @@ export default function TabLayout() {
   //   return <Redirect href={'/'}/>;
   // }
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <GestureHandlerRootView  className="flex-1">
+    <SafeAreaView className="flex-1 bg-primary">
+      <GestureHandlerRootView className="flex-1">
         <KeyboardAvoidingView behavior="padding" className="flex-1">
           <Header />
+         
           <Tabs
             screenOptions={{
-              header: Header,
+              // header: Header,
               headerShown: false,
               tabBarActiveTintColor: "#F97316",
               animation: "shift",

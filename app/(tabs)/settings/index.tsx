@@ -1,9 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import { general_features } from "@/constants";
 import { ChevronDown, ChevronRight, LogOut } from "lucide-react-native";
 import { TextInput } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { store } from "@/store/authStore";
 
 export default function index() {
   return (
@@ -24,7 +25,11 @@ const Option = ({ el }: { el: any }) => {
   const [collapsed, setCollapsed] = React.useState<boolean>(false);
   if (el.type === "link") {
     return (
-      <Link asChild href={el.href} className="border-b flex border-border p-4 flex-1">
+      <Link
+        asChild
+        href={el.href}
+        className="border-b flex border-border p-4 flex-1"
+      >
         <TouchableOpacity
           onPress={() => setCollapsed(!collapsed)}
           className="rounded-xl items-start  flex flex-row  mb-2 "
@@ -82,6 +87,27 @@ const Option = ({ el }: { el: any }) => {
 };
 
 export function Features() {
+  const handleLogout = () => {
+    Alert.alert("Se déconnecter", "Voulez vous quitter l'application ?", [
+      {
+        text: "Annuler",
+        style: "cancel",
+      },
+      {
+        text: "Se déconnecter",
+        onPress: async () => {
+          await store.getState().logout();
+          router.replace('/(auth)/login');
+          
+          Alert.alert(
+            "Déconnexion réussie",
+            "Vous avez été déconnecté avec succès."
+          );
+        },
+      },
+    ]);
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -95,7 +121,10 @@ export function Features() {
         {general_features.map((el, index) => {
           return <Option key={index} el={el} />;
         })}
-        <TouchableOpacity className="rounded-xl items-start p-4 flex flex-row  mb-20">
+        <TouchableOpacity
+          onPress={handleLogout}
+          className="rounded-xl items-start p-4 flex flex-row  mb-20"
+        >
           <LogOut color={"#EF4444"} />
           <View className="ml-3 flex-1">
             <Text className="text-lg font-[500] text-[#EF4444]">
