@@ -1,3 +1,16 @@
+export type KYCStatus = 'pending' | 'approved' | 'rejected' | 'under_review' | "not_submitted";
+export type KYCLevel = 'basic' | 'intermediate' | 'advanced';
+
+export interface TransactionLimits {
+  monthly_limit: number;
+  daily_limit: number;
+  transaction_limit: number;
+  remaining_daily_limit: number;
+  remaining_monthly_limit: number;
+  daily_usage: number;
+  monthly_usage: number;
+}
+
 export interface User {
   id: number;
   email: string;
@@ -6,15 +19,15 @@ export interface User {
   country: string;
   email_verified: boolean;
   phone_verified: boolean;
-  kyc_status: 'pending' | 'submitted' | 'approved' | 'rejected';
-  kyc_level: 'none' | 'basic' | 'advanced';
+  kyc_status: KYCStatus;
+  kyc_level: KYCLevel;
   two_factor_enabled: boolean;
   is_verified: boolean;
   can_transfer: boolean;
-  daily_limit: string;
-  transaction_limit: string;
-  created_at: string;
+  transaction_limits: TransactionLimits;
+  created_at: string; // ISO 8601 date string
 }
+
 
 export interface AuthTokens {
   access: string;

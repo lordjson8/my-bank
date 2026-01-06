@@ -2,20 +2,9 @@ import { set } from 'react-hook-form';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { secureStore } from '@/utils/secureStoreAdapter';
+import { User } from '@/types/auth.types';
 
-export interface User {
-  id: number;
-  email: string;
-  phone: string;
-  full_name: string;
-  country: string;
-  email_verified: boolean;
-  phone_verified: boolean;
-  kyc_status: string;
-  kyc_level: string;
-  two_factor_enabled: boolean;
-  can_transfer: boolean;
-}
+
 
 interface AuthState {
   user: User | null;

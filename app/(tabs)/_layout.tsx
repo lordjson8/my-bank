@@ -1,5 +1,6 @@
 import Header from "@/components/dashboard/header";
 import { HapticTab } from "@/components/haptic-tab";
+import { useAuthStore } from "@/store/authStore";
 import { Tabs } from "expo-router";
 
 import {
@@ -44,6 +45,8 @@ const Icon = ({
 };
 
 export default function TabLayout() {
+  const {user} = useAuthStore();
+  console.log("User in TabLayout:", user);
   // const { isLoggedIn } = useAuth();
   // if (!isLoggedIn) {
   //   return <Redirect href={'/'}/>;

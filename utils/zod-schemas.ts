@@ -181,3 +181,24 @@ export const emailSchema = z.object({
 });
 
 export type emailType = z.infer<typeof emailSchema>;
+
+// ============================================
+// CARD PAYMENT SCHEMA
+// ============================================
+export const CardPaymentSchema = z.object({
+  cardNumber: z
+    .string({ required_error: "Card number is required" })
+    .regex(/^[0-9]{16}$/, "Card number must be 16 digits and contain only numbers"),
+  cardName: z
+    .string({ required_error: "Name on card is required" })
+    .min(2, "Name must be at least 2 characters"),
+  expiryDate: z
+    .string({ required_error: "Expiry date is required" })
+    .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Invalid expiry date format (MM/YY)"),
+  cvv: z
+    .string({ required_error: "CVV is required" })
+    .min(3, "CVV must be 3 digits")
+    .max(3, "CVV must be 3 digits"),
+});
+
+export type CardPaymentFormType = z.infer<typeof CardPaymentSchema>;
