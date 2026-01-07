@@ -14,7 +14,7 @@ import {
   User,
   ApiError,
 } from '../types/auth.types';
-import apiService from './api.service';
+import apiService from './old/api.service';
 import storageService from './storage.service';
 
 class AuthService {

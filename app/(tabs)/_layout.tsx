@@ -45,8 +45,8 @@ const Icon = ({
 };
 
 export default function TabLayout() {
-  const {user} = useAuthStore();
-  console.log("User in TabLayout:", user);
+  // const {user} = useAuthStore();
+  // console.log("User in TabLayout:", user);
   // const { isLoggedIn } = useAuth();
   // if (!isLoggedIn) {
   //   return <Redirect href={'/'}/>;

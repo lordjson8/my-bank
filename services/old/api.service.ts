@@ -1,6 +1,6 @@
-import config from '../constants/config';
+import config from '../../constants/config';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
-import storageService from './storage.service';
+import storageService from '../storage.service';
 
 
 class ApiService {
