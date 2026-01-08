@@ -2,6 +2,7 @@ import Header from "@/components/dashboard/header";
 import { HapticTab } from "@/components/haptic-tab";
 import { useAuthStore } from "@/store/authStore";
 import { Tabs } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 import {
   Clock8,
@@ -11,10 +12,9 @@ import {
   Send,
   Settings,
 } from "lucide-react-native";
-import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { fa } from "zod/v4/locales";
 
 const Icon = ({
   name,
@@ -52,11 +52,14 @@ export default function TabLayout() {
   //   return <Redirect href={'/'}/>;
   // }
   return (
-    <SafeAreaView className="flex-1 bg-primary">
+    <>
+      <SafeAreaView edges={["top"]} className="bg-primary" />
+      <StatusBar style="light" />
+
       <GestureHandlerRootView className="flex-1">
         <KeyboardAvoidingView behavior="padding" className="flex-1">
           <Header />
-         
+
           <Tabs
             screenOptions={{
               // header: Header,
@@ -120,6 +123,22 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
+              name="update-profile"
+              options={{
+               
+                href: null,
+                tabBarIcon: ({ color, focused }) => (
+                  <Icon
+                    name="Paramètre"
+                    color={color}
+                    focused={focused}
+                    Icon={Settings}
+                  />
+                ),
+              }}
+            />
+
+            <Tabs.Screen
               name="cards"
               options={{
                 href: null,
@@ -155,6 +174,7 @@ export default function TabLayout() {
           </Tabs>
         </KeyboardAvoidingView>
       </GestureHandlerRootView>
-    </SafeAreaView>
+      <SafeAreaView edges={["bottom"]} className="bg-primary" />
+    </>
   );
 }

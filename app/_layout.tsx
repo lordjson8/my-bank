@@ -72,6 +72,7 @@ export default function RootLayout() {
             guard={isAuthenticated && isEmailVerified}
           >
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(kyc)" />
           </Stack.Protected>
 
           {/* 4️⃣ FALLBACKS */}
@@ -83,7 +84,8 @@ export default function RootLayout() {
         </Stack>
       {/* </ThemeProvider> */}
 
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
+      
     </GestureHandlerRootView>
   );
 }

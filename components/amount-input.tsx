@@ -1,8 +1,8 @@
 import { View, Text, TextInput } from "react-native";
 
 interface AmountInputProps {
-  amount: number;
-  setAmount: (value: number) => void;
+  amount: string;
+  setAmount: (value: string) => void;
 }
 
 export const AmountInput = ({ amount, setAmount }: AmountInputProps) => (
@@ -13,7 +13,7 @@ export const AmountInput = ({ amount, setAmount }: AmountInputProps) => (
       value={amount.toString()}
       keyboardType="decimal-pad"
       autoCapitalize="none"
-      onChangeText={(e) => setAmount(parseFloat(e))}
+      onChangeText={(e) => setAmount(e)}
       placeholderTextColor="gray"
       className="border-2 my-2 text-2xl rounded-xl text-black px-4 font-bold py-4 border-border"
     />

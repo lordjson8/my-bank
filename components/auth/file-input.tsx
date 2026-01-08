@@ -12,7 +12,7 @@ export default function FileInput({
   error,
   setImage,
 }: {
-  error?: string;
+  error?: string | any;
   label: string;
   Icon: LucideIcon;
   inputLabel: string;

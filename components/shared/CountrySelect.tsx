@@ -8,12 +8,16 @@ export default function CountrySelect({
   control,
   name,
   disable = false,
+  selectedCountry,
+  setSelectedCountry
 }: {
   name: string;
   disable?: boolean;
   control: Control<any>;
+  selectedCountry: (typeof countries)[0];
+  setSelectedCountry: (value: (typeof countries)[0]) => void;
 }) {
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  // const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [isFocused, setIsFocused] = useState(false);

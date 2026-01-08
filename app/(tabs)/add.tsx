@@ -10,7 +10,7 @@ import { TextInput } from "react-native";
 interface ITransaction {
   number: string;
   fees: string;
-  type: "debit" | "credit";
+  type: string;
   ref: string;
   date: Date;
   method: string;

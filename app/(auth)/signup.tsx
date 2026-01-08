@@ -55,7 +55,7 @@ export default function EmailSignup() {
 
     try {
       // Build phone in E.164 format, e.g. +2250748672248
-      const phone = `${selectedCountry.code}${data.phoneNumber.replace(/^0+/, "")}`;
+      const phone = `${selectedCountry.code}${data.phoneNumber}`;
 
       const payload = {
         email: data.email.trim(),
@@ -126,13 +126,11 @@ export default function EmailSignup() {
     }
   };
 
+  console.log("Form data:", { selectedCountry });
+
   return (
     <SafeAreaView className="flex-1 p-4 bg-white">
-      <PhoneModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        setSelectedCountry={setSelectedCountry}
-      />
+  
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -178,6 +176,8 @@ export default function EmailSignup() {
               <Text className="text-red-500 mt-1">{apiErrors?.email[0]}</Text>
             )}
             <CountrySelect
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
               disable={isLoading}
               control={control}
               name="phoneNumber"

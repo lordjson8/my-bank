@@ -23,6 +23,8 @@ export default function PhoneModal({
   const [search, setSearch] = React.useState("");
   const [filtered_countries, setFilteredCountries] = React.useState(countries);
 
+  // console.log("selected country", setSelectedCountry);
+
   useEffect(() => {
     setFilteredCountries(
       countries.filter(
@@ -69,6 +71,7 @@ export default function PhoneModal({
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
+                  console.log("Selected country:", item);
                   setSelectedCountry(item);
                   setModalVisible(false);
                 }}

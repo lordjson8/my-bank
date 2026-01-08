@@ -20,12 +20,11 @@ export default function AuthLayout() {
           animation: "slide_from_right",
         }}
       >
-        <StatusBar style="auto" />
+        {/* <StatusBar style="auto" /> */}
 
         <Stack.Screen name="signup" />
         <Stack.Screen name="signup-email" />
         <Stack.Screen name="success" />
-        <Stack.Screen name="info" />
         <Stack.Screen name="login" />
         <Stack.Screen name="verify" />
         <Stack.Screen name="security" />

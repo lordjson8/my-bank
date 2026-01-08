@@ -1,27 +1,25 @@
 import z from "zod/v3";
 
-const PASSWORD_REGEX = /^(?=[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;;
+const PASSWORD_REGEX =
+  /^(?=[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const SignupSchema = z.object({
   email: z.string().email("Email invalide"),
-   password: z
+  password: z
     .string()
     .regex(
       PASSWORD_REGEX,
       "Le mot de passe doit commencer par une majuscule, contenir au moins un chiffre, un caractère spécial et au minimum 8 caractères"
     ),
-  phoneNumber: z.string().min(9, "Le numéro de téléphone est requis"),
- 
+  phoneNumber: z.string().min(5, "Le numéro de téléphone est requis"),
 });
-
-
 
 export type SignupFormData = z.infer<typeof SignupSchema>;
 
 export { SignupSchema };
 
-
-const PHONE_REGEX = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
+const PHONE_REGEX =
+  /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
 
 // ============================================
 // LOGIN SCHEMA
@@ -76,12 +74,18 @@ export const SignupInfoSchema = z.object({
     .string({ required_error: "First name is required" })
     .min(2, "First name must be at least 2 characters")
     .max(50, "First name must be less than 50 characters")
-    .regex(/^[a-zA-Z\s'-]+$/, "First name can only contain letters, spaces, hyphens, and apostrophes"),
+    .regex(
+      /^[a-zA-Z\s'-]+$/,
+      "First name can only contain letters, spaces, hyphens, and apostrophes"
+    ),
   lastName: z
     .string({ required_error: "Last name is required" })
     .min(2, "Last name must be at least 2 characters")
     .max(50, "Last name must be less than 50 characters")
-    .regex(/^[a-zA-Z\s'-]+$/, "Last name can only contain letters, spaces, hyphens, and apostrophes"),
+    .regex(
+      /^[a-zA-Z\s'-]+$/,
+      "Last name can only contain letters, spaces, hyphens, and apostrophes"
+    ),
   phoneNumber: z
     .string({ required_error: "Phone number is required" })
     .regex(PHONE_REGEX, "Invalid phone number format"),
@@ -118,22 +122,16 @@ export type SignupAddressType = z.infer<typeof SignupAddressSchema>;
 
 // Step 6: Terms & Conditions
 export const SignupTermsSchema = z.object({
-  agreeToTerms: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must agree to the terms and conditions",
-    }),
-  agreeToPrivacy: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must agree to the privacy policy",
-    }),
+  agreeToTerms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the terms and conditions",
+  }),
+  agreeToPrivacy: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the privacy policy",
+  }),
   agreeToMarketing: z.boolean().default(false).optional(),
 });
 
 export type SignupTermsType = z.infer<typeof SignupTermsSchema>;
-
-
 
 // export type CompleteSignupType = z.infer<typeof CompleteSignupSchema>;
 
@@ -188,13 +186,19 @@ export type emailType = z.infer<typeof emailSchema>;
 export const CardPaymentSchema = z.object({
   cardNumber: z
     .string({ required_error: "Card number is required" })
-    .regex(/^[0-9]{16}$/, "Card number must be 16 digits and contain only numbers"),
+    .regex(
+      /^[0-9]{16}$/,
+      "Card number must be 16 digits and contain only numbers"
+    ),
   cardName: z
     .string({ required_error: "Name on card is required" })
     .min(2, "Name must be at least 2 characters"),
   expiryDate: z
     .string({ required_error: "Expiry date is required" })
-    .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Invalid expiry date format (MM/YY)"),
+    .regex(
+      /^(0[1-9]|1[0-2])\/([0-9]{2})$/,
+      "Invalid expiry date format (MM/YY)"
+    ),
   cvv: z
     .string({ required_error: "CVV is required" })
     .min(3, "CVV must be 3 digits")
@@ -202,3 +206,55 @@ export const CardPaymentSchema = z.object({
 });
 
 export type CardPaymentFormType = z.infer<typeof CardPaymentSchema>;
+
+// ============================================
+// PERSONAL INFO SCHEMA
+// ============================================
+export const PersonalInfoSchema = z.object({
+  first_name: z
+    .string({ required_error: "First name is required" })
+    .min(2, "First name must be at least 2 characters"),
+  last_name: z
+    .string({ required_error: "Last name is required" })
+    .min(2, "Last name must be at least 2 characters"),
+  gender: z.enum(["male", "female"], { required_error: "Gender is required" }),
+  address_line_1: z
+    .string({ required_error: "Address is required" })
+    .min(5, "Address must be at least 5 characters"),
+  address_line_2: z.string().optional(),
+  city: z
+    .string({ required_error: "City is required" })
+    .min(2, "City must be at least 2 characters"),
+  postal_code: z
+    .string({ required_error: "Postal code is required" })
+    .min(3, "Postal code must be at least 3 characters"),
+  state_province: z
+    .string({ required_error: "State/Province is required" })
+    .min(2, "State/Province must be at least 2 characters"),
+  date: z
+    .date({
+      invalid_type_error: "Date of birth must be a valid date",
+      required_error: "Date of birth is required",
+    })
+    .refine(
+      (date) => {
+        const today = new Date();
+        const eighteenYearsAgo = new Date(
+          today.getFullYear() - 18,
+          today.getMonth(),
+          today.getDate()
+        );
+        return date <= eighteenYearsAgo;
+      },
+      { message: "You must be at least 18 years old." }
+    ),
+});
+
+export type PersonalInfoFormData = z.infer<typeof PersonalInfoSchema>;
+
+export const KYCDocsSchema = z.object({
+  id: z.any().refine((file) => file, "ID document is required."),
+  selfie: z.any().refine((file) => file, "Selfie is required."),
+});
+
+export type KYCDocsFormData = z.infer<typeof KYCDocsSchema>;
