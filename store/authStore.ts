@@ -1,10 +1,9 @@
-import { set } from 'react-hook-form';
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { secureStore } from '@/utils/secureStoreAdapter';
-import { User } from '@/types/auth.types';
-
-
+import { set } from "react-hook-form";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { secureStore } from "@/utils/secureStoreAdapter";
+import { User } from "@/types/auth.types";
+import { getMe } from "@/services/user.service";
 
 interface AuthState {
   user: User | null;
@@ -17,7 +16,7 @@ interface AuthState {
     access: string;
     refresh: string;
   }) => Promise<void>;
-
+  updateUser: () => Promise<void>;
   logout: () => Promise<void>;
   completeOnboarding: () => void;
   setHasHydrated: (state: boolean) => void;
@@ -31,28 +30,35 @@ export const useAuthStore = create<AuthState>()(
       _hasHydrated: false,
 
       async loginSuccess({ user, access, refresh }) {
-        await secureStore.setItem('accessToken', access);
-        await secureStore.setItem('refreshToken', refresh);
+        await secureStore.setItem("accessToken", access);
+        await secureStore.setItem("refreshToken", refresh);
 
         set({ user });
       },
 
       async logout() {
-        await secureStore.removeItem('accessToken');
-        await secureStore.removeItem('refreshToken');
+        await secureStore.removeItem("accessToken");
+        await secureStore.removeItem("refreshToken");
 
         set({ user: null });
       },
-      setOnboarding: (hasCompleted : boolean) =>
+      updateUser: async () => {
+        try {
+          const user = await getMe();
+          set({user: user.data});
+          // console.log("Fetched user:", user.data);
+        } catch (error) {
+          console.log("Error updating user in auth store:", error);
+        }
+      },
+      setOnboarding: (hasCompleted: boolean) =>
         set({ hasCompletedOnboarding: hasCompleted }),
-      completeOnboarding: () =>
-        set({ hasCompletedOnboarding: true }),
+      completeOnboarding: () => set({ hasCompletedOnboarding: true }),
 
-      setHasHydrated: (state) =>
-        set({ _hasHydrated: state }),
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
     }),
     {
-      name: 'auth-ui-storage',
+      name: "auth-ui-storage",
       storage: createJSONStorage(() => secureStore),
 
       partialize: (state) => ({
@@ -66,6 +72,5 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
-
 
 export const store = useAuthStore;

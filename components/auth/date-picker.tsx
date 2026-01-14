@@ -35,17 +35,19 @@ export default function DateInput({
   ) => {
     const currentDate = selectedDate;
     setShow(Platform.OS === "ios"); // Close for Android in the declarative component
+    console.log("Selected date:", currentDate?.toISOString().split("T")[0]);
     setDate(currentDate ?? new Date());
   };
 
-  const showMode = (currentMode: "date") => {
+  const showMode = () => {
     if (Platform.OS === "android") {
       // Use the imperative Android API
       DateTimePickerAndroid.open({
         value: date ?? new Date(),
         onChange,
-        mode: currentMode,
+        mode: "date",
         is24Hour: true,
+        
       });
     } else {
       // Show the declarative component on iOS
@@ -54,7 +56,7 @@ export default function DateInput({
   };
 
   const showDatePicker = () => {
-    showMode("date");
+    showMode();
   };
 
   return (

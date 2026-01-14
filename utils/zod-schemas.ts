@@ -226,12 +226,11 @@ export const PersonalInfoSchema = z.object({
     .string({ required_error: "City is required" })
     .min(2, "City must be at least 2 characters"),
   postal_code: z
-    .string({ required_error: "Postal code is required" })
-    .min(3, "Postal code must be at least 3 characters"),
-  state_province: z
+    .string().optional(),
+     state_province: z
     .string({ required_error: "State/Province is required" })
     .min(2, "State/Province must be at least 2 characters"),
-  date: z
+  date_of_birth: z
     .date({
       invalid_type_error: "Date of birth must be a valid date",
       required_error: "Date of birth is required",

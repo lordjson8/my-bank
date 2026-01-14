@@ -128,7 +128,7 @@ export interface KYCProfileData {
     first_name: string;
     last_name: string;
     date_of_birth: string;
-    gender: 'male' | 'female' | 'other';
+    gender: 'male' | 'female';
     nationality: string;
     address_line_1: string;
     address_line_2?: string;

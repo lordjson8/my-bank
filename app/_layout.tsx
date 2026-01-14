@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useAuthStore } from "@/store/authStore";
+import Toast from "react-native-toast-message";
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -20,14 +21,9 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
-  const {
-    user,
-    logout,
-    hasCompletedOnboarding,
-    _hasHydrated,
-  } = useAuthStore();
+  const { user, logout, hasCompletedOnboarding, _hasHydrated } = useAuthStore();
 
-//  logout();
+  //  logout();
 
   const isAuthenticated = !!user;
   const isEmailVerified = user?.email_verified === true;
@@ -53,39 +49,31 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
-        <Stack screenOptions={{ headerShown: false }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* 1️⃣ ONBOARDING */}
+        <Stack.Protected guard={!hasCompletedOnboarding}>
+          <Stack.Screen name="(onboarding)" />
+        </Stack.Protected>
 
-          {/* 1️⃣ ONBOARDING */}
-          <Stack.Protected guard={!hasCompletedOnboarding}>
-            <Stack.Screen name="(onboarding)" />
-          </Stack.Protected>
+        {/* 2️⃣ AUTH (login / register / verify email) */}
+        <Stack.Protected guard={hasCompletedOnboarding && !isAuthenticated}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
 
-          {/* 2️⃣ AUTH (login / register / verify email) */}
-          <Stack.Protected
-            guard={hasCompletedOnboarding && !isAuthenticated}
-          >
-            <Stack.Screen name="(auth)" />
-          </Stack.Protected>
+        {/* 3️⃣ VERIFIED APP */}
+        <Stack.Protected guard={isAuthenticated && isEmailVerified}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="(kyc)" />
+        </Stack.Protected>
 
-          {/* 3️⃣ VERIFIED APP */}
-          <Stack.Protected
-            guard={isAuthenticated && isEmailVerified}
-          >
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="(kyc)" />
-          </Stack.Protected>
-
-          {/* 4️⃣ FALLBACKS */}
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal" }}
-          />
-        </Stack>
+        {/* 4️⃣ FALLBACKS */}
+        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      </Stack>
       {/* </ThemeProvider> */}
 
       <StatusBar style="dark" />
-      
+      <Toast />
     </GestureHandlerRootView>
   );
 }

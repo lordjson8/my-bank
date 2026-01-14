@@ -1,226 +1,176 @@
-import { View, Text, ScrollView, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "@/components/dashboard/header";
-import { Link } from "expo-router";
-import { WarningBanner } from "@/components/warning-barner";
-import { Check, CircleCheckBig, Search } from "lucide-react-native";
-import { TextInput } from "react-native";
+import { Search, CheckCircle2, XCircle, Clock } from "lucide-react-native";
+import { useTransactionStore } from "@/store/transactionStore";
+import { TransferHistoryItem } from "@/types/transfers";
+import { useFocusEffect } from "expo-router";
+// import moment from "moment";
 
-interface ITransaction {
-  number: string;
-  fees: string;
-  type: string;
-  ref: string;
-  date: Date;
-  method: string;
-}
-const transactions: ITransaction[] = [
-  // Original transaction
-  {
-    number: "+225 07 12 34 56 78",
-    fees: "50",
-    type: "debit",
-    ref: "TX1002",
-    date: new Date("2025-11-09T10:30:00Z"),
-    method: "MTN MoMo",
-  },
-  // Added in previous step
-  {
-    number: "+225 07 11 22 33 44",
-    fees: "0",
-    type: "credit",
-    ref: "TX1003",
-    date: new Date("2025-11-10T12:00:00Z"),
-    method: "Orange Money",
-  },
-  {
-    number: "+225 07 99 88 77 66",
-    fees: "150",
-    type: "debit",
-    ref: "TX1004",
-    date: new Date("2025-11-10T11:45:00Z"),
-    method: "Wave",
-  },
-  // Ten new transactions
-  {
-    number: "+225 07 10 20 30 40",
-    fees: "20",
-    type: "debit",
-    ref: "TX1005",
-    date: new Date("2025-11-11T08:00:00Z"),
-    method: "MTN MoMo",
-  },
-  {
-    number: "+225 07 55 66 77 88",
-    fees: "0",
-    type: "credit",
-    ref: "TX1006",
-    date: new Date("2025-11-11T09:15:00Z"),
-    method: "Orange Money",
-  },
-  {
-    number: "+225 07 33 44 55 66",
-    fees: "100",
-    type: "debit",
-    ref: "TX1007",
-    date: new Date("2025-11-12T14:30:00Z"),
-    method: "Wave",
-  },
-  {
-    number: "+225 07 21 09 87 65",
-    fees: "0",
-    type: "credit",
-    ref: "TX1008",
-    date: new Date("2025-11-12T16:45:00Z"),
-    method: "MTN MoMo",
-  },
-  {
-    number: "+225 07 43 21 09 87",
-    fees: "75",
-    type: "debit",
-    ref: "TX1009",
-    date: new Date("2025-11-13T10:00:00Z"),
-    method: "Orange Money",
-  },
-  {
-    number: "+225 07 87 65 43 21",
-    fees: "0",
-    type: "credit",
-    ref: "TX1010",
-    date: new Date("2025-11-13T11:10:00Z"),
-    method: "Wave",
-  },
-  {
-    number: "+225 07 13 57 92 46",
-    fees: "50",
-    type: "debit",
-    ref: "TX1011",
-    date: new Date("2025-11-14T15:20:00Z"),
-    method: "MTN MoMo",
-  },
-  {
-    number: "+225 07 98 76 54 32",
-    fees: "0",
-    type: "credit",
-    ref: "TX1012",
-    date: new Date("2025-11-14T17:55:00Z"),
-    method: "Orange Money",
-  },
-  {
-    number: "+225 07 54 32 10 98",
-    fees: "120",
-    type: "debit",
-    ref: "TX1013",
-    date: new Date("2025-11-15T09:30:00Z"),
-    method: "Wave",
-  },
-  {
-    number: "+225 07 65 43 21 01",
-    fees: "0",
-    type: "credit",
-    ref: "TX1014",
-    date: new Date("2025-11-15T10:40:00Z"),
-    method: "MTN MoMo",
-  },
-].sort((a, b) => {
-  if (a.date < b.date) {
-    return -1;
-  } else if (a.date > b.date) {
-    return 1;
-  } else {
-    return 0;
-  }
-});
-
-export default function Transactions() {
+export default function TransactionHistory() {
   const image = require("@/assets/images/Container.png");
+  const {
+    history,
+    loadingHistory,
+    historyError,
+    hasNextPage,
+    fetchHistory,
+  } = useTransactionStore();
 
-  const [filtered_transactions, setTransactions] = useState(transactions);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Fetch initial data and refresh on focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchHistory(true); // Fetch fresh data on screen focus
+    }, [])
+  );
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchHistory(true).finally(() => setRefreshing(false));
+  }, []);
+
+  const handleLoadMore = () => {
+    if (!loadingHistory && hasNextPage) {
+      fetchHistory();
+    }
+  };
+
+  const filteredHistory = history.filter((transaction) => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return (
+      transaction.recipient_name.toLowerCase().includes(lowerCaseSearchTerm) ||
+      transaction.recipient_phone.includes(lowerCaseSearchTerm) ||
+      transaction.status_display.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  });
+
+  if (historyError) {
+    return (
+      <SafeAreaView className="flex-1 bg-gray-50 items-center justify-center p-4">
+        <XCircle size={50} color="red" />
+        <Text className="mt-4 text-lg text-red-600 text-center">
+          Error loading transactions: {historyError}
+        </Text>
+        <TouchableOpacity onPress={onRefresh} className="mt-4 px-4 py-2 bg-blue-500 rounded-lg">
+          <Text className="text-white">Retry</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <View className="flex-1 bg-gray-50">
-      <View className="fixed left-0 top-0 mx-4 mt-4">
+      <View className="mx-4 mt-4 mb-4">
         <Text className="font-bold text-2xl">Historique</Text>
-        <View className="mt-2 mb-5 bg-gray-100 flex-row  gap-2 items-center px-2 rounded-xl">
+        <View className="mt-2 mb-5 bg-gray-100 flex-row gap-2 items-center px-2 rounded-xl">
           <Search size={17} color={"gray"} />
           <TextInput
-            onChangeText={(e) => {
-              const copy = [...filtered_transactions];
-              if (e != "") {
-                // const filtered;
-                console.log(e)
-                setTransactions(copy.filter((el) => el.method.toLowerCase().includes(e.toLowerCase())));
-              } else {
-                setTransactions(transactions);
-              }
-
-              console.log("change");
-            }}
+            onChangeText={setSearchTerm}
+            value={searchTerm}
             className="border-none w-full outline-none px-4 py-4 text-black"
             placeholder="Rechercher une transaction"
-            // value={search}
             placeholderTextColor={"gray"}
-            // onChangeText={setSearch}
           />
         </View>
       </View>
-      <ScrollView className="">
-        {/* <Header /> */}
 
-        <View className="px-4 flex-1 mb-2">
-          {filtered_transactions.length > 0 ? (
-            <View className="gap-2 flex-1">
-              {filtered_transactions.map((transaction) => (
-                <Transaction key={transaction.ref} transaction={transaction} />
-              ))}
-            </View>
-          ) : (
+      <FlatList
+      style={{ flex: 1 }}
+        data={filteredHistory}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <TransactionItem transaction={item} />}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListEmptyComponent={
+          !loadingHistory && filteredHistory.length === 0 ? (
             <View className="items-center justify-center mt-12">
               <Image source={image} />
-
               <Text className="font-bold text-2xl">Aucun résultat trouvé</Text>
-
-              <Text className="text-gray-500  text-center mt-4 px-12 text-base">
+              <Text className="text-gray-500 text-center mt-4 px-12 text-base">
                 Désolé, il n&apos;y a aucun résultat pour cette recherche,
                 veuillez essayer une autre chose.
               </Text>
             </View>
-          )}
-        </View>
-      </ScrollView>
+          ) : null
+        }
+        ListFooterComponent={
+          loadingHistory && hasNextPage ? (
+            <ActivityIndicator className="my-4" size="large" color="#0000ff" />
+          ) : null
+        }
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16, paddingBottom: 20 }}
+      />
     </View>
   );
 }
 
-const Transaction = ({ transaction }: { transaction: ITransaction }) => {
+const TransactionItem = ({ transaction }: { transaction: TransferHistoryItem }) => {
+  const isCredit = transaction.amount.startsWith('-'); // Assuming negative amounts for credit/debit
+  const isCompleted = transaction.status === 'completed';
+  const isFailed = transaction.status === 'failed';
+  const isPending = transaction.status === 'pending' || transaction.status === 'processing';
+
+  const statusIcon = isCompleted ? (
+    <CheckCircle2 size={30} color="green" />
+  ) : isFailed ? (
+    <XCircle size={30} color="red" />
+  ) : (
+    <Clock size={30} color="orange" />
+  );
+
+  const statusColor = isCompleted ? 'text-green-600' : isFailed ? 'text-red-600' : 'text-orange-600';
+
   return (
-    <View className="bg-white px-4 py-2 gap-2 rounded-lg flex-1">
+    <View className="bg-white px-4 py-2 gap-2 rounded-lg flex-1 mb-2">
       <View className="gap-2 flex-row items-center">
-        <View className="w-12 rounded-full items-center justify-center h-12 bg-orange-100 p-4">
-          <CircleCheckBig size={30} color={"#F97316"} />
+        <View
+          className="w-12 h-12 rounded-full items-center justify-center p-4"
+          style={{
+            backgroundColor: isCompleted
+              ? "#D9F99D"
+              : isFailed
+              ? "#FECACA"
+              : "#FED7AA",
+          }}
+        >
+          {statusIcon}
         </View>
         <View className="flex-1 relative">
-          <View className=" py-1 flex-row items-center justify-between">
-            <Text className="font-bold text-xl ">{transaction.number}</Text>
+          <View className="py-1 flex-row items-center justify-between">
+            <Text className="font-bold text-xl ">{transaction.recipient_name}</Text>
             <Text className="font-bold text-xl ">
-              {" "}
-              {transaction.type === "credit" ? "+" : "-"} 5,000 XOF
+              {isCredit ? "" : "+"}
+              {transaction.amount} {transaction.currency}
             </Text>
           </View>
           <View className="py-1 flex-row items-center justify-between">
-            <Text className="text-muted-foreground ">{transaction.method}</Text>
+            <Text className="text-muted-foreground ">{transaction.status_display}</Text>
             <Text className="text-muted-foreground ">
-              {transaction.date.toUTCString()}
+              {/* {moment(transaction.created_at).format('MMM Do, YYYY HH:mm')} */}
             </Text>
           </View>
         </View>
       </View>
       <View className="border-t border-border py-2 flex-row items-center justify-between">
         <Text className="text-muted-foreground ">
-          Frais: {transaction.fees} XOF
+          Phone: {transaction.recipient_phone}
         </Text>
-        <Text className="text-muted-foreground ">Réf: TX{transaction.ref}</Text>
+        <Text className="text-muted-foreground ">Ref: {transaction.id.substring(0, 8)}...</Text>
       </View>
     </View>
   );

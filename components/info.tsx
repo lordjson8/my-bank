@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Platform,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Input from "@/components/auth/input";
 import DateInput from "@/components/auth/date-picker";
 import { useForm, Controller } from "react-hook-form";
@@ -15,6 +15,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PersonalInfoSchema, PersonalInfoFormData } from "@/utils/zod-schemas";
 import { ChevronLeft } from "lucide-react-native";
 import { router } from "expo-router";
+import { createOrUpdateKYCProfile } from "@/services/user.service";
+import { AxiosError } from "axios";
+import { date } from "zod/v3";
+import { useAuthStore } from "@/store/authStore";
 
 export function Back({
   progress,
@@ -34,6 +38,7 @@ export function Back({
         className={`flex flex-row justify-between items-center text-gray-300`}
       >
         <TouchableOpacity
+          className="rounded-full bg-border"
           onPress={() => {
             router.back();
           }}
@@ -105,10 +110,12 @@ const GenderSelector = ({
 };
 
 export default function Info() {
+  // const [isSubmitting,setisSubmitting] = useState<boolean>(false)
+  const {updateUser} = useAuthStore()
   const {
     control,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<PersonalInfoFormData>({
     resolver: zodResolver(PersonalInfoSchema),
     defaultValues: {
@@ -119,15 +126,32 @@ export default function Info() {
       city: "",
       postal_code: "",
       state_province: "",
-      date: undefined,
+      date_of_birth: undefined,
       gender: undefined,
     },
   });
 
-  const onSubmit = (data: PersonalInfoFormData) => {
+  const onSubmit = async (data: PersonalInfoFormData) => {
     console.log(data);
-    // You can now submit this data to your backend
-    router.replace("/(kyc)/upload-kyc-docs");
+    try {
+      await createOrUpdateKYCProfile({
+        ...data,
+        date_of_birth: data.date_of_birth
+          ? data.date_of_birth.toISOString().split("T")[0]
+          : undefined,
+      });
+      await updateUser()
+      router.replace("/(kyc)/upload-kyc-docs");
+
+    } catch (error: AxiosError | any) {
+      console.log(
+        "Error updating KYC profile:",
+        error instanceof AxiosError
+          ? JSON.stringify(error.response?.data)
+          : error
+      );
+      return;
+    }
   };
 
   return (
@@ -171,14 +195,14 @@ export default function Info() {
 
           <Controller
             control={control}
-            name="date"
+            name="date_of_birth"
             render={({ field: { onChange, value } }) => (
               <DateInput
                 label="Date de naissance"
                 placeholder="mm/dd/yyyy"
                 date={value}
                 setDate={onChange}
-                error={errors.date?.message}
+                error={errors.date_of_birth?.message}
                 secure={false}
                 keyboardType="default"
               />
@@ -269,10 +293,10 @@ export default function Info() {
 
           <TouchableOpacity
             onPress={handleSubmit(onSubmit)}
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="bg-primary rounded-xl py-4 flex-row justify-center items-center mt-6"
           >
-            {isLoading ? (
+            {isSubmitting ? (
               <ActivityIndicator color="#fff" />
             ) : (
               <Text className="text-white text-xl font-bold">Continuer</Text>

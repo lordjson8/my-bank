@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ActivityIndicator,
+  Platform,
 } from "react-native";
 import { Wallet, Smartphone, CreditCard } from "lucide-react-native";
 import { AmountInput } from "@/components/amount-input";
@@ -18,27 +20,38 @@ import SenderPaymentModal from "@/components/sender-payment-modal";
 import { Destination, PaymentMethod } from "@/types/routes";
 import { useAuthStore } from "@/store/authStore";
 import { countries } from "@/constants";
+import { useFocusEffect, useRouter } from "expo-router";
+import * as Device from "expo-device";
+import { useTransactionStore } from "@/store/transactionStore";
+import Toast from "react-native-toast-message";
 
 export default function Transfer() {
+  const router = useRouter();
   const [amount, setAmount] = useState<string>("");
   const [fee, setFee] = useState<number>(0);
   const [selectedMethod, setSelectedMethod] = useState<string>("mobile");
-  const [phoneModalVisible, setPhoneModalVisible] = useState(false);
   const [receiverModalVisible, setReceiverModalVisible] = useState(false);
-  const [senderPaymentModalVisible, setSenderPaymentModalVisible] = useState(false);
-  const { user } = useAuthStore();
-  const [selectedCountry, setSelectedCountry] = useState<typeof countries[0]>();
+  const [senderPaymentModalVisible, setSenderPaymentModalVisible] =
+    useState(false);
+  const { user, updateUser } = useAuthStore();
+  const [selectedCountry, setSelectedCountry] =
+    useState<(typeof countries)[0]>();
+
+  const [recipientName, setRecipientName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const {
+    creatingTransfer,
+    createTransferError,
+    createTransfer,
+    resetCreateTransferError,
+  } = useTransactionStore();
 
   const {
     fetchFundingMethods,
     fetchDestinations,
     fundingMethods,
-    fundingCountry,
     fundingLoading,
-    destinations,
-    destinationsLoading,
-    sourceCountry,
-    error,
   } = useRoutesStore();
 
   const [selectedDestination, setSelectedDestination] =
@@ -47,15 +60,26 @@ export default function Transfer() {
     useState<PaymentMethod | null>(null);
   const [selectedFundingMethod, setSelectedFundingMethod] =
     useState<PaymentMethod | null>(null);
-  const [senderPhoneNumber, setSenderPhoneNumber] = useState(user?.national_number || "");
+  const [senderPhoneNumber, setSenderPhoneNumber] = useState(
+    user?.national_number || ""
+  );
   const [payoutPhoneNumber, setPayoutPhoneNumber] = useState("");
 
+  useFocusEffect(
+    useCallback(() => {
+      updateUser();
+    }, [])
+  );
   // Calculate fees based on selected destination and amount
   useEffect(() => {
-    if (selectedDestination && Number.parseInt(amount !==  ""? amount : "0") > 0) {
+    if (
+      selectedDestination &&
+      Number.parseInt(amount !== "" ? amount : "0") > 0
+    ) {
       const percentage = parseFloat(selectedDestination.fees.percentage) / 100;
       const fixed = parseFloat(selectedDestination.fees.fixed);
-      const calculatedFee = Number.parseInt(amount !==  ""? amount : "0") * percentage + fixed;
+      const calculatedFee =
+        Number.parseInt(amount !== "" ? amount : "0") * percentage + fixed;
       setFee(calculatedFee);
     } else {
       setFee(0);
@@ -64,12 +88,9 @@ export default function Transfer() {
 
   useEffect(() => {
     if (user?.country) {
-    
-    setSelectedCountry(countries.find(c => c.iso === user.country)!);      
+      setSelectedCountry(countries.find((c) => c.iso === user.country)!);
     }
   }, [user?.country]);
-
-  console.log("Selected Country:", selectedCountry);
 
   // Fetch funding methods for the selected country
   useEffect(() => {
@@ -97,6 +118,19 @@ export default function Transfer() {
     }
   }, [fundingMethods]);
 
+  // Handle transfer creation errors
+  useEffect(() => {
+    console.log("createTransferError", createTransferError);
+    if (createTransferError) {
+      Toast.show({
+        type: "error",
+        text1: "Transfer Error",
+        text2: createTransferError || "An error occurred",
+      });
+      resetCreateTransferError(); // Clear the error after showing it
+    }
+  }, [createTransferError]);
+
   const handleSelectPaymentMethod = (
     destination: Destination,
     method: PaymentMethod
@@ -104,6 +138,7 @@ export default function Transfer() {
     setSelectedDestination(destination);
     setSelectedPayoutMethod(method);
     setPayoutPhoneNumber("");
+    setRecipientName(""); // Clear recipient name on new selection
   };
 
   const handleSelectFundingMethod = (method: PaymentMethod) => {
@@ -196,7 +231,7 @@ export default function Transfer() {
     );
   };
 
-  const totalAmount = Number.parseInt(amount !==  ""? amount : "0") + fee;
+  const totalAmount = Number.parseInt(amount !== "" ? amount : "0") + fee;
 
   // Validate transfer limits
   const validateAmount = () => {
@@ -205,7 +240,10 @@ export default function Transfer() {
     const min = parseFloat(selectedDestination.limits.min);
     const max = parseFloat(selectedDestination.limits.max);
 
-    return Number.parseInt(amount !==  ""? amount : "0") >= min && Number.parseInt(amount !==  ""? amount : "0") <= max;
+    return (
+      Number.parseInt(amount !== "" ? amount : "0") >= min &&
+      Number.parseInt(amount !== "" ? amount : "0") <= max
+    );
   };
 
   const isAmountValid = validateAmount();
@@ -214,8 +252,55 @@ export default function Transfer() {
     selectedPayoutMethod &&
     selectedFundingMethod &&
     senderPhoneNumber &&
-    Number.parseInt(amount !==  ""? amount : "0") > 0 &&
+    payoutPhoneNumber && // Recipient phone number is now mandatory
+    recipientName && // Recipient name is now mandatory
+    Number.parseInt(amount !== "" ? amount : "0") > 0 &&
     isAmountValid;
+
+  const handleSendMoney = async () => {
+    if (!isFormValid || creatingTransfer) {
+      return;
+    }
+
+    let deviceId = "unknown";
+    if (Device.isDevice) {
+      deviceId = Device.osBuildId || "unknown"; // Use a more specific ID if available
+    }
+
+    const payload = {
+      recipient_name: recipientName,
+      recipient_phone: payoutPhoneNumber,
+      amount: parseFloat(amount), // Send as float/number
+      currency: "XAF", // Default to XAF if not found
+      // currency: selectedDestination?.currency || "XAF", // Default to XAF if not found
+      description: description,
+      device_id: deviceId,
+      // recipient_email is optional and not collected in UI for now
+    };
+    
+    try {
+    const result = await createTransfer(payload);
+    if (result) {
+      // Transfer initiated successfully, navigate to result screen
+      router.push({
+        pathname: "/transfer-result",
+        params: { transferId: result.id, status: result.status },
+      });
+      // Reset form fields after successful transfer
+      setAmount("");
+      setRecipientName("");
+      setDescription("");
+      setPayoutPhoneNumber("");
+      setSelectedDestination(null);
+      setSelectedPayoutMethod(null);
+    }
+      
+    } catch (error) {
+      
+    }
+
+    
+  };
 
   return (
     <View className="flex-1">
@@ -347,6 +432,24 @@ export default function Transfer() {
             )}
           </TouchableOpacity>
 
+          {/* Recipient Name Input */}
+          {selectedDestination && selectedPayoutMethod && (
+            <View className="mt-4">
+              <Text className="text-gray-600 font-medium mb-2">
+                Recipient&apos;s Full Name
+              </Text>
+              <View className="border border-border rounded-lg bg-white">
+                <TextInput
+                  placeholder="Enter recipient's full name"
+                  placeholderTextColor="gray"
+                  value={recipientName}
+                  onChangeText={setRecipientName}
+                  className="w-full text-black px-4 py-4 text-lg"
+                />
+              </View>
+            </View>
+          )}
+
           {/* Transfer Limits Warning */}
           {selectedDestination && !isAmountValid && (
             <View className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -385,12 +488,33 @@ export default function Transfer() {
               </View>
             )}
 
+          {/* Description Input */}
+          {selectedDestination && selectedPayoutMethod && (
+            <View className="mt-4">
+              <Text className="text-gray-600 font-medium mb-2">
+                Description (Optional)
+              </Text>
+              <View className="border border-border rounded-lg bg-white">
+                <TextInput
+                  placeholder="Reason for transfer (optional)"
+                  placeholderTextColor="gray"
+                  value={description}
+                  onChangeText={setDescription}
+                  className="w-full text-black px-4 py-4 text-lg"
+                  multiline
+                  numberOfLines={2}
+                />
+              </View>
+            </View>
+          )}
+
           {/* Summary Section */}
           <View className="px-2 py-2 rounded-lg bg-[#fae4d6] border-[#fbbf97] border-2 mt-4">
             <View className="flex-row justify-between items-center p-2">
               <Text className="text-[#374151]">Transfer amount</Text>
               <Text className="text-2xl font-bold">
-                {Number.parseInt(amount !==  ""? amount : "0").toFixed(2)} <Text>FCFA</Text>
+                {Number.parseInt(amount !== "" ? amount : "0").toFixed(2)}{" "}
+                <Text>FCFA</Text>
               </Text>
             </View>
 
@@ -443,32 +567,22 @@ export default function Transfer() {
           <View className="mt-4 mb-8">
             <TouchableOpacity
               className={`rounded-xl flex flex-row items-center py-4 justify-center gap-2 ${
-                isFormValid ? "bg-primary" : "bg-gray-300"
+                isFormValid && !creatingTransfer ? "bg-primary" : "bg-gray-300"
               }`}
-              disabled={!isFormValid}
-              onPress={() => {
-                console.log("Sending:", {
-                  amount,
-                  fee,
-                  totalAmount,
-                  sourceCountry: selectedCountry,
-                  sourcePhoneNumber: senderPhoneNumber,
-                  fundingMethod: selectedFundingMethod,
-                  destination: selectedDestination,
-                  payoutMethod: selectedPayoutMethod,
-                  payoutPhoneNumber,
-                  fees: selectedDestination?.fees,
-                  limits: selectedDestination?.limits,
-                });
-              }}
+              disabled={!isFormValid || creatingTransfer}
+              onPress={handleSendMoney}
             >
-              <Text
-                className={`text-xl font-bold ${
-                  isFormValid ? "text-white" : "text-gray-500"
-                }`}
-              >
-                Send Money
-              </Text>
+              {creatingTransfer ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Text
+                  className={`text-xl font-bold ${
+                    isFormValid ? "text-white" : "text-gray-500"
+                  }`}
+                >
+                  Send Money
+                </Text>
+              )}
             </TouchableOpacity>
 
             {!selectedFundingMethod && (
@@ -486,7 +600,18 @@ export default function Transfer() {
                 Please select a destination and payment method
               </Text>
             )}
-            {Number.parseInt(amount !==  ""? amount : "0") <= 0 && (
+            {!recipientName && (
+              <Text className="text-red-500 text-center mt-2">
+                Please enter recipient&apos;s full name
+              </Text>
+            )}
+            {selectedPayoutMethod?.method_type === "mobile_money" &&
+              !payoutPhoneNumber && (
+                <Text className="text-red-500 text-center mt-2">
+                  Please enter recipient&apos;s phone number
+                </Text>
+              )}
+            {Number.parseInt(amount !== "" ? amount : "0") <= 0 && (
               <Text className="text-red-500 text-center mt-2">
                 Please enter an amount greater than 0
               </Text>

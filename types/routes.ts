@@ -83,7 +83,7 @@ export interface Destination {
   country_name: string;
   country_flag: string;     // emoji flag
   corridor_id: number;
-
+  
   fees: CorridorFees;
   limits: CorridorLimits;
 

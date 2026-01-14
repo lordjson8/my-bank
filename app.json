@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "bank",
+    "scheme": "chic",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -19,7 +19,7 @@
         },
         "imageScale": "contain"
       },
-      "bundleIdentifier": "com.lordjson.Bank"
+      "bundleIdentifier": "com.chic.transfer"
     },
     "android": {
       "splash": {
@@ -39,7 +39,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.lordjson.Bank",
+      "package": "com.chic.transfer",
       "permissions": [
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT",
@@ -90,10 +90,11 @@
         "expo-camera",
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
-          "recordAudioAndroid": true
+          // "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          // "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true,

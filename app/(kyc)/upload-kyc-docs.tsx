@@ -9,21 +9,15 @@ import {
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Progress from "@/components/auth/progress";
-import Input from "@/components/auth/input";
-import FileInput from "@/components/auth/file-input";
+import FileInput, { PhotoInput } from "@/components/auth/file-input";
 import { Camera, Upload } from "lucide-react-native";
-import DateInput from "@/components/auth/date-picker";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  PersonalInfoSchema,
-  PersonalInfoFormData,
-  KYCDocsFormData,
-  KYCDocsSchema,
-} from "@/utils/zod-schemas";
+import { KYCDocsFormData, KYCDocsSchema } from "@/utils/zod-schemas";
 import { router } from "expo-router";
 import { Back } from "@/components/info";
+import { uploadKYCDocument } from "@/services/user.service";
+import { useAuthStore } from "@/store/authStore";
 
 const GenderSelector = ({
   control,
@@ -88,7 +82,7 @@ export function Info() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<KYCDocsFormData>({
     resolver: zodResolver(KYCDocsSchema),
     defaultValues: {
@@ -97,8 +91,38 @@ export function Info() {
     },
   });
 
-  const onSubmit = (data: KYCDocsFormData) => {
-    console.log(data);
+  const onSubmit = async (data: KYCDocsFormData) => {
+    // console.log(data.id.mimeType);
+    const selfie = new FormData();
+    const id = new FormData();
+    // "document_type": "national_id",
+            // "document_side": "front",  # Required
+            // "document_file": <file>,
+    id.append("document_file", {
+      uri: data.id?.uri,
+      name: data.id?.fileName,
+      type: data.id?.mimeType ?? "image/jpeg",
+    } as any);
+    id.append("document_type", "national_id");
+    id.append("document_side", "front");
+
+    selfie.append("document_file", {
+      uri: data.selfie?.uri,
+      name: data.selfie?.fileName,
+      type: data.selfie?.mimeType ?? "image/jpeg",
+    } as any);
+    selfie.append("document_type", "selfie");
+
+  //  console.log("Form Data:", formData);
+    try {
+      await uploadKYCDocument(id);
+      await uploadKYCDocument(selfie);
+      await useAuthStore.getState().updateUser();
+
+      router.replace("/(tabs)/");
+    } catch (error) {
+      console.error("Error uploading KYC documents:", error);
+    }
     // You can now submit this data to your backend
     // router.replace("/(kyc)/upload-kyc-docs");
   };
@@ -122,7 +146,21 @@ export function Info() {
               Ces informations sont nécessaires pour sécuriser votre compte
             </Text>
           </View>
-
+          <Controller
+            control={control}
+            name="selfie"
+            render={({ field: { onChange, value } }) => (
+              <FileInput
+                label="Selfie"
+                inputLabel="Photo de vous-même"
+                description="Cliquez pour téléverser"
+                Icon={Camera}
+                image={value}
+                setImage={onChange}
+                error={errors.selfie?.message}
+              />
+            )}
+          />
           <Controller
             control={control}
             name="id"
@@ -139,28 +177,12 @@ export function Info() {
             )}
           />
 
-          <Controller
-            control={control}
-            name="selfie"
-            render={({ field: { onChange, value } }) => (
-              <FileInput
-                label="Selfie"
-                inputLabel="Photo de vous-même"
-                description="Cliquez pour téléverser"
-                Icon={Camera}
-                image={value}
-                setImage={onChange}
-                error={errors.selfie?.message}
-              />
-            )}
-          />
-
           <TouchableOpacity
             onPress={handleSubmit(onSubmit)}
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="bg-primary rounded-xl py-4 flex-row justify-center items-center mt-6"
           >
-            {isLoading ? (
+            {isSubmitting ? (
               <ActivityIndicator color="#fff" />
             ) : (
               <Text className="text-white text-xl font-bold">Continuer</Text>

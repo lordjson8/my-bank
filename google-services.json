@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024494802607",
+    "project_id": "device-streaming-93394c84",
+    "storage_bucket": "device-streaming-93394c84.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024494802607:android:fa3a622377d9da6857e65a",
+        "android_client_info": {
+          "package_name": "com.chic.transfer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ1UnICDWTYYCjWSxT8BxkjzpfSuqS0qY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

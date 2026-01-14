@@ -12,7 +12,7 @@ const Warning = ({
 }: {
   message: string;
   link: any;
-  linkLabel: string;
+  linkLabel: string | null;
 }) => {
   return (
     <View className="flex-row items-between gap-3 px-3">
@@ -21,14 +21,15 @@ const Warning = ({
           <CircleAlert size={20} color={"#CA8A04"} />
           <Text className="text-[#854D0E] font-bold">{message}</Text>
         </View>
-
-        <Link href={link} asChild>
-          <TouchableOpacity>
-            <Text className="text-[#854D0E] underline font-bold">
-              {linkLabel}
-            </Text>
-          </TouchableOpacity>
-        </Link>
+        {link && (
+          <Link href={link} asChild>
+            <TouchableOpacity>
+              <Text className="text-[#854D0E] underline font-bold">
+                {linkLabel}
+              </Text>
+            </TouchableOpacity>
+          </Link>
+        )}
       </View>
     </View>
   );
@@ -37,14 +38,40 @@ const Warning = ({
 export const WarningBanner = () => {
   const { user } = useAuthStore();
   return (
-    <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+    <>
       {!user?.has_kyc_profile ? (
-        <Warning
-          message="Votre profil KYC est incomplet."
-          link="/(kyc)/update-profile"
-          linkLabel="Mettre à jour"
-        />
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+          <Warning
+            message="Votre profil KYC est incomplet."
+            link="/(kyc)/update-profile"
+            linkLabel="Mettre à jour"
+          />
+        </View>
+      ) : user?.kyc_status === "under_review" ? (
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+          <Warning
+            message="Votre profil KYC est en attente de validation."
+            link={null}
+            linkLabel={null}
+          />
+        </View>
+      ) : user?.kyc_status === "rejected" ? (
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+          <Warning
+            message="Votre profil KYC a été rejeté. Veuillez le mettre à jour."
+            link="/(kyc)/update-profile"
+            linkLabel="Mettre à jour"
+          />
+        </View>
+      ) : user?.kyc_status === "not_submitted" ? (
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+          <Warning
+            message="Vos documents KYC n'ont pas été soumis."
+            link="/(kyc)/upload-kyc-docs"
+            linkLabel="Mettre à jour"
+          />
+        </View>
       ) : null}
-    </View>
+    </>
   );
 };
