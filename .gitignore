@@ -41,4 +41,5 @@ app-example
 # generated native folders
 /ios
 /android
-device-streaming-93394c84-firebase-adminsdk-e7vne-52d40c7aa8.json
+
+device-streaming-*.json
