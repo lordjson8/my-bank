@@ -4,7 +4,9 @@ import { router } from 'expo-router';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store'
 
-const API_BASE_URL = 'http://192.168.100.30:8000/api';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+
+console.log("API_BASE_URL:", API_BASE_URL);
 
 // Create axios instance
 const api = axios.create({

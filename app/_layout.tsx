@@ -14,6 +14,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useAuthStore } from "@/store/authStore";
 import Toast from "react-native-toast-message";
+import { NotificationProvider } from "@/notifications/NotificationContext";
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -49,6 +50,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
+      <NotificationProvider>
       <Stack screenOptions={{ headerShown: false }}>
         {/* 1️⃣ ONBOARDING */}
         <Stack.Protected guard={!hasCompletedOnboarding}>
@@ -70,6 +72,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
+      </NotificationProvider>
       {/* </ThemeProvider> */}
 
       <StatusBar style="dark" />

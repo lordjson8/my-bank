@@ -1,5 +1,7 @@
 import Header from "@/components/dashboard/header";
 import { HapticTab } from "@/components/haptic-tab";
+import { registerForPushNotificationsAsync } from "@/notifications/registerForPushNotificationsAsync";
+import * as Notifications from "expo-notifications";
 import { useAuthStore } from "@/store/authStore";
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -12,9 +14,11 @@ import {
   Send,
   Settings,
 } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { KeyboardAvoidingView, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNotification } from "@/notifications/NotificationContext";
 
 const Icon = ({
   name,
@@ -45,12 +49,7 @@ const Icon = ({
 };
 
 export default function TabLayout() {
-  // const {user} = useAuthStore();
-  // console.log("User in TabLayout:", user);
-  // const { isLoggedIn } = useAuth();
-  // if (!isLoggedIn) {
-  //   return <Redirect href={'/'}/>;
-  // }
+  const {expoPushToken, notification, error} = useNotification()
   return (
     <>
       <SafeAreaView edges={["top"]} className="bg-primary" />
@@ -125,7 +124,6 @@ export default function TabLayout() {
             <Tabs.Screen
               name="update-profile"
               options={{
-               
                 href: null,
                 tabBarIcon: ({ color, focused }) => (
                   <Icon

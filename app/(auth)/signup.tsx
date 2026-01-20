@@ -39,6 +39,7 @@ export default function EmailSignup() {
     },
   });
 
+  console.log("env", process.env);
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [modalVisible, setModalVisible] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -108,6 +109,7 @@ export default function EmailSignup() {
       // },
       // });
       // }, 1000);
+      console.log("Signup error:", err);
       const backendError =
         err.response?.data?.error?.details ||
         "Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
