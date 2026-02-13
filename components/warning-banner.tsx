@@ -1,7 +1,7 @@
-import { View, Text, Touchable, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { CircleAlert } from "lucide-react-native";
 import { useAuthStore } from "@/store/authStore";
-import { ExternalPathString, Link, RelativePathString } from "expo-router";
+import { Link } from "expo-router";
 
 // Completez votre profil Mettre a jour
 
@@ -11,7 +11,7 @@ const Warning = ({
   linkLabel,
 }: {
   message: string;
-  link: any;
+  link: string | null;
   linkLabel: string | null;
 }) => {
   return (

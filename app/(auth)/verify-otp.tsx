@@ -16,7 +16,6 @@ import SignupHeader from "@/components/auth/signup-header";
 import { Link, useLocalSearchParams, router } from "expo-router";
 import { useState, useRef, useEffect } from "react";
 import api from "../../services/api";
-import { set } from "react-hook-form";
 
 const CODE_LENGTH = 6;
 
@@ -31,12 +30,10 @@ export default function VerifyOtp() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [apiErrors, setApiEroors] = useState<null | any>(null);
+  const [apiErrors, setApiErrors] = useState<Record<string, string[]> | null>(null);
 
   const inputRef = useRef<TextInput | null>(null);
   const cursorOpacity = useRef(new Animated.Value(1)).current;
-
-  console.log("Params:", { userId, phone, type });
 
   useEffect(() => {
     const animation = Animated.loop(
@@ -65,7 +62,7 @@ export default function VerifyOtp() {
 
   const handleOtpChange = (text: string) => {
     setErrorMsg(null);
-    setOtp(text.replace(/\D/g, "")); // Only digits
+    setOtp(text.replace(/\D/g, ""));
   };
 
   const handleSubmit = async () => {
@@ -84,7 +81,7 @@ export default function VerifyOtp() {
     setLoading(true);
     setErrorMsg(null);
     setSuccessMsg(null);
-    setApiEroors(null);
+    setApiErrors(null);
     try {
       const endpoint =
         type === "email_verification"
@@ -106,8 +103,6 @@ export default function VerifyOtp() {
         otp_type,
       });
 
-      // console.log(userId, otp, endpoint, res);
-
       if (!res.data?.success) {
         setErrorMsg(
           typeof res.data?.error === "string"
@@ -126,8 +121,10 @@ export default function VerifyOtp() {
       const backendError =
         err.response?.data?.error?.details ||
         "Une erreur est survenue. Veuillez réessayer.";
-      setErrorMsg(" Une erreur est survenue. Veuillez réessayer.");
-      setApiEroors(backendError);
+      setErrorMsg("Une erreur est survenue. Veuillez réessayer.");
+      if (typeof backendError === "object") {
+        setApiErrors(backendError);
+      }
     } finally {
       setLoading(false);
     }
@@ -141,7 +138,7 @@ export default function VerifyOtp() {
     setLoading(true);
     setErrorMsg(null);
     setSuccessMsg(null);
-    setApiEroors(null);
+    setApiErrors(null);
 
     try {
       const otp_type =
@@ -174,8 +171,9 @@ export default function VerifyOtp() {
           ? backendError
           : JSON.stringify(backendError)
       );
-      setApiEroors(backendError);
-      console.log(backendError);
+      if (typeof backendError === "object") {
+        setApiErrors(backendError);
+      }
     } finally {
       setLoading(false);
     }
@@ -184,9 +182,8 @@ export default function VerifyOtp() {
   const displayPhone = phone ?? "+237 8085472417";
 
   return (
-   
-      <SafeAreaView className="flex-1 p-4 bg-white">
-        <KeyboardAvoidingView
+    <SafeAreaView className="flex-1 p-4 bg-white">
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
@@ -276,13 +273,21 @@ export default function VerifyOtp() {
                 width: 1,
                 height: 1,
                 opacity: 0,
-                top: -100, // Move it off-screen
+                top: -100,
               }}
               caretHidden
             />
-            
-          {apiErrors?.errors && <Text className="text-red-500 font-bold text-center">{apiErrors?.errors[0]}</Text>}
-          {apiErrors?.error && <Text className="text-red-500 font-bold text-center">{apiErrors?.error}</Text>}
+
+            {apiErrors?.errors && (
+              <Text className="text-red-500 font-bold text-center">
+                {apiErrors.errors[0]}
+              </Text>
+            )}
+            {apiErrors?.error && (
+              <Text className="text-red-500 font-bold text-center">
+                {apiErrors.error}
+              </Text>
+            )}
 
             <View className="flex-row justify-center gap-1">
               <Text className="text-base text-gray-600">
@@ -318,7 +323,7 @@ export default function VerifyOtp() {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

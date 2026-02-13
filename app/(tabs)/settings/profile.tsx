@@ -3,7 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/dashboard/header";
 import { Link } from "expo-router";
-import { WarningBanner } from "@/components/warning-barner";
+import { WarningBanner } from "@/components/warning-banner";
 import { CircleCheckBig, Clock, Search, XCircle } from "lucide-react-native";
 import { TextInput } from "react-native";
 import { useAuthStore } from "@/store/authStore";

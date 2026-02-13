@@ -1,4 +1,4 @@
-// my-bank/types/auth.types.ts
+export type KYCStatus = 'pending' | 'approved' | 'rejected' | 'under_review' | 'not_submitted';
 
 export interface RegisterData {
     email: string;
@@ -51,12 +51,12 @@ export interface User {
     country: string;
     email_verified: boolean;
     phone_verified: boolean;
-    kyc_status: string;
+    kyc_status: KYCStatus;
     kyc_level: string;
     has_kyc_profile: boolean;
     two_factor_enabled: boolean;
     is_verified: boolean;
-    transaction_limits: any;
+    transaction_limits: Record<string, unknown> | null;
     created_at: string;
 }
 

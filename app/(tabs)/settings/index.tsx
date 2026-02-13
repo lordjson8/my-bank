@@ -1,12 +1,11 @@
 import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import React from "react";
-import { general_features } from "@/constants";
+import { general_features, GeneralFeature } from "@/constants";
 import { ChevronDown, ChevronRight, LogOut } from "lucide-react-native";
-import { TextInput } from "react-native";
 import { Link, router } from "expo-router";
 import { store } from "@/store/authStore";
 
-export default function index() {
+export default function SettingsScreen() {
   return (
     <ScrollView
       contentContainerStyle={{
@@ -21,7 +20,7 @@ export default function index() {
   );
 }
 
-const Option = ({ el }: { el: any }) => {
+const Option = ({ el }: { el: GeneralFeature }) => {
   const [collapsed, setCollapsed] = React.useState<boolean>(false);
   if (el.type === "link") {
     return (

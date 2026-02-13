@@ -159,6 +159,32 @@ export const PasswordResetSchema = z
 export type PasswordResetType = z.infer<typeof PasswordResetSchema>;
 
 // ============================================
+// CHANGE PASSWORD SCHEMA
+// ============================================
+export const ChangePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string({ required_error: "Current password is required" })
+      .min(1, "Current password is required"),
+    newPassword: z
+      .string({ required_error: "New password is required" })
+      .min(8, "Password must be at least 8 characters")
+      .regex(
+        PASSWORD_REGEX,
+        "Password must contain uppercase, lowercase, number, and special character"
+      ),
+    confirmNewPassword: z.string({
+      required_error: "Password confirmation is required",
+    }),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords do not match",
+    path: ["confirmNewPassword"],
+  });
+
+export type ChangePasswordType = z.infer<typeof ChangePasswordSchema>;
+
+// ============================================
 // LEGACY SCHEMAS (For backward compatibility)
 // ============================================
 export const InfoFormSchema = z.object({

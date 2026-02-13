@@ -127,7 +127,7 @@ export const getKYCProfile = (): Promise<AxiosResponse<KYCProfile>> => {
  * @param data - The KYC profile data.
  * @returns The updated KYC profile.
  */
-export const createOrUpdateKYCProfile = (data: KYCProfileData | any): Promise<AxiosResponse<KYCProfile>> => {
+export const createOrUpdateKYCProfile = (data: Partial<KYCProfileData>): Promise<AxiosResponse<KYCProfile>> => {
     return api.post("/kyc/profile/", data);
 };
 

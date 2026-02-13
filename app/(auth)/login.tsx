@@ -45,12 +45,8 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      // Get device info
       const deviceInfo = deviceServices.getDeviceInfo();
 
-      // console.log("Device Info:", deviceInfo);
-
-      // Call login API
       const response = await api.post("/auth/login/", {
         email: data.email.trim(),
         password: data.password,
@@ -58,8 +54,6 @@ export default function Login() {
         device_name: deviceInfo.device_name,
         device_type: deviceInfo.device_type,
       });
-
-      console.log("Login Response:", response.data);
 
       // Check response success
       if (!response.data?.success) {
@@ -135,15 +129,8 @@ export default function Login() {
           refresh: tokens.refresh,
         });
         setSuccessMessage("Login successful! Redirecting...");
-
-        // setTimeout(() => {
-        //   // Navigate to main app (adjust route as needed)
-        //   router.replace("/(tabs)/transfer");
-        // }, 1000);
       }
     } catch (err: any) {
-      // console.error("Login error:", err);
-
       // Handle network errors
       if (err.code === "ECONNABORTED" || err.message === "Network Error") {
         setErrorMessage(
@@ -168,7 +155,6 @@ export default function Login() {
             .join("\n");
 
           setErrorMessage(errorMessages);
-          console.log("Backend field errors:", backendError);
         } else if (typeof backendError === "string") {
           setErrorMessage(backendError);
         } else {
@@ -227,11 +213,6 @@ export default function Login() {
               placeholder="Your email address"
               disable={isLoading}
             />
-            {errors.email && (
-              <Text className="text-red-500 text-sm mt-1 ml-1">
-                {errors.email.message}
-              </Text>
-            )}
 
             <PasswordInput
               name="password"
@@ -241,11 +222,6 @@ export default function Login() {
               placeholder="Your password"
               disable={isLoading}
             />
-            {errors.password && (
-              <Text className="text-red-500 text-sm mt-1 ml-1">
-                {errors.password.message}
-              </Text>
-            )}
 
             <View className="mt-4 mb-4 flex-row justify-end">
               <Link href={"/(auth)/forget-password"} asChild>

@@ -4,7 +4,6 @@ import {
   Platform,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -14,13 +13,11 @@ import PasswordInput from "@/components/auth/password-input";
 import { Checkbox } from "expo-checkbox";
 import { Link, router } from "expo-router";
 import TextBold from "@/components/auth/text-bold";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "@/components/auth/input";
-import PhoneModal from "@/components/auth/phone-modal";
 import { countries } from "@/constants";
 import CountrySelect from "@/components/shared/CountrySelect";
-import { set, useForm } from "react-hook-form";
-import z from "zod/v3";
+import { useForm } from "react-hook-form";
 import { SignupFormData, SignupSchema } from "@/utils/zod-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../services/api";
@@ -39,34 +36,29 @@ export default function EmailSignup() {
     },
   });
 
-  console.log("env", process.env);
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [modalVisible, setModalVisible] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [apiErrors, setApiEroors] = useState<null | any>(null);
+  const [apiErrors, setApiErrors] = useState<Record<string, string[]> | null>(null);
 
-  const OnSubmit = async (data: SignupFormData) => {
+  const onSubmit = async (data: SignupFormData) => {
     setErrorMessage(null);
     setSuccessMessage(null);
     setIsLoading(true);
-    setApiEroors(null);
+    setApiErrors(null);
 
     try {
-      // Build phone in E.164 format, e.g. +2250748672248
       const phone = `${selectedCountry.code}${data.phoneNumber}`;
 
       const payload = {
         email: data.email.trim(),
         phone,
         password: data.password,
-        // full_name: data.fullName ?? "",      // if you have this in your schema
-        country: selectedCountry.iso, // e.g. "CI"
+        country: selectedCountry.iso,
       };
 
-      console.log(payload);
       const res = await api.post("/auth/register/", payload);
 
       if (!res.data?.success) {
@@ -84,7 +76,6 @@ export default function EmailSignup() {
 
       setSuccessMessage("Compte créé avec succès ! Redirection...");
 
-      // Go to OTP verification, pass what you need
       setTimeout(() => {
         setSuccessMessage(null);
         router.push({
@@ -98,18 +89,6 @@ export default function EmailSignup() {
         });
       }, 1000);
     } catch (err: any) {
-      // Try to show backend validation errors
-      //  setTimeout(() => {
-      // router.push({
-      // pathname: "/(auth)/verify-otp",
-      // params: {
-      //   userId: String(userId),
-      //   email,
-      //   phone: phoneFromApi,
-      // },
-      // });
-      // }, 1000);
-      console.log("Signup error:", err);
       const backendError =
         err.response?.data?.error?.details ||
         "Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
@@ -118,21 +97,16 @@ export default function EmailSignup() {
           ? backendError
           : "Une erreur est survenue lors de l'inscription."
       );
-      setApiEroors(backendError);
-      console.log(apiErrors, backendError);
-      // setTimeout(() => {
-      //   setApiEroors(null)
-      // },3000)
+      if (typeof backendError === "object") {
+        setApiErrors(backendError);
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  console.log("Form data:", { selectedCountry });
-
   return (
     <SafeAreaView className="flex-1 p-4 bg-white">
-  
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -146,7 +120,7 @@ export default function EmailSignup() {
           }}
           className="flex-1 px-4 py-8"
         >
-          <View className="">
+          <View>
             <SignupHeader
               label="Get started with your account!"
               step={1}
@@ -173,9 +147,8 @@ export default function EmailSignup() {
               label="Email"
               placeholder="Votre address email"
             />
-            {/* {errors.email && <Text className="text-red-500 mt-1">{errors.email.message}</Text>} */}
             {apiErrors?.email && (
-              <Text className="text-red-500 mt-1">{apiErrors?.email[0]}</Text>
+              <Text className="text-red-500 mt-1">{apiErrors.email[0]}</Text>
             )}
             <CountrySelect
               selectedCountry={selectedCountry}
@@ -184,9 +157,8 @@ export default function EmailSignup() {
               control={control}
               name="phoneNumber"
             />
-            {/* {errors.phoneNumber && <Text className="text-red-500 mt-1">{errors.phoneNumber.message}</Text>} */}
             {apiErrors?.phone && (
-              <Text className="text-red-500 mt-1">{apiErrors?.phone[0]}</Text>
+              <Text className="text-red-500 mt-1">{apiErrors.phone[0]}</Text>
             )}
             <PasswordInput
               disable={isLoading}
@@ -196,10 +168,9 @@ export default function EmailSignup() {
               label="Mot de passe"
               placeholder="Votre mot de passe"
             />
-            {/* {errors.password && <Text className="text-red-500 mt-1">{errors.password.message}</Text>} */}
             {apiErrors?.password && (
               <Text className="text-red-500 mt-1">
-                {apiErrors?.password[0]}
+                {apiErrors.password[0]}
               </Text>
             )}
           </View>
@@ -223,7 +194,7 @@ export default function EmailSignup() {
             </View>
             <View className="mt-2">
               <TouchableOpacity
-                onPress={handleSubmit(OnSubmit)}
+                onPress={handleSubmit(onSubmit)}
                 disabled={!agreeTerms || isLoading}
                 className={`rounded-xl ${!agreeTerms || isLoading ? "bg-orange-200" : "bg-primary"} flex flex-row items-center py-4 justify-center gap-2`}
               >

@@ -6,7 +6,7 @@ interface AmountInputProps {
 }
 
 export const AmountInput = ({ amount, setAmount }: AmountInputProps) => (
-  <View className="flex-1">
+  <View className="flex-1 ">
     <Text className="font-bold">Montant</Text>
     <TextInput
       placeholder="0"

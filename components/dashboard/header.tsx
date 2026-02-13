@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { use } from "react";
-import { Bell, List, ListCollapse, Menu, User } from "lucide-react-native";
-import { WarningBanner } from "../warning-barner";
+import React from "react";
+import { Bell, User } from "lucide-react-native";
+import { WarningBanner } from "../warning-banner";
 import { useAuthStore } from "@/store/authStore";
 
 export default function Header() {
@@ -9,7 +9,6 @@ export default function Header() {
   return (
     <View className="bg-primary">
       <View className="flex-row justify-between items-center px-4 py-5 ">
-        {/* <Menu color={"#FFF"} className="text-primary" /> */}
         <Text className="font-bold text-lg text-white">Ma Banque</Text>
 
         <View className="flex-row gap-6">

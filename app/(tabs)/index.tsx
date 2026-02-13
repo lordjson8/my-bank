@@ -120,7 +120,6 @@ export default function Transfer() {
 
   // Handle transfer creation errors
   useEffect(() => {
-    console.log("createTransferError", createTransferError);
     if (createTransferError) {
       Toast.show({
         type: "error",
@@ -268,14 +267,16 @@ export default function Transfer() {
     }
 
     const payload = {
+      sender_phone: senderPhoneNumber,
+      sender_name: user?.full_name || "",
       recipient_name: recipientName,
       recipient_phone: payoutPhoneNumber,
-      amount: parseFloat(amount), // Send as float/number
-      currency: "XAF", // Default to XAF if not found
-      // currency: selectedDestination?.currency || "XAF", // Default to XAF if not found
+      amount: parseFloat(amount),
+      currency: "XAF",
       description: description,
+      funding_provider: selectedFundingMethod!.mobile_provider,
+      payout_provider: selectedPayoutMethod!.mobile_provider,
       device_id: deviceId,
-      // recipient_email is optional and not collected in UI for now
     };
     
     try {
@@ -295,11 +296,10 @@ export default function Transfer() {
       setSelectedPayoutMethod(null);
     }
       
-    } catch (error) {
-      
+    } catch (_error) {
+      // Error is already handled by the store via createTransferError
     }
 
-    
   };
 
   return (
@@ -518,7 +518,7 @@ export default function Transfer() {
               </Text>
             </View>
 
-            <View className="flex-row justify-between items-center p-2 border-t-2 border-border">
+            <View className="flex-row justify-between items-center p-2 border-t-2 border-primary">
               <Text className="text-[#374151]">Transfer fee</Text>
               <View className="items-end">
                 <Text className="text-primary text-lg font-bold">
@@ -533,7 +533,7 @@ export default function Transfer() {
               </View>
             </View>
 
-            <View className="flex-row justify-between items-center p-2 border-t-2 border-border">
+            <View className="flex-row justify-between items-center p-2 border-t-2 border-primary">
               <Text className="font-bold">Total to pay</Text>
               <Text className="text-2xl font-bold">
                 {totalAmount.toFixed(2)} <Text>FCFA</Text>
@@ -541,7 +541,7 @@ export default function Transfer() {
             </View>
 
             {selectedFundingMethod && (
-              <View className="flex-row justify-between items-center p-2 border-t-2 border-border">
+              <View className="flex-row justify-between items-center p-2 border-t-2 border-primary">
                 <Text className="text-gray-600">Funding method</Text>
                 <Text className="text-gray-800 font-medium">
                   {selectedFundingMethod.mobile_provider_display?.split(
@@ -552,7 +552,7 @@ export default function Transfer() {
             )}
 
             {selectedPayoutMethod && (
-              <View className="flex-row justify-between items-center p-2 border-t-2 border-border">
+              <View className="flex-row justify-between items-center p-2 border-t-2 border-primary">
                 <Text className="text-gray-600">Payout method</Text>
                 <Text className="text-gray-800 font-medium">
                   {selectedPayoutMethod.mobile_provider_display?.split(

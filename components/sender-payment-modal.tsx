@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import {
   Modal,
   View,
@@ -34,7 +34,6 @@ const SenderPaymentModal: React.FC<Props> = ({
 }) => {
   // Filter funding methods for the current country (funding only)
   const { user } = useAuthStore();
-  console.log("User in SenderPaymentModal:", user, selectedCountry);
 
   return (
     <Modal

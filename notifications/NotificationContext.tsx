@@ -3,7 +3,6 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useRef,
   ReactNode,
 } from "react";
 import * as Notifications from "expo-notifications";
@@ -53,8 +52,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     );
 
     const responseListener =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+      Notifications.addNotificationResponseReceivedListener((_response) => {
+        // Handle notification tap response
       });
 
     return () => {
