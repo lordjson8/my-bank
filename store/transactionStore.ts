@@ -1,6 +1,10 @@
-import transferService from '@/services/transactionService';
-import { create } from 'zustand';
-import { TransferHistoryItem, CreateTransferPayload, Transfer } from '@/types/transfers';
+import transferService from "@/services/transactionService";
+import { create } from "zustand";
+import {
+  TransferHistoryItem,
+  CreateTransferPayload,
+  Transfer,
+} from "@/types/transfers";
 
 interface TransactionState {
   history: TransferHistoryItem[];
@@ -32,11 +36,16 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       const limit = 20;
       const offset = replace ? 0 : get().offset;
 
-      const response = await transferService.getTransferHistory({ limit, offset });
-      
+      const response = await transferService.getTransferHistory({
+        limit,
+        offset,
+      });
+
       if (response.success) {
         set((state) => ({
-          history: replace ? response.data : [...state.history, ...response.data],
+          history: replace
+            ? response.data
+            : [...state.history, ...response.data],
           offset: offset + response.data.length,
           hasNextPage: response.pagination.has_more,
         }));
@@ -44,7 +53,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
         throw new Error("Failed to fetch history");
       }
     } catch (error: any) {
-      set({ historyError: error.message || 'An unknown error occurred' });
+      set({ historyError: error.message || "An unknown error occurred" });
     } finally {
       set({ loadingHistory: false });
     }
@@ -59,15 +68,16 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
         set({ offset: 0, history: [] }); // Reset history so it re-fetches
         return response.data;
       } else {
-        throw new Error(response.message || 'Transfer creation failed');
+        throw new Error(response.message || "Transfer creation failed");
       }
     } catch (error: any) {
+        console.log("Create transfer error:",JSON.stringify(error));
       const errorMessage =
         error.response?.data?.error ||
         error.response?.data?.message ||
         error.response?.data?.amount?.[0] ||
         error.message ||
-        'An unknown error occurred during transfer.';
+        "An unknown error occurred during transfer.";
       set({ createTransferError: errorMessage });
       return null;
     } finally {

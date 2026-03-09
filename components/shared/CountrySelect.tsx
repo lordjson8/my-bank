@@ -32,7 +32,7 @@ export default function CountrySelect({
         setModalVisible={setModalVisible}
         setSelectedCountry={setSelectedCountry}
       />
-      <Text className="text-base mb-2 ">
+      <Text className="text-base text-text mb-2 ">
         Pays <Text className="text-primary font-bold">*</Text>{" "}
       </Text>
 
@@ -49,7 +49,7 @@ export default function CountrySelect({
             >
               <View className="w-20">
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
-                  <Text className={`text-center ${disable ? 'text-gray-500' : 'text-black'} text-lg py-4 px-0 font-bold`}>
+                  <Text className={`text-center ${disable ? 'text-gray-500' : 'text-text'} text-lg py-4 px-0 font-bold`}>
                     {selectedCountry.flag} {selectedCountry.code}
                   </Text>
                 </TouchableOpacity>

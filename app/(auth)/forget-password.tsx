@@ -49,7 +49,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-white">
+    <SafeAreaView className="flex-1 p-4 dark bg-background">
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{

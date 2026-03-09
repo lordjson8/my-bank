@@ -27,7 +27,7 @@ export default function Input<T>({
 
   return (
     <View className="mb-2">
-      <Text className="text-base mb-2 ">
+      <Text className="text-base text-text mb-2 ">
         {label} <Text className="text-primary font-bold">*</Text>{" "}
       </Text>
       <Controller
@@ -51,7 +51,7 @@ export default function Input<T>({
     
               placeholderTextColor={"gray"}
               secureTextEntry={secure}
-              className={`border-2 ${isFocused ? "border-primary" : "border-border"} ${disable ? 'text-gray-500' : 'text-black'} rounded-xl  px-4 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
+              className={`border-2 ${isFocused ? "border-primary" : "border-border"} ${disable ? 'text-gray-500' : 'text-text'} rounded-xl  px-4 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
             />
             {error && (
               <Text className="text-red-500 text-md mt-1">{error.message}</Text>

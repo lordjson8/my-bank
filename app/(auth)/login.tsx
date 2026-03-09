@@ -20,6 +20,7 @@ import { LoginFormType, LoginSchema } from "@/utils/zod-schemas";
 import api from "@/services/api";
 import deviceServices from "@/services/device.services";
 import { useAuthStore } from "@/store/authStore";
+import axios from "axios";
 
 export default function Login() {
   const {
@@ -88,7 +89,7 @@ export default function Login() {
                   });
                 },
               },
-            ]
+            ],
           );
           return;
         }
@@ -97,7 +98,7 @@ export default function Login() {
         setErrorMessage(
           typeof errorMsg === "string"
             ? errorMsg
-            : "Invalid email or password. Please try again."
+            : "Invalid email or password. Please try again.",
         );
         return;
       }
@@ -132,9 +133,10 @@ export default function Login() {
       }
     } catch (err: any) {
       // Handle network errors
+      // console.error("Login error:", err);
       if (err.code === "ECONNABORTED" || err.message === "Network Error") {
         setErrorMessage(
-          "Network error. Please check your internet connection and try again."
+          "Network error. Please check your internet connection and try again.",
         );
         return;
       }
@@ -162,7 +164,7 @@ export default function Login() {
         }
       } else {
         setErrorMessage(
-          "An unexpected error occurred. Please try again later."
+          "An unexpected error occurred. Please try again later.",
         );
       }
     } finally {
@@ -171,7 +173,7 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-white">
+    <SafeAreaView className="flex-1 p-4 bg-background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -251,7 +253,7 @@ export default function Login() {
               </TouchableOpacity>
 
               <View className="flex-row items-center justify-center px-4 mt-4 mb-2">
-                <Text className="text-center font-bold text-base text-gray-700">
+                <Text className="text-center dark:text-white font-bold text-base text-gray-700">
                   Don&apos;t have an account?{" "}
                 </Text>
                 <Link href={"/(auth)/signup"} asChild>

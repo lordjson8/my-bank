@@ -280,6 +280,7 @@ export default function Transfer() {
     };
     
     try {
+      console.log("creating")
     const result = await createTransfer(payload);
     if (result) {
       // Transfer initiated successfully, navigate to result screen
@@ -297,15 +298,16 @@ export default function Transfer() {
     }
       
     } catch (_error) {
+      console.error("Transfer creation error:", _error);
       // Error is already handled by the store via createTransferError
     }
 
   };
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-background">
       <ScrollView
-        className="bg-gray-50"
+        className=""
         contentContainerStyle={{
           flexGrow: 1,
         }}

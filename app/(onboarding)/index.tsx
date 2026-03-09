@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, Text, TouchableOpacity, View, Button } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, Button, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import Progress from "@/components/auth/progress";
 import Message from "@/components/auth/message";
@@ -11,6 +11,7 @@ import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 import * as GoogleAuth from 'expo-auth-session/providers/google';
 import axios from 'axios'
 import { useAuthStore } from "@/store/authStore";
+import { colorScheme } from "nativewind";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -48,11 +49,13 @@ const Index = () => {
   //     console.log('code', code)
   //   }
   // }, [response]);
+  const colorScheme = useColorScheme();
+  console.log('colorScheme', colorScheme);
 
   const { completeOnboarding } = useAuthStore();
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-white">
+    <SafeAreaView className="flex-1 p-4  bg-background">
       <ScrollView className="px-4 py-8 " showsHorizontalScrollIndicator={true} showsVerticalScrollIndicator={true}>
         {/* <Progress step={1} progress={"20%"} /> */}
         {/* <Button
@@ -63,7 +66,7 @@ const Index = () => {
         <Message />
         <View className="mt-4 mb-4">
           {/* <Link href={"/(onboarding)/auth-options"} asChild> */}
-            <TouchableOpacity onPress={completeOnboarding} className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2 mb-12">
+            <TouchableOpacity onPress={() => completeOnboarding()} className="rounded-xl bg-primary flex flex-row items-center py-4 justify-center gap-2 mb-12">
               <ArrowRight color={"#fff"} size={24} />
               <Text className="text-white text-xl font-bold">Commencer</Text>
             </TouchableOpacity>

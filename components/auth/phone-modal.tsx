@@ -41,14 +41,14 @@ export default function PhoneModal({
       presentationStyle="pageSheet"
       onRequestClose={() => setModalVisible(false)}
     >
-      <SafeAreaView className="w-full bg-white  flex-1">
-        <View className="bg-white relative rounded-xl max-h-screen mx-4">
+      <SafeAreaView className="w-full bg-background  flex-1">
+        <View className="bg-background relative rounded-xl max-h-screen mx-4">
           <View className="px-4 py-4 ">
-            <Text className="text-center text-lg font-bold">
+            <Text className="text-center text-lg font-bold text-text">
               Select your country
             </Text>
           </View>
-          <View className="mt-2 mb-5 bg-gray-50 flex-row  gap-2 items-center px-2 rounded-xl">
+          <View className="mt-2 mb-5 bg-gray-50 dark:bg-gray-900 flex-row  gap-2 items-center px-2 rounded-xl">
             <Search size={17} color={"gray"} />
             <TextInput
               className="border-none w-full outline-none px-3 py-3"
@@ -78,7 +78,7 @@ export default function PhoneModal({
                 className="px-4 py-4 flex-row items-center gap-6 border-t border-border"
               >
                 <Text>{item.flag}</Text>
-                <Text>{item.name}</Text>
+                <Text className="text-text">{item.name}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item) => item.code}

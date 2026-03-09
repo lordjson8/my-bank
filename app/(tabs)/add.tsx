@@ -120,10 +120,10 @@ export default function TransactionHistory() {
 }
 
 const TransactionItem = ({ transaction }: { transaction: TransferHistoryItem }) => {
-  const isCredit = transaction.amount.startsWith('-'); // Assuming negative amounts for credit/debit
+  const isCredit = transaction.amount.startsWith('-');
   const isCompleted = transaction.status === 'completed';
-  const isFailed = transaction.status === 'failed';
-  const isPending = transaction.status === 'pending' || transaction.status === 'processing';
+  const isFailed = transaction.status === 'failed' || transaction.status === 'deposit_failed';
+  const isInProgress = ['pending', 'processing', 'deposit_pending', 'deposit_confirmed', 'withdrawal_pending'].includes(transaction.status);
 
   const statusIcon = isCompleted ? (
     <CheckCircle2 size={30} color="green" />
@@ -145,7 +145,9 @@ const TransactionItem = ({ transaction }: { transaction: TransferHistoryItem }) 
               ? "#D9F99D"
               : isFailed
               ? "#FECACA"
-              : "#FED7AA",
+              : isInProgress
+              ? "#FED7AA"
+              : "#E5E7EB",
           }}
         >
           {statusIcon}

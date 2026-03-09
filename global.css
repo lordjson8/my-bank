@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ─── Light mode (default) ─── */
+:root {
+  --color-text: #0f172a;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+
+  --color-primary: #f97316;
+  --color-primary-foreground: #ffffff;
+
+  --color-card: #eff6ff;
+  --color-card-foreground: #0f172a;
+
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+
+  --color-border: #e2e8f0;
+  --color-destructive: #ef4444;
+  --color-success: #22c55e;
+}
+
+/* ─── System automatic (no manual toggle needed) ─── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ffffff;
+    --color-background: #09090b;
+    --color-foreground: #fafafa;
+
+    --color-primary: #fb923c;
+    --color-primary-foreground: #ffffff;
+
+    --color-card: #18181b;
+    --color-card-foreground: #e4e4e7;
+
+    --color-muted: #27272a;
+    --color-muted-foreground: #a1a1aa;
+
+    --color-border: #3f3f46;
+    --color-destructive: #f87171;
+    --color-success: #4ade80;
+  }
+}
+
+/* ─── Manual override (when user explicitly picks dark) ─── */
+.dark {
+    --color-text: #ffffff;
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+
+  --color-primary: #fb923c;
+  --color-primary-foreground: #ffffff;
+
+  --color-card: #18181b;
+  --color-card-foreground: #e4e4e7;
+
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa;
+
+  --color-border: #3f3f46;
+  --color-destructive: #f87171;
+  --color-success: #4ade80;
+}

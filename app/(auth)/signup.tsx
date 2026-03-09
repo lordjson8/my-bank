@@ -106,7 +106,7 @@ export default function EmailSignup() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-white">
+    <SafeAreaView className="flex-1 p-4 bg-background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -205,7 +205,7 @@ export default function EmailSignup() {
                 )}
               </TouchableOpacity>
               <View className="flex-row items-center justify-center px-4 mt-4 mb-2">
-                <Text className="text-center font-bold text-base text-gray-700 items-center justify-center">
+                <Text className="text-center dark:text-white font-bold text-base text-gray-700 items-center justify-center">
                   Vous avez deja un compte ?{" "}
                 </Text>
                 <Link href={"/(auth)/login"} asChild>

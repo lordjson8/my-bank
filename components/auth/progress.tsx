@@ -17,11 +17,12 @@ export default function Progress({
   console.log(style);
   return (
     <View className="">
-      <View className={`flex flex-row justify-between items-center text-gray-300`}>
+      <View className={`flex  flex-row justify-between items-center text-gray-300`}>
         <TouchableOpacity
           onPress={() => {
             router.back();
           }}
+          className="dark:bg-gray-500 rounded-full"
         >
           <ChevronLeft size={32}/>
         </TouchableOpacity>

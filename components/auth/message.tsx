@@ -5,12 +5,12 @@ import MB from "./mb";
 
 export default function Message() {
   return (
-    <View className="mt-6">
+    <View className="mt-6 ">
       <View className="h-[80px] w-full flex items-center justify-center">
         <MB />
       </View>
       <View className="mt-6">
-        <Text className="text-center font-bold text-3xl">
+        <Text className="text-center dark:text-white font-bold text-3xl">
           Bienvenue sur ChicTransfer
         </Text>
         <Text className="text-center text-lg font-[400] text-muted-foreground mt-4 leading-6">

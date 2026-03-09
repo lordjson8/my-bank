@@ -26,7 +26,7 @@ export const PaymentMethodsSection = ({
   setSelectedMethod,
 }: PaymentMethodsSectionProps) => (
   <View className="mt-2">
-    <Text className="font-bold">Méthode de paiement</Text>
+    <Text className="font-bold text-text">Méthode de paiement</Text>
     <View className="flex-row items-center justify-evenly gap-1">
       {METHODS.map((method) => (
         <PaymentMethod

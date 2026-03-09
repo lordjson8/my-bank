@@ -21,11 +21,10 @@ export default function AuthLayout() {
         }}
       >
         {/* <StatusBar style="auto" /> */}
-
+        <Stack.Screen name="login" />
         <Stack.Screen name="signup" />
         <Stack.Screen name="signup-email" />
         <Stack.Screen name="success" />
-        <Stack.Screen name="login" />
         <Stack.Screen name="verify" />
         <Stack.Screen name="security" />
         <Stack.Screen name="access-code" />

@@ -28,7 +28,7 @@ export default function PasswordInput({
 
   return (
     <View className="mb-2">
-      <Text className="text-base mb-2 ">
+      <Text className="text-base text-text mb-2 ">
         {label} <Text className="text-primary font-bold">*</Text>{" "}
       </Text>
 
@@ -51,7 +51,7 @@ export default function PasswordInput({
                 onChangeText={onChange}
                 placeholderTextColor={"gray"}
                 secureTextEntry={secure}
-                className={`rounded-xl ${disable ? 'text-gray-500' : 'text-black'} px-0 text-base py-4 flex-1`}
+                className={`rounded-xl ${disable ? 'text-gray-500' : 'text-text'} px-0 text-base py-4 flex-1`}
               />
               <TouchableOpacity onPress={() => setSecure(!secure)}>
                 {secure ? (
