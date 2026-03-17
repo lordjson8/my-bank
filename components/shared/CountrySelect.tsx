@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PhoneModal from "../auth/phone-modal";
 import { countries } from "@/constants";
 import { Control, Controller } from "react-hook-form";
+import { useColorScheme } from "nativewind";
 
 export default function CountrySelect({
   control,
@@ -21,6 +22,8 @@ export default function CountrySelect({
   const [modalVisible, setModalVisible] = useState(false);
 
   const [isFocused, setIsFocused] = useState(false);
+  const { colorScheme } = useColorScheme();
+  const placeholderColor = colorScheme === "dark" ? "#a1a1aa" : "#9CA3AF";
 
   const handleFocus = React.useCallback(() => setIsFocused(true), []);
   const handleBlur = React.useCallback(() => setIsFocused(false), []);
@@ -63,8 +66,8 @@ export default function CountrySelect({
                   onFocus={handleFocus}
                   placeholder={"Numéro de téléphone"}
                   keyboardType="phone-pad"
-                  placeholderTextColor={"gray"}
-                  className={` w-full  px-0 text-lg  py-4 ${disable ? 'text-gray-500' : 'text-black'} `}
+                  placeholderTextColor={placeholderColor}
+                  className={`w-full px-0 text-lg py-4 ${disable ? 'text-muted-foreground' : 'text-foreground'}`}
                 />
               </View>
             </View>

@@ -32,11 +32,21 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Handle network errors early
+    if (!error.response) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const refreshToken = await SecureStore.getItemAsync('refreshToken');
+
+        if (!refreshToken) {
+          await store.getState().logout();
+          return Promise.reject(error);
+        }
 
         const response = await axios.post(
           `${API_BASE_URL}/auth/token/refresh/`,
@@ -46,7 +56,9 @@ api.interceptors.response.use(
         const { access, refresh } = response.data;
 
         await SecureStore.setItemAsync('accessToken', access);
-        await SecureStore.setItemAsync('refreshToken', refresh);
+        if (refresh) {
+          await SecureStore.setItemAsync('refreshToken', refresh);
+        }
 
         originalRequest.headers.Authorization = `Bearer ${access}`;
         return api(originalRequest);

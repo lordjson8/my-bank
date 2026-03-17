@@ -1,7 +1,8 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react-native";
 import { Control, Controller } from "react-hook-form";
+import { useColorScheme } from "nativewind";
 
 export default function PasswordInput({
   label,
@@ -22,6 +23,8 @@ export default function PasswordInput({
 }) {
   const [secure, setSecure] = useState<boolean>(true);
   const [isFocused, setIsFocused] = useState(false);
+  const { colorScheme } = useColorScheme();
+  const placeholderColor = colorScheme === "dark" ? "#a1a1aa" : "#9CA3AF";
 
   const handleFocus = React.useCallback(() => setIsFocused(true), []);
   const handleBlur = React.useCallback(() => setIsFocused(false), []);
@@ -49,7 +52,7 @@ export default function PasswordInput({
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 onChangeText={onChange}
-                placeholderTextColor={"gray"}
+                placeholderTextColor={placeholderColor}
                 secureTextEntry={secure}
                 className={`rounded-xl ${disable ? 'text-gray-500' : 'text-text'} px-0 text-base py-4 flex-1`}
               />

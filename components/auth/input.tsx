@@ -1,6 +1,7 @@
 import { View, Text, TextInput } from "react-native";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
+import { useColorScheme } from "nativewind";
 
 export default function Input<T>({
   error,
@@ -24,6 +25,8 @@ export default function Input<T>({
   const [isFocused, setIsFocused] = React.useState(false);
   const handleFocus = React.useCallback(() => setIsFocused(true), []);
   const handleBlur = React.useCallback(() => setIsFocused(false), []);
+  const { colorScheme } = useColorScheme();
+  const placeholderColor = colorScheme === "dark" ? "#a1a1aa" : "#9CA3AF";
 
   return (
     <View className="mb-2">
@@ -49,7 +52,7 @@ export default function Input<T>({
               onFocus={() => setIsFocused(true)}
               onChangeText={onChange}
     
-              placeholderTextColor={"gray"}
+              placeholderTextColor={placeholderColor}
               secureTextEntry={secure}
               className={`border-2 ${isFocused ? "border-primary" : "border-border"} ${disable ? 'text-gray-500' : 'text-text'} rounded-xl  px-4 text-base py-4 ${error ? "border-red-500" : "border-border"} `}
             />

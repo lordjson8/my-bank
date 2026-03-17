@@ -63,7 +63,7 @@ export interface Country {
 export interface FundingMethodsResponse {
   success: true;
   country: Country;
-  funding_methods: PaymentMethod[];
+  payment_methods: PaymentMethod[];
   count: number;
 }
 
@@ -81,6 +81,7 @@ export interface CorridorLimits {
 export interface Destination {
   country_code: string;     // ISO-2
   country_name: string;
+  phone_prefix: string;
   country_flag: string;     // emoji flag
   corridor_id: number;
   
@@ -96,6 +97,30 @@ export interface DestinationsResponse {
   source_country: Country;
   destinations: Destination[];
   total_destinations: number;
+}
+
+export interface Corridor {
+  id: number;
+  source_country: Country;
+  destination_country: Country;
+  is_active: boolean;
+  fixed_fee: string;
+  percentage_fee: string;
+  min_amount: string;
+  max_amount: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TransferFlowResponse {
+  success: boolean;
+  source_country: Country;
+  destination_country: Country;
+  funding_methods: PaymentMethod[];
+  payout_methods: PaymentMethod[];
+  corridor: Corridor;
+  available: boolean;
+  message: string;
 }
 
 

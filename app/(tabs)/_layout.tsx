@@ -2,42 +2,49 @@ import Header from "@/components/dashboard/header";
 import { HapticTab } from "@/components/haptic-tab";
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-
-import {
-  Clock8,
-  CreditCard,
-  LayoutGrid,
-  LucideIcon,
-  Send,
-  Settings,
-} from "lucide-react-native";
-import { KeyboardAvoidingView, View, Text } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Clock8, LucideIcon, Send, Settings } from "lucide-react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
+import { useEffect } from "react";
 
 const TabIcon = ({
   color,
   Icon,
   focused,
-  text
 }: {
   color: string;
   Icon: LucideIcon;
   focused: boolean;
-  text?: string;
 }) => {
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withSpring(focused ? 1.18 : 1, {
+      damping: 12,
+      stiffness: 220,
+    });
+  }, [focused]);
+
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
   return (
-    <View className="relative">
+    <View className="items-center">
       {focused && (
-        <View className="items-center">
-          <View
-            style={{ backgroundColor: color }}
-            className="h-1 w-[250%] -top-2 absolute rounded-full"
-          />
-        </View>
+        <View
+          style={{ backgroundColor: color }}
+          className="h-0.5 w-10 absolute -top-3 rounded-full"
+        />
       )}
-      <Icon size={28} color={color} />
-      
+      <Animated.View style={animStyle}>
+        <Icon size={26} color={color} />
+      </Animated.View>
     </View>
   );
 };
@@ -47,11 +54,12 @@ export default function TabLayout() {
     <>
       <SafeAreaView edges={["top"]} className="bg-primary" />
       <StatusBar style="light" />
-
-      <GestureHandlerRootView className="flex-1">
-        <KeyboardAvoidingView behavior="padding" className="flex-1">
-          <Header />
-
+      <View className="flex-1">
+        <Header />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          className="flex-1"
+        >
           <Tabs
             screenOptions={{
               headerShown: false,
@@ -76,60 +84,30 @@ export default function TabLayout() {
               }}
             />
             <Tabs.Screen
-              name="add"
+              name="transfer-results"
               options={{
-                
                 title: "Historique",
-                tabBarIcon: ({ color, focused,  }) => (
-                  <TabIcon color={color} focused={focused} Icon={Clock8} text="Historique" />
+                tabBarIcon: ({ color, focused }) => (
+                  <TabIcon color={color} focused={focused} Icon={Clock8} />
                 ),
               }}
             />
-
             <Tabs.Screen
               name="settings"
               options={{
-                title: "Settings",
+                title: "Paramètres",
                 tabBarIcon: ({ color, focused }) => (
                   <TabIcon color={color} focused={focused} Icon={Settings} />
                 ),
               }}
             />
-
-            <Tabs.Screen
-              name="update-profile"
-              options={{
-                href: null,
-                tabBarIcon: ({ color, focused }) => (
-                  <TabIcon color={color} focused={focused} Icon={Settings} />
-                ),
-              }}
-            />
-
-            <Tabs.Screen
-              name="cards"
-              options={{
-                href: null,
-                title: "Cards",
-                tabBarIcon: ({ color, focused }) => (
-                  <TabIcon color={color} focused={focused} Icon={CreditCard} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="dashboard"
-              options={{
-                title: "More",
-                href: null,
-                tabBarIcon: ({ color, focused }) => (
-                  <TabIcon color={color} focused={focused} Icon={LayoutGrid} />
-                ),
-              }}
-            />
+            <Tabs.Screen name="update-profile" options={{ href: null }} />
+            <Tabs.Screen name="cards" options={{ href: null }} />
+            <Tabs.Screen name="dashboard" options={{ href: null }} />
           </Tabs>
         </KeyboardAvoidingView>
-      </GestureHandlerRootView>
-      <SafeAreaView edges={["bottom"]} className="bg-primary" />
+      </View>
+      <SafeAreaView edges={["bottom"]} className="bg-background" />
     </>
   );
 }

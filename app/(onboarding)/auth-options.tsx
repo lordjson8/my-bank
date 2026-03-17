@@ -8,8 +8,8 @@ export default function AuthOptions() {
   const image = require("@/assets/images/PastedImage.png");
 
   return (
-    <SafeAreaView className="bg-white flex-1">
-      <ScrollView className="flex-1 bg-white">
+    <SafeAreaView className="bg-background flex-1">
+      <ScrollView className="flex-1 bg-background">
         <View className="flex-1  pt-32 mx-auto">
           <Image className="flex-1 w-[302.01px] h-[232.77px]" source={image} />
         </View>
@@ -17,7 +17,7 @@ export default function AuthOptions() {
           <View className="mx-auto">
             <MB />
           </View>
-          <Text className="text-center text-4xl font-extrabold">
+          <Text className="text-center text-4xl font-extrabold text-foreground">
             Ouvrez un compte mobile en quelques minutes.
           </Text>
           <Text className="text-center text-xl text-muted-foreground">
@@ -28,8 +28,8 @@ export default function AuthOptions() {
           <View className="flex-1 mt-6">
             <View className="flex flex-row gap-3 mb-5">
               <Link asChild href={"/(auth)/login"}>
-                <TouchableOpacity className="w-[40%]  gap-1 py-4 px-8 items-center bg-[#31313133] rounded-xl">
-                  <Text className="font-bold">Login</Text>
+                <TouchableOpacity className="w-[40%] gap-1 py-4 px-8 items-center bg-muted rounded-xl">
+                  <Text className="font-bold text-foreground">Login</Text>
                 </TouchableOpacity>
               </Link>
 

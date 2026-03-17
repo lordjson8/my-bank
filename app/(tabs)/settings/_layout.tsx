@@ -41,29 +41,22 @@ const StackHeader = ({
   ];
 
   return (
-    <View className="bg-white">
+    <View className="bg-background border-b border-border">
       <View className="flex-row justify-evenly relative">
         {NavLinks.map((link) => {
           const href = link.route;
           const isActive =
             route.name === link.route.toString().replace("/settings/", "") ||
             (route.name === "index" && link.route === "/settings");
-          console.log(
-            "route.name",
-            route.name,
-            "link.route",
-            link.route,
-            isActive
-          );
 
           return (
             <View key={link.title} className="flex-1 relative items-center">
               <Link replace href={href} asChild>
                 <TouchableOpacity
-                  className={`${isActive && "bg-orange-50"} rounded-lg px-2 py-6 w-full`}
+                  className={`${isActive ? "bg-primary/10" : ""} rounded-lg px-2 py-6 w-full`}
                 >
                   <Text
-                    className={`${isActive && "text-primary"}  font-bold text-center `}
+                    className={`${isActive ? "text-primary" : "text-muted-foreground"} font-bold text-center`}
                   >
                     {link.title}
                   </Text>
@@ -71,7 +64,7 @@ const StackHeader = ({
               </Link>
 
               <View
-                className={` h-1  w-full absolute bottom-0 ${isActive ? "bg-primary" : "bg-gray-100"}`}
+                className={`h-1 w-full absolute bottom-0 ${isActive ? "bg-primary" : "bg-border"}`}
               />
             </View>
           );

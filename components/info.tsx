@@ -34,9 +34,7 @@ export function Back({
   console.log(style);
   return (
     <View className="fixed left-0 top-0 ">
-      <View
-        className={`flex flex-row justify-between items-center text-gray-300`}
-      >
+      <View className="flex flex-row justify-between items-center">
         <TouchableOpacity
           className="rounded-full bg-border"
           onPress={() => {
@@ -65,21 +63,21 @@ const GenderSelector = ({
       name={name}
       render={({ field: { onChange, value } }) => (
         <View className="mb-4">
-          <Text className="text-gray-700 text-base font-medium mb-2">
+          <Text className="text-muted-foreground text-base font-medium mb-2">
             Gender
           </Text>
           <View className="flex-row gap-4">
             <TouchableOpacity
               className={`flex-1 py-3 px-4 rounded-lg border ${
                 value === "male"
-                  ? "border-primary bg-orange-50"
-                  : "border-gray-300 bg-white"
+                  ? "border-primary bg-primary/10"
+                  : "border-border bg-card"
               }`}
               onPress={() => onChange("male")}
             >
               <Text
                 className={`text-center font-medium ${
-                  value === "male" ? "text-primary" : "text-gray-700"
+                  value === "male" ? "text-primary" : "text-foreground"
                 }`}
               >
                 Male
@@ -88,21 +86,21 @@ const GenderSelector = ({
             <TouchableOpacity
               className={`flex-1 py-3 px-4 rounded-lg border ${
                 value === "female"
-                  ? "border-primary bg-orange-50"
-                  : "border-gray-300 bg-white"
+                  ? "border-primary bg-primary/10"
+                  : "border-border bg-card"
               }`}
               onPress={() => onChange("female")}
             >
               <Text
                 className={`text-center font-medium ${
-                  value === "female" ? "text-primary" : "text-gray-700"
+                  value === "female" ? "text-primary" : "text-foreground"
                 }`}
               >
                 Female
               </Text>
             </TouchableOpacity>
           </View>
-          {error && <Text className="text-red-500 mt-1">{error.message}</Text>}
+          {error && <Text className="text-destructive mt-1">{error.message}</Text>}
         </View>
       )}
     />
@@ -159,7 +157,7 @@ export default function Info() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <View className="px-6 py-8">
+      <View className="px-6 py-8 bg-background flex-1">
         <Back step={4} progress="80%" />
 
         <ScrollView
@@ -167,7 +165,7 @@ export default function Info() {
           contentContainerStyle={{ paddingBottom: 50 }}
         >
           <View className="mt-6 mb-4">
-            <Text className="text-center font-bold text-2xl">
+            <Text className="text-center font-bold text-2xl text-foreground">
               Vérification d&apos;identité
             </Text>
             <Text className="text-center text-base font-[400] text-muted-foreground mt-4 leading-6">
@@ -303,8 +301,8 @@ export default function Info() {
             )}
           </TouchableOpacity>
 
-          <View className="mb-12 mt-3 bg-[#FEFCE8] px-3 py-4 rounded-xl ">
-            <Text className="text-[#854D0E] text-center leading-6">
+          <View className="mb-12 mt-3 bg-primary/10 px-3 py-4 rounded-xl border border-primary/20">
+            <Text className="text-primary text-center leading-6">
               Vos données sont traitées de manière sécurisée et conformément à
               notre politique de confidentialité.
             </Text>

@@ -71,14 +71,19 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
         throw new Error(response.message || "Transfer creation failed");
       }
     } catch (error: any) {
-        console.log("Create transfer error:",JSON.stringify(error));
+      const data = error.response?.data;
+      // Try to extract the most useful error message from various backend shapes
       const errorMessage =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        error.response?.data?.amount?.[0] ||
+        (typeof data?.error === "string" ? data.error : null) ||
+        data?.error?.details ||
+        data?.error?.detail ||
+        data?.detail ||
+        data?.message ||
+        data?.amount?.[0] ||
+        data?.non_field_errors?.[0] ||
         error.message ||
-        "An unknown error occurred during transfer.";
-      set({ createTransferError: errorMessage });
+        "Une erreur inattendue est survenue.";
+      set({ createTransferError: typeof errorMessage === "string" ? errorMessage : JSON.stringify(errorMessage) });
       return null;
     } finally {
       set({ creatingTransfer: false });

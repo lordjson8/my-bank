@@ -127,13 +127,13 @@ export default function EmailSignup() {
               progress="20%"
             />
             {errorMessage && (
-              <View className="px-4 py-3 mb-4 bg-red-100 border border-red-400 rounded-lg">
-                <Text className="text-red-700 font-medium">{errorMessage}</Text>
+              <View className="px-4 py-3 mb-4 bg-destructive/10 border border-destructive/40 rounded-lg">
+                <Text className="text-destructive font-medium">{errorMessage}</Text>
               </View>
             )}
             {successMessage && (
-              <View className="px-4 py-3 mb-4 bg-green-100 border border-green-400 rounded-lg">
-                <Text className="text-green-700 font-medium">
+              <View className="px-4 py-3 mb-4 bg-success/10 border border-success/40 rounded-lg">
+                <Text className="text-success font-medium">
                   {successMessage}
                 </Text>
               </View>
@@ -205,7 +205,7 @@ export default function EmailSignup() {
                 )}
               </TouchableOpacity>
               <View className="flex-row items-center justify-center px-4 mt-4 mb-2">
-                <Text className="text-center dark:text-white font-bold text-base text-gray-700 items-center justify-center">
+                <Text className="text-center font-bold text-base text-foreground items-center justify-center">
                   Vous avez deja un compte ?{" "}
                 </Text>
                 <Link href={"/(auth)/login"} asChild>

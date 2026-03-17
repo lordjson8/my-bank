@@ -89,30 +89,30 @@ export default function ChangeCode() {
     >
         <ScrollView
           contentContainerStyle={{}}
-          className="px-8 bg-white py-4 flex-1"
+          className="px-8 bg-background py-4 flex-1"
           keyboardShouldPersistTaps="handled"
         >
           <View className="flex-1 mb-8">
             <View className="mb-6">
-              <Text className="text-center font-bold text-2xl">
+              <Text className="text-center font-bold text-2xl text-foreground">
                 Account Security
               </Text>
-              <Text className="text-center text-base font-[400] text-gray-500 mt-2 leading-6">
+              <Text className="text-center text-base font-[400] text-muted-foreground mt-2 leading-6">
                 Update your password to keep your account secure.
               </Text>
             </View>
 
             {/* Error Message */}
             {errorMessage && (
-              <View className="px-4 py-3 mb-4 bg-red-100 border border-red-400 rounded-lg">
-                <Text className="text-red-700 font-medium">{errorMessage}</Text>
+              <View className="px-4 py-3 mb-4 bg-destructive/10 border border-destructive/40 rounded-lg">
+                <Text className="text-destructive font-medium">{errorMessage}</Text>
               </View>
             )}
 
             {/* Success Message */}
             {successMessage && (
-              <View className="px-4 py-3 mb-4 bg-green-100 border border-green-400 rounded-lg">
-                <Text className="text-green-700 font-medium">
+              <View className="px-4 py-3 mb-4 bg-success/10 border border-success/40 rounded-lg">
+                <Text className="text-success font-medium">
                   {successMessage}
                 </Text>
               </View>

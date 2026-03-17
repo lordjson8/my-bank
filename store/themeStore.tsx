@@ -1,75 +1,32 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { secureStore } from "@/utils/secureStoreAdapter";
-import { User } from "@/types/auth.types";
-import { getMe } from "@/services/user.service";
-import { useRoutesStore } from "./route.store";
+import { colorScheme } from "nativewind";
 
-interface AuthState {
-  user: User | null;
-  setOnboarding: (hasCompleted: boolean) => void;
-  hasCompletedOnboarding: boolean;
-  _hasHydrated: boolean;
+export type ThemePreference = "light" | "dark" | "system";
 
-  loginSuccess: (payload: {
-    user: User;
-    access: string;
-    refresh: string;
-  }) => Promise<void>;
-  updateUser: () => Promise<void>;
-  logout: () => Promise<void>;
-  completeOnboarding: () => void;
-  setHasHydrated: (state: boolean) => void;
+interface ThemeState {
+  preference: ThemePreference;
+  setTheme: (theme: ThemePreference) => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      user: null,
-      hasCompletedOnboarding: false,
-      _hasHydrated: false,
-
-      async loginSuccess({ user, access, refresh }) {
-        await secureStore.setItem("accessToken", access);
-        await secureStore.setItem("refreshToken", refresh);
-        set({ user });
+      preference: "system",
+      setTheme: (preference) => {
+        colorScheme.set(preference);
+        set({ preference });
       },
-
-      async logout() {
-        await secureStore.removeItem("accessToken");
-        await secureStore.removeItem("refreshToken");
-        set({ user: null });
-        useRoutesStore.getState().reset();
-      },
-
-      updateUser: async () => {
-        try {
-          const user = await getMe();
-          set({ user: user.data });
-        } catch (_error) {
-          // Silently fail - user will see stale data
-        }
-      },
-
-      setOnboarding: (hasCompleted: boolean) =>
-        set({ hasCompletedOnboarding: hasCompleted }),
-      completeOnboarding: () => set({ hasCompletedOnboarding: true }),
-      setHasHydrated: (state) => set({ _hasHydrated: state }),
     }),
     {
-      name: "auth-ui-storage",
+      name: "theme-ui-storage",
       storage: createJSONStorage(() => secureStore),
-
-      partialize: (state) => ({
-        user: state.user,
-        hasCompletedOnboarding: state.hasCompletedOnboarding,
-      }),
-
       onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
+        if (state?.preference) {
+          colorScheme.set(state.preference);
+        }
       },
     }
   )
 );
-
-export const store = useAuthStore;

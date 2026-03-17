@@ -11,6 +11,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { Calendar } from "lucide-react-native";
+import { useColorScheme } from "nativewind";
 
 export default function DateInput({
   label,
@@ -27,6 +28,9 @@ export default function DateInput({
   placeholder: string;
   keyboardType: "email-address" | "phone-pad" | "default";
 }) {
+  const { colorScheme } = useColorScheme();
+  const iconColor = colorScheme === "dark" ? "#a1a1aa" : "#6B7280";
+  const placeholderColor = colorScheme === "dark" ? "#a1a1aa" : "#9CA3AF";
   const [show, setShow] = useState(false);
 
   const onChange = (
@@ -91,17 +95,18 @@ export default function DateInput({
 
       <TouchableOpacity
         onPress={showDatePicker}
-        className={`border rounded-xl px-3  py-1 border-border flex-row justify-between items-center ${error? 'border-red-500' : 'border-border'}`}
+        className={`border rounded-xl px-3 py-1 flex-row justify-between items-center ${error ? "border-destructive" : "border-border"} bg-card`}
       >
         <TextInput
           placeholder={placeholder}
+          placeholderTextColor={placeholderColor}
           value={date ? date.toLocaleDateString() : ""}
-          className={`text-base placeholder:text-muted-foreground  `}
+          className="text-base text-foreground flex-1 py-3"
           editable={false}
         />
-        <Calendar size={15} />
+        <Calendar size={15} color={iconColor} />
       </TouchableOpacity>
-      {error && <Text className="text-red-500 text-sm">{error}</Text>}
+      {error && <Text className="text-destructive text-sm mt-1">{error}</Text>}
     </View>
   );
 }

@@ -46,7 +46,7 @@ export default function ProfileScreen() {
 
   if (!user) {
     return (
-      <View className="bg-gray-50 flex-1 justify-center items-center">
+      <View className="bg-background flex-1 justify-center items-center">
         <Text>Utilisateur non trouvé</Text>
       </View>
     );
@@ -59,17 +59,17 @@ export default function ProfileScreen() {
   } = kycStatusConfig[user.kyc_status];
 
   return (
-    <View className="bg-gray-50 flex-1">
+    <View className="bg-background flex-1">
       <ScrollView className="">
         <View className="px-6 py-6">
-          <Text className="font-bold text-lg">Données personnelles</Text>
+          <Text className="font-bold text-lg text-foreground">Données personnelles</Text>
 
           <View className="gap-1">
             <View className="border-b border-border py-4">
               <View className="gap-1">
                   <Text className="text-muted-foreground ">Nom complet</Text>
                 </View>
-              <Text className="font-bold text-xl">{user.full_name}</Text>
+              <Text className="font-bold text-xl text-foreground">{user.full_name}</Text>
               <View className="flex-row gap-3 items-center">
                 {kycStatusIcon}
                 <Text style={{ color: kycStatusColor }} className="font-semibold">
@@ -116,7 +116,7 @@ export default function ProfileScreen() {
                   Photo carte d&apos;identité/passeport
                 </Text>
                 <View className="border-b border-border py-4">
-                  <Text className="font-semibold text-lg">{user.full_name}</Text>
+                  <Text className="font-semibold text-lg text-foreground">{user.full_name}</Text>
                   <View className="flex-row gap-3 items-center mt-2">
                     {kycStatusIcon}
                     <Text style={{ color: kycStatusColor }} className="font-semibold">
@@ -130,7 +130,7 @@ export default function ProfileScreen() {
                   Selfie avec carte d&apos;identité/passeport
                 </Text>
                 <View className="py-4">
-                  <Text className="font-semibold text-lg">{user.full_name}</Text>
+                  <Text className="font-semibold text-lg text-foreground">{user.full_name}</Text>
                   <View className="flex-row gap-3 items-center mt-2">
                     {kycStatusIcon}
                     <Text style={{ color: kycStatusColor }} className="font-semibold">

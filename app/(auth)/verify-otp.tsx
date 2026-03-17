@@ -182,7 +182,7 @@ export default function VerifyOtp() {
   const displayPhone = phone ?? "+237 8085472417";
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-white">
+    <SafeAreaView className="flex-1 p-4 bg-background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
@@ -203,24 +203,24 @@ export default function VerifyOtp() {
             />
 
             {errorMsg && (
-              <View className="px-4 py-3 mb-4 bg-red-100 border border-red-400 rounded-lg">
-                <Text className="text-red-700 font-medium">{errorMsg}</Text>
+              <View className="px-4 py-3 mb-4 bg-destructive/10 border border-destructive/40 rounded-lg">
+                <Text className="text-destructive font-medium">{errorMsg}</Text>
               </View>
             )}
             {successMsg && (
-              <View className="px-4 py-3 mb-4 bg-green-100 border border-green-400 rounded-lg">
-                <Text className="text-green-700 font-medium">{successMsg}</Text>
+              <View className="px-4 py-3 mb-4 bg-success/10 border border-success/40 rounded-lg">
+                <Text className="text-success font-medium">{successMsg}</Text>
               </View>
             )}
 
-            <Text className="text-2xl font-bold text-gray-800 mb-2">
+            <Text className="text-2xl font-bold text-foreground mb-2">
               Vérifiez votre numéro
             </Text>
-            <Text className="text-base text-gray-600 mb-4">
+            <Text className="text-base text-muted-foreground mb-4">
               Nous avons envoyé un code de vérification à
             </Text>
             <View className="flex-row gap-2 items-center mb-6">
-              <Text className="text-base font-semibold text-gray-800">
+              <Text className="text-base font-semibold text-foreground">
                 {displayPhone}
               </Text>
               <Link href={"/(auth)/step-two"} asChild>
@@ -242,11 +242,11 @@ export default function VerifyOtp() {
                 return (
                   <View
                     key={index}
-                    className={`w-14 h-14 bg-gray-100 border-2 rounded-xl justify-center items-center ${
-                      isFocused ? "border-primary" : "border-gray-200"
+                    className={`w-14 h-14 bg-card border-2 rounded-xl justify-center items-center ${
+                      isFocused ? "border-primary" : "border-border"
                     }`}
                   >
-                    <Text className="text-2xl font-bold text-gray-800">
+                    <Text className="text-2xl font-bold text-foreground">
                       {digit}
                     </Text>
                     {isFocused && (
@@ -290,7 +290,7 @@ export default function VerifyOtp() {
             )}
 
             <View className="flex-row justify-center gap-1">
-              <Text className="text-base text-gray-600">
+              <Text className="text-base text-muted-foreground">
                 Vous n&apos;avez pas reçu le code ?
               </Text>
               <TouchableOpacity disabled={loading} onPress={handleResend}>
@@ -302,7 +302,7 @@ export default function VerifyOtp() {
           </View>
 
           <View className="mt-8">
-            <Text className="text-xs text-gray-500 text-center mb-4">
+            <Text className="text-xs text-muted-foreground text-center mb-4">
               En fournissant votre numéro de téléphone, vous acceptez nos termes
               et conditions. Des frais de messagerie peuvent s&apos;appliquer.
             </Text>

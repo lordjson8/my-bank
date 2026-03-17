@@ -14,7 +14,7 @@ const formatCurrency = (amount: number) => {
 
 export default function RoofScreen() {
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-background">
       <Features />
     </View>
   );
@@ -50,7 +50,7 @@ export function Features() {
   return (
     <ScrollView className="px-4 py-6">
       <View className="flex-1">
-        <Text className="font-bold">Statut compte Ma Banque</Text>
+        <Text className="font-bold text-foreground">Statut compte Ma Banque</Text>
         <View className="rounded-xl items-center p-y flex flex-row mt-4 justify-between">
           <Text className="text-md text-muted-foreground">
             Transfert par mobile money
@@ -66,68 +66,68 @@ export function Features() {
       </View>
 
       <View className="flex-1 mt-6">
-        <Text className="font-bold">Plafond mobile money Ma Banque</Text>
+        <Text className="font-bold text-foreground">Plafond mobile money Ma Banque</Text>
         <View className="rounded-xl items-center p-y flex flex-row mt-4 justify-between">
           <Text className="text-md text-muted-foreground">Journalier</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.daily_limit)}
           </Text>
         </View>
         <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Restant journalier</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.remaining_daily_limit)}
           </Text>
         </View>
         <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Mensuel</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.monthly_limit)}
           </Text>
         </View>
         <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Restant mensuel</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.remaining_monthly_limit)}
           </Text>
         </View>
         {/* <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Par transaction</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.transaction_limit)}
           </Text>
         </View> */}
       </View>
 
       <View className="flex-1 mt-6">
-        <Text className="font-bold">Plafond carte bancaire Ma Banque</Text>
+        <Text className="font-bold text-foreground">Plafond carte bancaire Ma Banque</Text>
         <View className="rounded-xl items-center p-y flex flex-row mt-4 justify-between">
           <Text className="text-md text-muted-foreground">Journalier</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.daily_limit)}
           </Text>
         </View>
         <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Restant journalier</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.remaining_daily_limit)}
           </Text>
         </View>
         <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Mensuel</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.monthly_limit)}
           </Text>
         </View>
         <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Restant mensuel</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.remaining_monthly_limit)}
           </Text>
         </View>
         {/* <View className="rounded-xl items-center p-y flex flex-row mt-2 justify-between">
           <Text className="text-md text-muted-foreground">Par transaction</Text>
-          <Text className="mt-2 font-bold">
+          <Text className="mt-2 font-bold text-foreground">
             {formatCurrency(transaction_limits.transaction_limit)}
           </Text>
         </View> */}

@@ -55,38 +55,37 @@ export default function FileInput({
 
   return (
     <View className="mb-4">
-      <Text className="text-base mb-2">
+      <Text className="text-base mb-2 text-foreground">
         {label} <Text className="text-primary font-bold">*</Text>{" "}
       </Text>
 
       <View
-        className={`border ${error ? "border-red-300" : "border-border"} px-6 py-8 bg-white rounded-xl flex items-center ${!image && "justify-center"}`}
+        className={`border ${error ? "border-destructive" : "border-border"} px-6 py-8 bg-card rounded-xl flex items-center ${!image && "justify-center"}`}
       >
         {image ? (
           <>
-            {/* {renderPicture(image.uri!)} */}
-            <View className="flex-row gap-2 px-3 py-3 bg-card items-center mb-3">
+            <View className="flex-row gap-2 px-3 py-3 bg-muted items-center mb-3 rounded-lg">
               <Icon size={24} color={"#F97316"} />
-              <Text className="text-sm  mt-2 max-h-6">{image.fileName}</Text>
+              <Text className="text-sm mt-2 max-h-6 text-foreground">{image.fileName}</Text>
             </View>
             <TouchableOpacity
               onPress={pickImage}
-              className="rounded-xl  flex items-center justify-center"
+              className="rounded-xl flex items-center justify-center"
             >
-              <Text className="text-primary ">Changer</Text>
+              <Text className="text-primary">Changer</Text>
             </TouchableOpacity>
           </>
         ) : (
           <>
             <TouchableOpacity
               onPress={pickImage}
-              className="w-20 h-20 rounded-full bg-card flex items-center justify-center"
+              className="w-20 h-20 rounded-full bg-muted flex items-center justify-center"
             >
               <Icon size={34} color={"#F97316"} />
             </TouchableOpacity>
-            <Text className="mt-3">{inputLabel}</Text>
-            <Text className="text-sm text-gray-400 mt-2">{description}</Text>
-            {error && <Text className="text-red-500 text-sm">{error}</Text>}
+            <Text className="mt-3 text-foreground">{inputLabel}</Text>
+            <Text className="text-sm text-muted-foreground mt-2">{description}</Text>
+            {error && <Text className="text-destructive text-sm mt-1">{error}</Text>}
           </>
         )}
       </View>
@@ -157,37 +156,37 @@ export function PhotoInput({
 
   return (
     <View className="mb-4">
-      <Text className="text-base mb-2">
+      <Text className="text-base mb-2 text-foreground">
         {label} <Text className="text-primary font-bold">*</Text>{" "}
       </Text>
       <CameraView style={{ width: "100%", height: 200 }} facing={facing} />
       <View
-        className={`border ${error ? "border-red-300" : "border-border"} px-6 py-8 rounded-xl flex items-center justify-center`}
+        className={`border ${error ? "border-destructive" : "border-border"} px-6 py-8 bg-card rounded-xl flex items-center justify-center`}
       >
         {image ? (
           <>
-            <View className="flex-row gap-2 px-3 py-3 bg-card items-center mb-3">
+            <View className="flex-row gap-2 px-3 py-3 bg-muted items-center mb-3 rounded-lg">
               <Icon size={24} color={"#F97316"} />
-              <Text className="text-sm  mt-2 max-h-6">{image.fileName}</Text>
+              <Text className="text-sm mt-2 max-h-6 text-foreground">{image.fileName}</Text>
             </View>
             <TouchableOpacity
               onPress={pickImage}
-              className="rounded-xl  flex items-center justify-center"
+              className="rounded-xl flex items-center justify-center"
             >
-              <Text className="text-primary ">Changer</Text>
+              <Text className="text-primary">Changer</Text>
             </TouchableOpacity>
           </>
         ) : (
           <>
             <TouchableOpacity
               onPress={toggleCameraFacing}
-              className="w-20 h-20 rounded-full bg-card flex items-center justify-center"
+              className="w-20 h-20 rounded-full bg-muted flex items-center justify-center"
             >
               <Icon size={34} color={"#F97316"} />
             </TouchableOpacity>
-            <Text className="mt-3">{inputLabel}</Text>
-            <Text className="text-sm text-gray-400 mt-2">{description}</Text>
-            {error && <Text className="text-red-500 text-sm">{error}</Text>}
+            <Text className="mt-3 text-foreground">{inputLabel}</Text>
+            <Text className="text-sm text-muted-foreground mt-2">{description}</Text>
+            {error && <Text className="text-destructive text-sm mt-1">{error}</Text>}
           </>
         )}
       </View>

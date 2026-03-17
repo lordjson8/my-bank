@@ -40,7 +40,7 @@ export const WarningBanner = () => {
   return (
     <>
       {!user?.has_kyc_profile ? (
-        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] py-3">
           <Warning
             message="Votre profil KYC est incomplet."
             link="/(kyc)/update-profile"
@@ -48,7 +48,7 @@ export const WarningBanner = () => {
           />
         </View>
       ) : user?.kyc_status === "under_review" ? (
-        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] py-3">
           <Warning
             message="Votre profil KYC est en attente de validation."
             link={null}
@@ -56,7 +56,7 @@ export const WarningBanner = () => {
           />
         </View>
       ) : user?.kyc_status === "rejected" ? (
-        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] py-3">
           <Warning
             message="Votre profil KYC a été rejeté. Veuillez le mettre à jour."
             link="/(kyc)/update-profile"
@@ -64,7 +64,7 @@ export const WarningBanner = () => {
           />
         </View>
       ) : user?.kyc_status === "not_submitted" ? (
-        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] mx-1 py-3">
+        <View className="bg-[#FEFCE8] w-full border-l-4 border-[#FACC15] py-3">
           <Warning
             message="Vos documents KYC n'ont pas été soumis."
             link="/(kyc)/upload-kyc-docs"

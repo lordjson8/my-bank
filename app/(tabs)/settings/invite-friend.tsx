@@ -6,7 +6,7 @@ export default function InviteFriend() {
   const image = require("@/assets/images/invite.png");
   const [click, setClick] = React.useState<boolean>(false);
   return (
-    <View className="flex-1 bg-white items-center justify-center gap-3 px-6">
+    <View className="flex-1 bg-background items-center justify-center gap-3 px-6">
       <View className="bg-orange-100 p-4 rounded-full">
         <View className="bg-orange-200 p-4 rounded-full">
           <View className="w-16 h-16 items-center justify-center bg-primary rounded-full">
@@ -15,7 +15,7 @@ export default function InviteFriend() {
         </View>
       </View>
       <View className="mt-2 mb-2">
-        <Text className="font-extrabold text-4xl text-center">
+        <Text className="font-extrabold text-4xl text-center text-foreground">
           Share the link
         </Text>
         <Text className="text-muted-foreground text-center text-xl px-12 mt-2 ">

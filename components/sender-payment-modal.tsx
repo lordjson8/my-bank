@@ -8,10 +8,11 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import { X, Check } from "lucide-react-native";
+import { X, Check, ShieldCheck, AlertCircle } from "lucide-react-native";
 import { PaymentMethod } from "@/types/routes";
 import { countries } from "@/constants";
 import { useAuthStore } from "@/store/authStore";
+import { useRoutesStore } from "@/store/route.store";
 
 interface Props {
   selectedFundingMethod: PaymentMethod | null;
@@ -21,6 +22,8 @@ interface Props {
   setSenderPaymentModalVisible: (visible: boolean) => void;
   loading: boolean;
   selectedCountry: (typeof countries)[0];
+  corridorActive?: boolean;
+  destinationCountryName?: string;
 }
 
 const SenderPaymentModal: React.FC<Props> = ({
@@ -31,9 +34,17 @@ const SenderPaymentModal: React.FC<Props> = ({
   setSenderPaymentModalVisible,
   loading,
   selectedCountry,
+  corridorActive,
+  destinationCountryName,
 }) => {
-  // Filter funding methods for the current country (funding only)
   const { user } = useAuthStore();
+  const { fundingError, fetchFundingMethods } = useRoutesStore();
+
+  const handleRetry = () => {
+    if (user?.country) {
+      fetchFundingMethods(user.country);
+    }
+  };
 
   return (
     <Modal
@@ -43,123 +54,164 @@ const SenderPaymentModal: React.FC<Props> = ({
       onRequestClose={() => setSenderPaymentModalVisible(false)}
     >
       <View className="flex-1 justify-end bg-black/50">
-        <View className="bg-white rounded-t-3xl h-3/4 pt-5">
-          <View className="flex-row items-center justify-between px-5 pb-4 border-b border-gray-100">
+        <View className="bg-background rounded-t-3xl h-3/4 pt-5">
+          {/* En-tête */}
+          <View className="flex-row items-center justify-between px-5 pb-4 border-b border-border">
             <View>
-              <Text className="text-2xl font-bold text-gray-900">
-                Select Funding Method
+              <Text className="text-2xl font-bold text-foreground">
+                Mode de financement
               </Text>
-              <Text className="text-sm text-gray-500 mt-1">
-                How do you want to pay from {selectedCountry.name}?
+              <Text className="text-sm text-muted-foreground mt-1">
+                Comment souhaitez-vous payer depuis {selectedCountry.name} ?
               </Text>
             </View>
             <TouchableOpacity
               onPress={() => setSenderPaymentModalVisible(false)}
-              className="w-10 h-10 items-center justify-center rounded-full bg-gray-100"
+              className="w-10 h-10 items-center justify-center rounded-full bg-muted"
             >
-              <X size={24} color="#6B7280" />
+              <X size={22} color="#6B7280" />
             </TouchableOpacity>
           </View>
 
-          {/* Country Info */}
-          <View className="px-5 py-4 bg-blue-50 border-b border-blue-100">
+          {/* Infos pays */}
+          <View className="px-5 py-4 bg-primary/10 border-b border-primary/20">
             <View className="flex-row items-center">
               <Text className="text-3xl mr-3">{selectedCountry.flag}</Text>
-              <View>
-                <Text className="font-semibold text-gray-900">
+              <View className="flex-1">
+                <Text className="font-semibold text-foreground">
                   {selectedCountry.name}
                 </Text>
-                <Text className="text-gray-500 text-sm">
-                {user?.phone}
+                <Text className="text-muted-foreground text-sm">
+                  {user?.phone}
                 </Text>
               </View>
             </View>
+            {corridorActive && destinationCountryName && (
+              <View className="mt-3 flex-row items-center gap-2 p-2 bg-primary/10 rounded-lg border border-primary/20">
+                <ShieldCheck size={14} color="#F97316" />
+                <Text className="text-primary text-xs font-medium flex-1">
+                  Corridor validé · Envoi vers {destinationCountryName}
+                </Text>
+              </View>
+            )}
           </View>
 
-          <ScrollView
-            className="px-5 py-4"
-            showsVerticalScrollIndicator={false}
-          >
+          <ScrollView className="px-5 py-4" showsVerticalScrollIndicator={false}>
             {loading ? (
-              <View className="py-20">
-                <ActivityIndicator size="large" color="#3B82F6" />
-                <Text className="text-center text-gray-600 mt-4">
-                  Loading funding methods...
+              <View className="py-20 items-center">
+                <ActivityIndicator size="large" color="#F97316" />
+                <Text className="text-center text-muted-foreground mt-4">
+                  Chargement...
                 </Text>
+              </View>
+            ) : fundingError ? (
+              <View className="py-20 items-center">
+                <AlertCircle size={48} color="#EF4444" />
+                <Text className="text-destructive text-lg font-medium mt-4">
+                  Erreur de chargement
+                </Text>
+                <Text className="text-muted-foreground text-center mt-2 px-4">
+                  {fundingError}
+                </Text>
+                <TouchableOpacity
+                  onPress={handleRetry}
+                  className="mt-6 bg-primary px-6 py-3 rounded-full"
+                >
+                  <Text className="text-white font-medium">Réessayer</Text>
+                </TouchableOpacity>
               </View>
             ) : fundingMethods.length === 0 ? (
               <View className="py-20 items-center">
-                <Text className="text-gray-500 text-lg">
-                  No funding methods available
+                <AlertCircle size={48} color="#9CA3AF" />
+                <Text className="text-muted-foreground text-lg mt-4">
+                  Aucun mode de financement disponible
                 </Text>
-                <Text className="text-gray-400 text-sm mt-2">
-                  Please try another payment type
+                <Text className="text-muted-foreground text-sm mt-2">
+                  Essayez un autre type de paiement
                 </Text>
+                <TouchableOpacity
+                  onPress={handleRetry}
+                  className="mt-6 bg-primary px-6 py-3 rounded-full"
+                >
+                  <Text className="text-white font-medium">Actualiser</Text>
+                </TouchableOpacity>
               </View>
             ) : (
               <>
-                <Text className="text-gray-500 text-sm font-medium mb-3">
-                  Available payment methods for {selectedCountry.name}:
+                <Text className="text-muted-foreground text-sm font-medium mb-3">
+                  Modes disponibles pour {selectedCountry.name} :
                 </Text>
 
-                {fundingMethods.map((method) => (
-                  <TouchableOpacity
-                    key={method.id}
-                    className={`flex-row items-center justify-between p-4 mb-3 rounded-xl border ${
-                      selectedFundingMethod?.id === method.id
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200 bg-white"
-                    } ${!method.is_active ? "opacity-50" : ""}`}
-                    onPress={() =>
-                      method.is_active && handleSelectFundingMethod(method)
-                    }
-                    disabled={!method.is_active}
-                  >
-                    <View className="flex-row items-center flex-1">
-                      {method.icon_url ? (
-                        <Image
-                          source={{ uri: method.icon_url }}
-                          className="w-12 h-12 rounded-lg mr-4"
-                          resizeMode="contain"
-                        />
-                      ) : (
-                        <View
-                          className="w-12 h-12 rounded-lg mr-4 items-center justify-center"
-                          style={{
-                            backgroundColor: method.brand_color || "#3B82F6",
-                          }}
-                        >
-                          <Text className="text-white font-bold">
-                            {method.method_type_display.charAt(0)}
+                {fundingMethods.map((method) => {
+                  const isSelected = selectedFundingMethod?.id === method.id;
+                  return (
+                    <TouchableOpacity
+                      key={method.id}
+                      className={`flex-row items-center justify-between p-4 mb-3 rounded-xl border ${
+                        isSelected
+                          ? "border-primary bg-primary/10"
+                          : "border-border bg-card"
+                      } ${!method.is_active ? "opacity-50" : ""}`}
+                      onPress={() =>
+                        method.is_active && handleSelectFundingMethod(method)
+                      }
+                      disabled={!method.is_active}
+                    >
+                      <View className="flex-row items-center flex-1">
+                        {method.icon_url ? (
+                          <Image
+                            source={{ uri: method.icon_url }}
+                            className="w-12 h-12 rounded-xl mr-4"
+                            resizeMode="contain"
+                          />
+                        ) : (
+                          <View
+                            className="w-12 h-12 rounded-xl mr-4 items-center justify-center"
+                            style={{
+                              backgroundColor: method.brand_color || "#F97316",
+                            }}
+                          >
+                            <Text className="text-white font-bold">
+                              {method.method_type_display.charAt(0)}
+                            </Text>
+                          </View>
+                        )}
+
+                        <View className="flex-1">
+                          <Text className="font-semibold text-foreground">
+                            {method.mobile_provider_display ||
+                              method.display_name}
                           </Text>
+                          <Text className="text-muted-foreground text-sm">
+                            {method.method_type_display}
+                          </Text>
+                          {!method.is_active && (
+                            <Text className="text-destructive text-xs mt-1">
+                              Actuellement indisponible
+                            </Text>
+                          )}
+                        </View>
+                      </View>
+
+                      {isSelected && (
+                        <View className="w-6 h-6 rounded-full bg-primary items-center justify-center">
+                          <Check size={14} color="white" />
                         </View>
                       )}
-
-                      <View className="flex-1">
-                        <Text className="font-semibold text-gray-900">
-                          {method.mobile_provider_display ||
-                            method.display_name}
-                        </Text>
-                        <Text className="text-gray-500 text-sm">
-                          {method.method_type_display}
-                        </Text>
-                        {!method.is_active && (
-                          <Text className="text-red-500 text-xs mt-1">
-                            Currently unavailable
-                          </Text>
-                        )}
-                      </View>
-                    </View>
-
-                    {selectedFundingMethod?.id === method.id && (
-                      <View className="w-6 h-6 rounded-full bg-blue-500 items-center justify-center">
-                        <Check size={14} color="white" />
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                ))}
+                    </TouchableOpacity>
+                  );
+                })}
               </>
             )}
+
+            <View className="pb-8 pt-2 items-center">
+              <View className="flex-row items-center gap-2">
+                <ShieldCheck size={16} color="#9CA3AF" />
+                <Text className="text-muted-foreground text-sm">
+                  Tous les paiements sont sécurisés
+                </Text>
+              </View>
+            </View>
           </ScrollView>
         </View>
       </View>
